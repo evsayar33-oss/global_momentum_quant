@@ -496,7 +496,7 @@
    "trades": [],
    "peak": 64066.66689251388,
    "paused": false,
-   "spec_name": "A_mom12_hi52_lowmax",
+   "spec_name": "B_mom12_hi52",
    "events": [
     {
      "date": "2026-10-02",
@@ -1034,7 +1034,7 @@
    "trades": [],
    "peak": 732.6412679386931,
    "paused": false,
-   "spec_name": "A_resid_mom",
+   "spec_name": "C_mom_12_1",
    "events": [
     {
      "date": "2026-10-01",

@@ -1,11 +1,11 @@
 {
  "bist": {
   "streak": {
-   "B_mom12_hi52": 2,
+   "B_mom12_hi52": 3,
    "C_resid_hi52_clv": 0,
    "D_upvol_posdays": 0
   },
-  "last_switch": null,
+  "last_switch": "2026-10-02",
   "history": [
    {
     "date": "2026-10-02",
@@ -100,17 +100,65 @@
      }
     ],
     "switched": null
+   },
+   {
+    "date": "2026-10-02",
+    "active": "B_mom12_hi52",
+    "table": [
+     {
+      "strateji": "A_mom12_hi52_lowmax",
+      "aktif": true,
+      "tüm_fazla": 0.7,
+      "tüm_t": 1.14,
+      "36ay_fazla": 1.2,
+      "36ay_t": 1.09,
+      "36ay_net": 2.75,
+      "aktife_göre_t": null
+     },
+     {
+      "strateji": "B_mom12_hi52",
+      "aktif": false,
+      "tüm_fazla": 3.62,
+      "tüm_t": 3.71,
+      "36ay_fazla": 6.98,
+      "36ay_t": 5.46,
+      "36ay_net": 5.25,
+      "aktife_göre_t": 4.08
+     },
+     {
+      "strateji": "C_resid_hi52_clv",
+      "aktif": false,
+      "tüm_fazla": 1.54,
+      "tüm_t": 1.6,
+      "36ay_fazla": 3.81,
+      "36ay_t": 3.03,
+      "36ay_net": 4.56,
+      "aktife_göre_t": 1.97
+     },
+     {
+      "strateji": "D_upvol_posdays",
+      "aktif": false,
+      "tüm_fazla": 2.34,
+      "tüm_t": 2.52,
+      "36ay_fazla": 4.21,
+      "36ay_t": 2.73,
+      "36ay_net": 4.16,
+      "aktife_göre_t": 1.75
+     }
+    ],
+    "switched": "B_mom12_hi52"
    }
   ]
  },
  "us": {
   "streak": {
    "B_overnight_mom": 0,
-   "C_mom_12_1": 2,
+   "C_mom_12_1": 3,
    "D_resid_overnight": 0,
-   "E_resid_mom": 0
+   "E_resid_mom": 0,
+   "E_resid_mom12": 0
   },
-  "last_switch": null,
+  "last_switch": "2026-10-02",
   "history": [
    {
     "date": "2026-10-02",
@@ -215,6 +263,63 @@
      }
     ],
     "switched": null
+   },
+   {
+    "date": "2026-10-02",
+    "active": "C_mom_12_1",
+    "table": [
+     {
+      "strateji": "A_resid_mom",
+      "aktif": true,
+      "tüm_fazla": 2.03,
+      "tüm_t": 2.77,
+      "36ay_fazla": 3.48,
+      "36ay_t": 2.66,
+      "36ay_net": 4.69,
+      "aktife_göre_t": null
+     },
+     {
+      "strateji": "E_resid_mom12",
+      "aktif": false,
+      "tüm_fazla": 2.92,
+      "tüm_t": 3.27,
+      "36ay_fazla": 4.73,
+      "36ay_t": 2.94,
+      "36ay_net": 6.29,
+      "aktife_göre_t": 1.77
+     },
+     {
+      "strateji": "B_overnight_mom",
+      "aktif": false,
+      "tüm_fazla": 3.3,
+      "tüm_t": 3.2,
+      "36ay_fazla": 5.42,
+      "36ay_t": 2.85,
+      "36ay_net": 7.22,
+      "aktife_göre_t": 1.45
+     },
+     {
+      "strateji": "C_mom_12_1",
+      "aktif": false,
+      "tüm_fazla": 3.71,
+      "tüm_t": 3.72,
+      "36ay_fazla": 6.51,
+      "36ay_t": 3.58,
+      "36ay_net": 8.27,
+      "aktife_göre_t": 2.64
+     },
+     {
+      "strateji": "D_resid_overnight",
+      "aktif": false,
+      "tüm_fazla": 2.59,
+      "tüm_t": 2.71,
+      "36ay_fazla": 5.07,
+      "36ay_t": 3.03,
+      "36ay_net": 6.6,
+      "aktife_göre_t": 1.82
+     }
+    ],
+    "switched": "C_mom_12_1"
    }
   ]
  }

@@ -230,3 +230,23 @@ BUY MRK QTY=0.1276 AMT=18.35 STOP=107.8575 MARKET_ON_OPEN 2026-10-02
 BUY WDC QTY=0.0397 AMT=18.35 STOP=346.92 MARKET_ON_OPEN 2026-10-02
 BUY STX QTY=0.0194 AMT=18.35 STOP=709.1775 MARKET_ON_OPEN 2026-10-02
 BUY PSX QTY=0.0694 AMT=18.35 STOP=198.1725 MARKET_ON_OPEN 2026-10-02</pre>
+
+===== 2026-10-02 13:33 =====
+🔬 <b>Aylık derin denetim</b> (son 8 yıl, aynı kurallar, rastgeleye göre)
+
+<b>BIST</b> (aktif: B_mom12_hi52)
+✅ A_mom12_hi52_lowmax: tüm dönem %+0.70/dilim (t=1.1), son 36 ay %+1.20 (t=1.1)
+▫️ B_mom12_hi52: tüm dönem %+3.62/dilim (t=3.7), son 36 ay %+6.98 (t=5.5, aktife göre t=4.1)
+▫️ C_resid_hi52_clv: tüm dönem %+1.54/dilim (t=1.6), son 36 ay %+3.81 (t=3.0, aktife göre t=2.0)
+▫️ D_upvol_posdays: tüm dönem %+2.34/dilim (t=2.5), son 36 ay %+4.21 (t=2.7, aktife göre t=1.8)
+Kural: rakip, aktif stratejiyi son 36 ayda t>2 farkla 3 ay üst üste geçerse değişir (yılda en fazla 1 kez).
+ℹ️ Derin denetim: BIST stratejisi A_mom12_hi52_lowmax → B_mom12_hi52 olarak değişti (son 36 ayda t=4.1 fark, 3 ay üst üste doğrulandı). Açık pozisyonlar kendi süresinde kapanır, yeni dilimler yeni stratejiyle kurulur.
+
+<b>ABD (S&P 500)</b> (aktif: C_mom_12_1)
+✅ A_resid_mom: tüm dönem %+2.03/dilim (t=2.8), son 36 ay %+3.48 (t=2.7)
+▫️ E_resid_mom12: tüm dönem %+2.92/dilim (t=3.3), son 36 ay %+4.73 (t=2.9, aktife göre t=1.8)
+▫️ B_overnight_mom: tüm dönem %+3.30/dilim (t=3.2), son 36 ay %+5.42 (t=2.9, aktife göre t=1.4)
+▫️ C_mom_12_1: tüm dönem %+3.71/dilim (t=3.7), son 36 ay %+6.51 (t=3.6, aktife göre t=2.6)
+▫️ D_resid_overnight: tüm dönem %+2.59/dilim (t=2.7), son 36 ay %+5.07 (t=3.0, aktife göre t=1.8)
+Kural: rakip, aktif stratejiyi son 36 ayda t>2 farkla 3 ay üst üste geçerse değişir (yılda en fazla 1 kez).
+ℹ️ Derin denetim: ABD (S&P 500) stratejisi A_resid_mom → C_mom_12_1 olarak değişti (son 36 ayda t=2.6 fark, 3 ay üst üste doğrulandı). Açık pozisyonlar kendi süresinde kapanır, yeni dilimler yeni stratejiyle kurulur.
