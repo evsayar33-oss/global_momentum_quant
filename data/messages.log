@@ -1,0 +1,42 @@
+
+===== 2026-10-02 10:39 =====
+🚀 <b>Global Momentum Quant başladı</b>
+Başlangıç sermayesi: 100.000 TL
+• BIST (TL) hesabı: 64.000 TL
+• ABD ($) hesabı: 733 $
+Her kol 4 dilimde kurulur: ilk dilim yarın, sonrakiler 5'er işlem günü arayla. Her işlem en fazla 21 işlem günü (≈1 ay) tutulur. Felaket stopu: girişin %25 altı. Portföy sigortası: kapalı.
+
+===== 2026-10-02 10:40 =====
+🇹🇷 <b>BIST</b> — 2026-10-02 kapanışı
+
+📌 <b>Yarın AÇILIŞTA yapılacaklar</b>
+<u>Dilim 1</u> (bütçe 16.000 TL, 21 işlem günü tutulur)
+🟢 AL <b>INVES</b> — 1.600 TL ≈ 2 adet (son fiyat 704,00 TL, felaket stopu 528,00 TL)
+🟢 AL <b>AYGAZ</b> — 1.600 TL ≈ 5 adet (son fiyat 292,00 TL, felaket stopu 219,00 TL)
+🟢 AL <b>BIMAS</b> — 1.600 TL ≈ 4 adet (son fiyat 406,50 TL, felaket stopu 304,88 TL)
+🟢 AL <b>AGESA</b> — 1.600 TL ≈ 7 adet (son fiyat 233,20 TL, felaket stopu 174,90 TL)
+🟢 AL <b>GLYHO</b> — 1.600 TL ≈ 100 adet (son fiyat 15,97 TL, felaket stopu 11,98 TL)
+🟢 AL <b>TUPRS</b> — 1.600 TL ≈ 4 adet (son fiyat 383,75 TL, felaket stopu 287,81 TL)
+🟢 AL <b>KLSYN</b> — 1.600 TL ≈ 110 adet (son fiyat 14,56 TL, felaket stopu 10,92 TL)
+🟢 AL <b>EBEBK</b> — 1.600 TL ≈ 20 adet (son fiyat 80,65 TL, felaket stopu 60,49 TL)
+🟢 AL <b>AKSGY</b> — 1.600 TL ≈ 171 adet (son fiyat 9,36 TL, felaket stopu 7,02 TL)
+🟢 AL <b>SOKM</b> — 1.600 TL ≈ 29 adet (son fiyat 55,90 TL, felaket stopu 41,92 TL)
+
+💼 <b>Durum</b>
+BIST kolu: 64.067 TL | açık pozisyon 0 | nakit %100
+🌍 Toplam portföy: <b>100.067 TL</b> (zirveden %+0.0) | hedef BIST %64 / ABD %36 | USD/TRY 49,14
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+
+===== 2026-10-02 10:40 =====
+🤖 <b>Bot emirleri</b> (data/orders_bist.json)
+<pre>BUY INVES.IS QTY=2 AMT=1600.0 STOP=528.0 MARKET_ON_OPEN 2026-10-05
+BUY AYGAZ.IS QTY=5 AMT=1600.0 STOP=219.0 MARKET_ON_OPEN 2026-10-05
+BUY BIMAS.IS QTY=3 AMT=1600.0 STOP=304.875 MARKET_ON_OPEN 2026-10-05
+BUY AGESA.IS QTY=6 AMT=1600.0 STOP=174.9 MARKET_ON_OPEN 2026-10-05
+BUY GLYHO.IS QTY=100 AMT=1600.0 STOP=11.9775 MARKET_ON_OPEN 2026-10-05
+BUY TUPRS.IS QTY=4 AMT=1600.0 STOP=287.8125 MARKET_ON_OPEN 2026-10-05
+BUY KLSYN.IS QTY=109 AMT=1600.0 STOP=10.92 MARKET_ON_OPEN 2026-10-05
+BUY EBEBK.IS QTY=19 AMT=1600.0 STOP=60.4875 MARKET_ON_OPEN 2026-10-05
+BUY AKSGY.IS QTY=170 AMT=1600.0 STOP=7.02 MARKET_ON_OPEN 2026-10-05
+BUY SOKM.IS QTY=28 AMT=1600.0 STOP=41.925 MARKET_ON_OPEN 2026-10-05</pre>
