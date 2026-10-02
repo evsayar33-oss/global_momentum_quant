@@ -21,8 +21,11 @@ import signals as SG
 
 # ------------------------------------------------------------------ piyasa verisi (hızlı erişim)
 class MarketData:
-    def __init__(self, mk, W, spec=None):
+    def __init__(self, mk, W, spec=None, member=None, sectors=None):
+        """member: (isteğe bağlı) tarih x hisse True/False — o gün endeks üyesi mi (geçmiş test için).
+        sectors: {hisse: sektör} — sektör sınırı için."""
         cfg = C.MARKETS[mk]
+        self.sectors = sectors or {}
         self.mk = mk
         self.cfg = cfg
         self.spec = spec or cfg["spec"]
@@ -48,7 +51,8 @@ class MarketData:
             cum = f.iloc[::-1].cumprod().iloc[::-1].shift(-1).fillna(1.0)
             Wadj = {k: (W[k] * cum if k in ("o", "h", "l", "c") else W[k] / cum) for k in W}
             self.event = f.values.astype(float)
-        sc, U = SG.score(Wadj, self.spec, cfg["max_move"], cfg.get("liq_min_pct", C.LIQ_MIN_PCT))
+        mem = member.reindex(index=days, columns=self.tickers).fillna(False).astype(bool) if member is not None else None
+        sc, U = SG.score(Wadj, self.spec, cfg["max_move"], cfg.get("liq_min_pct", C.LIQ_MIN_PCT), member=mem)
         self.o = W["o"].values.astype(float)
         self.c = W["c"].values.astype(float)
         self.c_ff = W["c"].ffill().values.astype(float)
@@ -58,14 +62,28 @@ class MarketData:
         self.U = U.values
         self.fc = cfg["cost_rt_pct"] / 200.0      # tek yön maliyet oranı
 
-    def picks(self, i, n=C.N_PICKS):
+    def picks(self, i, n=None):
+        n = n or C.N_PICKS                      # çalışma anındaki ayar (varsayılan argüman donmasın)
         row = self.score[i]
         m = self.U[i] & np.isfinite(row)
         if m.sum() < 30:
             return []
         idx = np.where(m)[0]
-        order = idx[np.argsort(-row[idx], kind="stable")][:n]
-        return [self.tickers[j] for j in order]
+        order = idx[np.argsort(-row[idx], kind="stable")]
+        cap = C.SECTOR_CAP if getattr(C, "SECTOR_CAP", None) and self.sectors else None
+        if not cap:
+            return [self.tickers[j] for j in order[:n]]
+        out, cnt = [], {}
+        for j in order:
+            t = self.tickers[j]
+            s = self.sectors.get(t, "?")
+            if cnt.get(s, 0) >= cap:
+                continue
+            cnt[s] = cnt.get(s, 0) + 1
+            out.append(t)
+            if len(out) == n:
+                break
+        return out
 
     def universe(self, i):
         return [self.tickers[j] for j in np.where(self.U[i])[0]]

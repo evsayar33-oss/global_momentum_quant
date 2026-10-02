@@ -150,6 +150,16 @@ def run_market(mk):
     ev = evs[-1]
 
     status, notes = AU.live_audit(state, mk)
+    card = None
+    if mk == "us":
+        try:
+            spy = DA.download(["SPY"], "", period="3y")
+            spy = spy.set_index("tarih")["close"].sort_index()
+            spy_tl = (spy * fx.reindex(spy.index.union(fx.index)).ffill().reindex(spy.index)).dropna()
+            card, cnotes = AU.spy_scorecard(state, spy_tl)
+            notes += cnotes
+        except Exception as exc:
+            print("SPY karnesi hesaplanamadı:", exc)
     if len(todo) > 1 and not first:
         notes.insert(0, f"{len(todo)} işlem günü birlikte işlendi (önceki çalışmalar kaçmış). Arada üretilen emirler "
                         "kağıt üzerinde gerçekleşmiş sayıldı; lütfen panelden pozisyonlarını kontrol et.")
@@ -159,6 +169,8 @@ def run_market(mk):
     OR.write(mk, doc)
     msg = TG.market_message(mk, ev, state, notes)
     msg += f"\n🧪 Öz denetim: {status}"
+    if card:
+        msg += f"\n📊 SPY {card}"
     lines = OR.plain_lines(doc)
     bot_msg = None
     if lines:

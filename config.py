@@ -2,8 +2,8 @@
 
 Strateji (13 yıllık veride, rastgele seçim kıyaslı, eğitim 2014-19 / test 2020-26 ile seçildi):
   * BIST kolu : 12 ay momentum + 52 hafta zirvesine yakınlık + düşük aşırı-sıçrama, 10 hisse, 21 işlem günü
-  * ABD kolu  : S&P 500'ün en likit ~125 hissesinde kalıntı momentum + 12 ay momentum, 10 hisse, 21 işlem günü
-  * Sermaye   : %100 ABD (FIXED_WEIGHTS). BIST kolu kodda duruyor, ağırlığı 0
+  * ABD kolu  : S&P 500 kalıntı (piyasadan arındırılmış) momentum, 10 hisse, 21 işlem günü
+  * Sermaye   : BIST + ABD, risk paritesiyle (FIXED_WEIGHTS = None)
   * Her kol 4 dilim: her dilim 21 günde bir yenilenir, dilimler 5'er gün kaydırılır (kademeli giriş)
   * Felaket stopu: kapanış girişin %25 altına inerse ertesi açılışta sat
   * Kollar arası ağırlık: risk paritesi (63 günlük oynaklığın tersi, ayda bir)
@@ -18,13 +18,14 @@ CAPITAL_TL = 100_000          # başlangıç sermayesi (TL). Mesajlardaki tutarl
 START_DATE = None             # None: ilk çalıştırma günü başlar. "2026-10-05" gibi bir tarih de verilebilir.
 
 # ---------------------------------------------------------------- strateji (araştırmayla birebir)
-ENGINE_VERSION = "1.2.0"
+ENGINE_VERSION = "1.4.0"
 HOLD_DAYS = 21                # dilim tutma süresi (işlem günü)
 N_TRANCHES = 4                # kademeli giriş dilim sayısı
 TRANCHE_STEP = 5              # dilimler arası gün kaydırması
 N_PICKS = 10                  # dilim başına hisse
 CAT_STOP = 0.25               # felaket stopu: girişten %25 düşüş
 MIN_TRADE = {"bist": 250.0, "us": 10.0}   # bundan küçük yeniden boyutlandırma emri üretilmez
+SECTOR_CAP = None             # sektör başına en fazla hisse (None = sınırsız)
 LIQ_MIN_PCT = 0.40            # likidite: 20 gün medyan işlem hacmine göre alttaki %40 dışarıda
 
 MARKETS = {
@@ -35,17 +36,17 @@ MARKETS = {
         "universe_file": "data/universe_bist.json",
     },
     "us": {
-        "name": "ABD (S&P 500 büyükler)", "ccy": "$", "suffix": "", "max_move": 0.40,
+        "name": "ABD (S&P 500)", "ccy": "$", "suffix": "", "max_move": 0.40,
         "cost_rt_pct": 0.10,
-        "liq_min_pct": 0.75,                       # yalnızca en likit %25 (≈125 büyük şirket)
-        "spec": [["resid_mom", 1], ["mom_12_1", 1]],
+        "liq_min_pct": 0.40,                       # %100 ABD büyükler sürümü için 0.75
+        "spec": [["resid_mom", 1]],
         "universe_file": "data/universe_us.json",
     },
 }
 
 # ---------------------------------------------------------------- portföy düzeyi
 RP_WINDOW = 63                # risk paritesi oynaklık penceresi
-FIXED_WEIGHTS = {"bist": 0.0, "us": 1.0}   # %100 ABD büyükler. None yapılırsa risk paritesi (BIST+ABD) çalışır
+FIXED_WEIGHTS = None          # None: BIST+ABD karma (risk paritesi). {"bist": 0.0, "us": 1.0}: %100 ABD
 RP_DEFAULT = {"bist": 0.64, "us": 0.36}   # yeterli geçmiş yokken (13 yıllık ortalama)
 RP_BOUNDS = (0.30, 0.90)      # BIST ağırlığı sınırları (aşırı uçlara karşı)
 REBAL_TOL = 0.05              # hedeften 5 puan sapınca aktarım önerisi
@@ -54,6 +55,9 @@ INS_TRIGGER = 0.08            # sigorta: zirveden düşüş
 INS_RELEASE = 0.04            # sigorta kapanış eşiği
 INS_EXPOSURE = 0.25           # sigorta devredeyken pozisyon boyutu (%25)
 INS_RESTORE_NOW = True        # sigorta kapanınca pozisyonları hemen tam boyuta tamamla
+VOL_TARGET = False            # momentum çöküş freni (oynaklık ölçekleme)
+VOL_FLOOR = 0.25
+VOL_TARGET_FIXED = None       # None: stratejinin kendi geçmiş medyan oynaklığı
 CASH_RATE = {"bist": 0.30, "us": 0.035}   # nakitte bekleyen paranın yıllık net getirisi (para piyasası fonu / T-bill)
 
 # ---------------------------------------------------------------- öz denetim (yavaş, kanıta dayalı)
@@ -72,8 +76,8 @@ CANDIDATES = {                # önceden kayıtlı rakipler (araştırmada sağl
         "D_upvol_posdays": [["upvol_ratio", 1], ["pos_days", 1]],
     },
     "us": {
-        "A_resid_mom12": [["resid_mom", 1], ["mom_12_1", 1]],
-        "E_resid_mom": [["resid_mom", 1]],
+        "A_resid_mom": [["resid_mom", 1]],
+        "E_resid_mom12": [["resid_mom", 1], ["mom_12_1", 1]],
         "B_overnight_mom": [["overnight_mom", 1]],
         "C_mom_12_1": [["mom_12_1", 1]],
         "D_resid_overnight": [["resid_mom", 1], ["overnight_mom", 1]],

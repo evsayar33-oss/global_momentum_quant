@@ -159,3 +159,48 @@ def _save_audit(au):
     os.makedirs(C.DATA_DIR, exist_ok=True)
     with open(C.AUDIT_FILE, "w", encoding="utf-8") as f:
         json.dump(au, f, ensure_ascii=False, indent=1, default=str)
+
+
+# ------------------------------------------------------------------ SPY'a karşı canlı karne
+SPY_WARN_MONTHS = 24          # bu kadar ay geride kalırsa uyarı
+SPY_WARN_GAP = 0.10           # en az bu kadar (10 puan) geride
+
+
+def spy_scorecard(state, spy_tl: pd.Series):
+    """Canlı portföyü (TL) aynı tarihte yatırılmış SPY (TL) ile karşılaştırır.
+    Dönüş: (karne metni, uyarı listesi). Uyarı ayda en fazla bir kez gönderilir."""
+    try:
+        nav = pd.read_csv(C.NAV_FILE, parse_dates=["date"])
+    except Exception:
+        return "karne: veri birikiyor", []
+    if nav.empty or spy_tl is None or len(spy_tl) == 0:
+        return "karne: veri birikiyor", []
+    s = nav.groupby("date")["total_tl"].last().sort_index()
+    created = state.get("created")
+    if created:
+        s = s[s.index >= pd.Timestamp(created) - pd.Timedelta(days=5)]
+    if len(s) < 2:
+        return "karne: veri birikiyor", []
+    sp = spy_tl.reindex(s.index.union(spy_tl.index)).ffill().reindex(s.index)
+    def ret(x, a):
+        x = x[x.index >= a]
+        return float(x.iloc[-1] / x.iloc[0] - 1) if len(x) > 1 else float("nan")
+    start = s.index[0]
+    sys_all, spy_all = ret(s, start), ret(sp, start)
+    days = (s.index[-1] - start).days
+    txt = f"karne (başlangıçtan, {days} gün): sistem %{sys_all * 100:+.1f} / SPY %{spy_all * 100:+.1f}"
+    notes = []
+    for months in (12, SPY_WARN_MONTHS):
+        a = s.index[-1] - pd.DateOffset(months=months)
+        if a >= start:
+            r1, r2 = ret(s, a), ret(sp, a)
+            txt += f" | son {months} ay: sistem %{r1 * 100:+.1f} / SPY %{r2 * 100:+.1f}"
+            if months == SPY_WARN_MONTHS and (1 + r1) / (1 + r2) - 1 < -SPY_WARN_GAP:
+                key = s.index[-1].strftime("%Y-%m")
+                if state["pf"].get("spy_warn_month") != key:
+                    state["pf"]["spy_warn_month"] = key
+                    notes.append(f"KARNE UYARISI: sistem son {months} ayda SPY'ın %{((1 + r1) / (1 + r2) - 1) * 100:.0f} gerisinde. "
+                                 "Strateji etkisini yitirmiş olabilir; paranın bir kısmını veya tamamını SPY endeks fonuna "
+                                 "aktarmayı değerlendir.")
+    state["pf"]["spy_card"] = txt
+    return txt, notes

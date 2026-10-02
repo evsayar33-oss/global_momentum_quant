@@ -64,10 +64,14 @@ def compute(W, names, max_move):
     return S, valid, liq
 
 
-def score(W, spec, max_move, liq_min_pct):
-    """spec: [[sinyal, yön], ...] -> evren içi yüzdelik sıra ortalaması (yüksek = iyi), evren maskesi."""
+def score(W, spec, max_move, liq_min_pct, member=None):
+    """spec: [[sinyal, yön], ...] -> evren içi yüzdelik sıra ortalaması (yüksek = iyi), evren maskesi.
+    member verilirse likidite sıralaması ve evren yalnızca o günün endeks üyeleri arasında yapılır."""
     S, valid, liq = compute(W, [k for k, _ in spec], max_move)
-    U = universe_mask(valid, liq, liq_min_pct)
+    if member is not None:
+        U = universe_mask(valid & member, liq.where(member), liq_min_pct)
+    else:
+        U = universe_mask(valid, liq, liq_min_pct)
     out = None
     for k, s in spec:
         x = S[k].where(U).rank(axis=1, pct=True)

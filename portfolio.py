@@ -50,6 +50,31 @@ def set_hist_rates(us_tbill=None):
     HIST_RATES["us"] = (us_tbill / 100).dropna() if us_tbill is not None else pd.Series({pd.Timestamp("2013-01-01"): 0.02})
 
 
+# ------------------------------------------------------------------ momentum çöküş freni (oynaklık ölçekleme)
+VOLSCALE = {"bist": None, "us": None}
+
+
+def make_vol_scale(ret_local: pd.Series):
+    """Barroso & Santa-Clara (2015) tipi: stratejinin son 126 gün oynaklığı, kendi geçmiş medyanının üstüne
+    çıkınca yeni dilimler küçültülür. ölçek = min(1, medyan_oynaklık / güncel_oynaklık), alt sınır VOL_FLOOR.
+    Yalnızca geçmiş veri kullanılır (genişleyen medyan)."""
+    r = ret_local.dropna()
+    vol = r.rolling(126, min_periods=60).std() * np.sqrt(252)
+    med = vol.expanding(min_periods=120).median()
+    if getattr(C, "VOL_TARGET_FIXED", None):
+        med = pd.Series(C.VOL_TARGET_FIXED, index=vol.index)
+    s = (med / vol).clip(upper=1.0, lower=getattr(C, "VOL_FLOOR", 0.25)).fillna(1.0)
+    return s
+
+
+def vol_scale_at(mk, d):
+    s = VOLSCALE.get(mk)
+    if s is None or len(s) == 0:
+        return 1.0
+    v = s[s.index < pd.Timestamp(d)]
+    return float(v.iloc[-1]) if len(v) else 1.0
+
+
 def new_state(capital_tl, fx_now):
     w = dict(C.FIXED_WEIGHTS) if getattr(C, "FIXED_WEIGHTS", None) else dict(C.RP_DEFAULT)
     return {
@@ -118,8 +143,10 @@ def process_day(state, mk, md: E.MarketData, i: int, fx: pd.Series, shadow_fn=No
     tot = me_tl + other_tl
     target_tl = tot * pf["weights"][mk]
     target_local = target_tl / (f if mk == "us" else 1.0)
+    vs = vol_scale_at(mk, d) if getattr(C, "VOL_TARGET", False) else 1.0
+    ev_vs = vs
     ctx = {"target_local": target_local,
-           "exposure": C.INS_EXPOSURE if pf.get("insurance") else 1.0,
+           "exposure": (C.INS_EXPOSURE if pf.get("insurance") else 1.0) * vs,
            "reduce": bool(pf["reduce_pending"].get(mk)),
            "cash_rate": cash_rate(mk, d)}
     ev = E.step_market(md, i, st, ctx)
@@ -188,6 +215,8 @@ def process_day(state, mk, md: E.MarketData, i: int, fx: pd.Series, shadow_fn=No
             pf.setdefault("restore_pending", {})[OTHER[mk]] = True
             pf["reduce_pending"][OTHER[mk]] = False
     ev["weights"] = dict(pf["weights"])
+    ev["vol_scale"] = ev_vs
+    pf.setdefault("vol_scale", {})[mk] = round(float(ev_vs), 3)
     ev["total_tl"] = tot_after
     ev["dd"] = pf.get("dd", 0.0)
     ev["fx"] = f
@@ -211,6 +240,8 @@ def self_financed_returns(md: E.MarketData):
 def run_backtest(mdb: E.MarketData, mdu: E.MarketData, fx: pd.Series, start, end=None, capital=100_000.0):
     rb, _ = self_financed_returns(mdb)
     ru_usd, _ = self_financed_returns(mdu)
+    VOLSCALE["bist"] = make_vol_scale(rb)
+    VOLSCALE["us"] = make_vol_scale(ru_usd)
     ru = _to_tl_returns(ru_usd, "us", fx)
 
     def shadow(mk, d):

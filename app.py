@@ -57,7 +57,7 @@ def tl(x):
 
 D = load()
 st.title("🌍 Global Momentum Quant")
-st.caption("ABD büyük şirketler · kalıntı + 12 ay momentum · 4 dilimli kademeli giriş · işlemler en fazla 21 işlem günü · "
+st.caption("BIST momentum + ABD kalıntı momentum · risk paritesi · 4 dilimli kademeli giriş · işlemler en fazla 21 işlem günü · "
            "felaket stopu %25 · bot emir dosyası")
 
 tabs = st.tabs(["Özet", "Açık pozisyonlar", "İşlemler", "Performans", "Öz denetim", "13 yıllık test"])
