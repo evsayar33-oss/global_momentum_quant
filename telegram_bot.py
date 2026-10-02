@@ -136,8 +136,9 @@ def welcome_message(state):
     s = state["pf"]["initial_split"]
     return ("🚀 <b>Global Momentum Quant başladı</b>\n"
             f"Başlangıç sermayesi: {money(state['pf']['capital_tl'], 'TL')}\n"
-            f"• BIST (TL) hesabı: {money(s['bist_tl'], 'TL')}\n"
-            f"• ABD ($) hesabı: {money(s['us_usd'], '$')}\n"
+            + (f"• BIST (TL) hesabı: {money(s['bist_tl'], 'TL')}\n" if s['bist_tl'] > 0 else "")
+            + (f"• ABD ($) hesabı: {money(s['us_usd'], '$')}\n" if s['us_usd'] > 0 else "")
+            + 
             "Her kol 4 dilimde kurulur: ilk dilim yarın, sonrakiler 5'er işlem günü arayla. "
             "Her işlem en fazla 21 işlem günü (≈1 ay) tutulur. Felaket stopu: girişin %25 altı. "
             + ("Portföy sigortası: kapalı." if not getattr(C, "INS_ENABLED", True) else f"Portföy sigortası: toplam değer zirveden %{C.INS_TRIGGER * 100:.0f} düşerse pozisyonlar %{C.INS_EXPOSURE * 100:.0f} boyuta iner, toparlanınca tam boyuta döner."))

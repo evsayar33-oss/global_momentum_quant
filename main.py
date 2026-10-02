@@ -80,6 +80,12 @@ def run_market(mk):
         if not len(fx):
             print("Kur alınamadı; ilk kurulum ertelendi.")
             return
+        # önceki bir çalışmadan kalan kayıtlar varsa arşivle (yeni başlangıç karışmasın)
+        stamp = datetime.now().strftime("%Y%m%d_%H%M")
+        for pth in (C.NAV_FILE, C.TRADES_FILE, os.path.join(C.DATA_DIR, "orders_history.jsonl")):
+            if os.path.exists(pth):
+                os.makedirs(os.path.join(C.DATA_DIR, "arsiv"), exist_ok=True)
+                os.replace(pth, os.path.join(C.DATA_DIR, "arsiv", f"{stamp}_{os.path.basename(pth)}"))
         state = P.new_state(C.CAPITAL_TL, float(fx.iloc[-1]))
         state["created"] = datetime.now().strftime("%Y-%m-%d")
         for m in state["markets"]:
@@ -173,7 +179,10 @@ def run_audit():
         print("Durum yok; önce günlük çalışma.")
         return
     lines = ["🔬 <b>Aylık derin denetim</b> (son 8 yıl, aynı kurallar, rastgeleye göre)"]
+    fw = getattr(C, "FIXED_WEIGHTS", None)
     for mk in ("bist", "us"):
+        if fw and fw.get(mk, 0) <= 0 and not state["markets"][mk].get("positions"):
+            continue                      # kapalı pazar denetlenmez
         try:
             panel = DA.get_panel(mk, years=C.AUDIT_YEARS, force_full=True)
             W = DA.to_wide(panel)

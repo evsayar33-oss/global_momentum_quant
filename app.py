@@ -1,6 +1,7 @@
 """Global Momentum Quant — Streamlit paneli (repo'daki data/ ve backtest_ref/ dosyalarını okur)."""
 import json
 import os
+import re
 
 import altair as alt
 import numpy as np
@@ -34,6 +35,22 @@ def load():
     return out
 
 
+def active_markets(S=None):
+    fw = getattr(C, "FIXED_WEIGHTS", None)
+    out = []
+    for mk in ("bist", "us"):
+        has_pos = bool(S and (S["markets"][mk].get("positions") or S["markets"][mk].get("pending")))
+        if not fw or fw.get(mk, 0) > 0 or has_pos:
+            out.append(mk)
+    return out
+
+
+def mval(s):
+    if s.get("nav_post") is not None:
+        return float(s["nav_post"])
+    return s["nav_hist"][-1][1] if s["nav_hist"] else s["cash"]
+
+
 def tl(x):
     return f"{x:,.0f} TL".replace(",", ".")
 
@@ -41,7 +58,7 @@ def tl(x):
 D = load()
 st.title("🌍 Global Momentum Quant")
 st.caption("ABD büyük şirketler · kalıntı + 12 ay momentum · 4 dilimli kademeli giriş · işlemler en fazla 21 işlem günü · "
-           "felaket stopu %25 · risk paritesi · bot emir dosyası")
+           "felaket stopu %25 · bot emir dosyası")
 
 tabs = st.tabs(["Özet", "Açık pozisyonlar", "İşlemler", "Performans", "Öz denetim", "13 yıllık test"])
 
@@ -55,33 +72,43 @@ with tabs[0]:
         fx = pf.get("fx", 1)
         b = S["markets"]["bist"]
         u = S["markets"]["us"]
-        bv = b["nav_hist"][-1][1] if b["nav_hist"] else b["cash"]
-        uv = u["nav_hist"][-1][1] if u["nav_hist"] else u["cash"]
+        bv, uv = mval(b), mval(u)
         tot = bv + uv * fx
+        AM = active_markets(S)
         c1, c2, c3, c4 = st.columns(4)
         c1.metric("Toplam portföy", tl(tot), f"{(tot / pf['capital_tl'] - 1) * 100:+.1f}% başlangıçtan")
         c2.metric("Zirveden", f"{pf.get('dd', 0) * 100:.1f}%")
         c3.metric("Sigorta", "DEVREDE" if pf.get("insurance") else "kapalı")
         c4.metric("USD/TRY", f"{fx:.2f}")
-        c1, c2, c3 = st.columns(3)
         w = pf.get("weights", {})
-        c1.metric("BIST kolu", tl(bv), f"hedef %{w.get('bist', 0) * 100:.0f} · gerçek %{bv / tot * 100:.0f}")
-        c2.metric("ABD kolu", f"{uv:,.0f} $".replace(",", "."), f"hedef %{w.get('us', 0) * 100:.0f} · gerçek %{uv * fx / tot * 100:.0f}")
-        c3.metric("Aktif stratejiler", f"{b.get('spec_name')} / {u.get('spec_name')}")
-        for mk, s in (("bist", b), ("us", u)):
-            if s.get("paused"):
+        cols = st.columns(len(AM) + 1)
+        for j, mk in enumerate(AM):
+            s = S["markets"][mk]
+            v = bv if mk == "bist" else uv
+            vtl = v if mk == "bist" else v * fx
+            label = tl(v) if mk == "bist" else f"{v:,.0f} $".replace(",", ".")
+            cols[j].metric(f"{C.MARKETS[mk]['name']} kolu", label,
+                           f"hedef %{w.get(mk, 0) * 100:.0f} · gerçek %{vtl / tot * 100:.0f}" if tot else None)
+        cols[-1].metric("Aktif strateji", " / ".join(str(S["markets"][mk].get("spec_name")) for mk in AM))
+        for mk in AM:
+            if S["markets"][mk].get("paused"):
                 st.warning(f"{C.MARKETS[mk]['name']}: öz denetim nedeniyle yeni alımlar durduruldu.")
-        st.subheader("Son mesajlar")
+        st.subheader("Son mesajlar (en yeni üstte)")
         if os.path.exists(C.LOG_FILE):
             with open(C.LOG_FILE, encoding="utf-8") as f:
-                txt = f.read()[-6000:]
-            st.text(txt.replace("<b>", "").replace("</b>", "").replace("<u>", "").replace("</u>", ""))
+                txt = f.read()
+            blocks = [b_.strip() for b_ in txt.split("===== ") if b_.strip()]
+            for b_ in blocks[::-1][:8]:
+                head, _, body = b_.partition("=====")
+                clean = re.sub(r"<[^>]+>", "", body).replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+                with st.expander(head.strip(), expanded=False):
+                    st.text(clean.strip())
 
 # ------------------------------------------------------------------ pozisyonlar
 with tabs[1]:
     S = D.get("state")
     if S:
-        for mk in ("bist", "us"):
+        for mk in active_markets(S):
             s = S["markets"][mk]
             ccy = C.MARKETS[mk]["ccy"]
             st.subheader(f"{C.MARKETS[mk]['name']} — {len(s['positions'])} pozisyon")
@@ -107,7 +134,7 @@ with tabs[2]:
     if T is None or T.empty:
         st.info("Henüz kapanan işlem yok.")
     else:
-        for mk in ("bist", "us"):
+        for mk in active_markets(D.get("state")):
             g = T[T.market == mk]
             if g.empty:
                 continue
@@ -128,6 +155,9 @@ with tabs[3]:
         st.info("Canlı öz sermaye eğrisi ilk çalışmalardan sonra oluşacak.")
     else:
         N["date"] = pd.to_datetime(N["date"])
+        S_ = D.get("state") or {}
+        if S_.get("created"):
+            N = N[N["date"] >= pd.Timestamp(S_["created"]) - pd.Timedelta(days=5)]
         s = N.groupby("date")["total_tl"].last()
         dd = s / s.cummax() - 1
         df = pd.DataFrame({"date": s.index, "Portföy (TL)": s.values, "Düşüş %": dd.values * 100})
@@ -146,7 +176,7 @@ with tabs[3]:
 with tabs[4]:
     S = D.get("state")
     if S:
-        for mk in ("bist", "us"):
+        for mk in active_markets(S):
             s = S["markets"][mk]
             st.subheader(C.MARKETS[mk]["name"])
             st.write("Canlı denetim:", s.get("audit_status", "-"))
@@ -156,6 +186,8 @@ with tabs[4]:
     A = D.get("audit")
     if A:
         for mk, rec in A.items():
+            if mk not in active_markets(D.get("state")):
+                continue
             if rec.get("history"):
                 h = rec["history"][-1]
                 st.subheader(f"Derin denetim — {mk} ({h['date']}, aktif: {h['active']})")
