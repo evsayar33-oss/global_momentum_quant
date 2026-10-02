@@ -194,3 +194,39 @@ BUY SOKM.IS QTY=28 AMT=1600.0 STOP=42.6375 MARKET_ON_OPEN 2026-10-05
 BUY AKSGY.IS QTY=171 AMT=1600.0 STOP=6.99 MARKET_ON_OPEN 2026-10-05
 BUY KLSYN.IS QTY=110 AMT=1600.0 STOP=10.83 MARKET_ON_OPEN 2026-10-05
 BUY EBEBK.IS QTY=19 AMT=1600.0 STOP=60.5625 MARKET_ON_OPEN 2026-10-05</pre>
+
+===== 2026-10-02 13:30 =====
+🇺🇸 <b>ABD (S&P 500)</b> — 2026-10-01 kapanışı
+
+📌 <b>Yarın AÇILIŞTA yapılacaklar</b>
+<u>Dilim 1</u> (bütçe 184 $, 21 işlem günü tutulur)
+🟢 AL <b>SNDK</b> — 18 $ (≈ 900 TL) ≈ 0,01 adet (son fiyat 1.787,69 $, felaket stopu 1.340,77 $)
+🟢 AL <b>MU</b> — 18 $ (≈ 900 TL) ≈ 0,02 adet (son fiyat 1.097,39 $, felaket stopu 823,04 $)
+🟢 AL <b>JNJ</b> — 18 $ (≈ 900 TL) ≈ 0,07 adet (son fiyat 258,66 $, felaket stopu 194,00 $)
+🟢 AL <b>VLO</b> — 18 $ (≈ 900 TL) ≈ 0,04 adet (son fiyat 408,46 $, felaket stopu 306,35 $)
+🟢 AL <b>LITE</b> — 18 $ (≈ 900 TL) ≈ 0,02 adet (son fiyat 1.045,78 $, felaket stopu 784,34 $)
+🟢 AL <b>MPC</b> — 18 $ (≈ 900 TL) ≈ 0,04 adet (son fiyat 420,15 $, felaket stopu 315,11 $)
+🟢 AL <b>MRK</b> — 18 $ (≈ 900 TL) ≈ 0,13 adet (son fiyat 143,81 $, felaket stopu 107,86 $)
+🟢 AL <b>WDC</b> — 18 $ (≈ 900 TL) ≈ 0,04 adet (son fiyat 462,56 $, felaket stopu 346,92 $)
+🟢 AL <b>STX</b> — 18 $ (≈ 900 TL) ≈ 0,02 adet (son fiyat 945,57 $, felaket stopu 709,18 $)
+🟢 AL <b>PSX</b> — 18 $ (≈ 900 TL) ≈ 0,07 adet (son fiyat 264,23 $, felaket stopu 198,17 $)
+
+💼 <b>Durum</b>
+ABD (S&P 500) kolu: 733 $ | açık pozisyon 0 | nakit %100
+🌍 Toplam portföy: <b>99.987 TL</b> (zirveden %-0.1) | hedef BIST %64 / ABD %36 | USD/TRY 49,03
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+📊 SPY karne: veri birikiyor
+
+===== 2026-10-02 13:30 =====
+🤖 <b>Bot emirleri</b> (data/orders_us.json)
+<pre>BUY SNDK QTY=0.0103 AMT=18.35 STOP=1340.7675 MARKET_ON_OPEN 2026-10-02
+BUY MU QTY=0.0167 AMT=18.35 STOP=823.0425 MARKET_ON_OPEN 2026-10-02
+BUY JNJ QTY=0.0709 AMT=18.35 STOP=193.995 MARKET_ON_OPEN 2026-10-02
+BUY VLO QTY=0.0449 AMT=18.35 STOP=306.345 MARKET_ON_OPEN 2026-10-02
+BUY LITE QTY=0.0175 AMT=18.35 STOP=784.335 MARKET_ON_OPEN 2026-10-02
+BUY MPC QTY=0.0437 AMT=18.35 STOP=315.1125 MARKET_ON_OPEN 2026-10-02
+BUY MRK QTY=0.1276 AMT=18.35 STOP=107.8575 MARKET_ON_OPEN 2026-10-02
+BUY WDC QTY=0.0397 AMT=18.35 STOP=346.92 MARKET_ON_OPEN 2026-10-02
+BUY STX QTY=0.0194 AMT=18.35 STOP=709.1775 MARKET_ON_OPEN 2026-10-02
+BUY PSX QTY=0.0694 AMT=18.35 STOP=198.1725 MARKET_ON_OPEN 2026-10-02</pre>
