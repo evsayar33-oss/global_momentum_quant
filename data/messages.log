@@ -92,3 +92,45 @@ Kural: rakip, aktif stratejiyi son 36 ayda t>2 farkla 3 ay üst üste geçerse d
 ▫️ C_mom_12_1: tüm dönem %+3.71/dilim (t=3.7), son 36 ay %+6.51 (t=3.6, aktife göre t=2.6)
 ▫️ D_resid_overnight: tüm dönem %+2.59/dilim (t=2.7), son 36 ay %+5.07 (t=3.0, aktife göre t=1.8)
 Kural: rakip, aktif stratejiyi son 36 ayda t>2 farkla 3 ay üst üste geçerse değişir (yılda en fazla 1 kez).
+
+===== 2026-10-02 12:17 =====
+🚀 <b>Global Momentum Quant başladı</b>
+Başlangıç sermayesi: 100.000 TL
+• BIST (TL) hesabı: 0 TL
+• ABD ($) hesabı: 2.035 $
+Her kol 4 dilimde kurulur: ilk dilim yarın, sonrakiler 5'er işlem günü arayla. Her işlem en fazla 21 işlem günü (≈1 ay) tutulur. Felaket stopu: girişin %25 altı. Portföy sigortası: kapalı.
+
+===== 2026-10-02 12:17 =====
+🇺🇸 <b>ABD (S&P 500 büyükler)</b> — 2026-10-01 kapanışı
+
+📌 <b>Yarın AÇILIŞTA yapılacaklar</b>
+<u>Dilim 1</u> (bütçe 509 $, 21 işlem günü tutulur)
+🟢 AL <b>SNDK</b> — 51 $ (≈ 2.495 TL) ≈ 0,03 adet (son fiyat 1.787,69 $, felaket stopu 1.340,77 $)
+🟢 AL <b>MU</b> — 51 $ (≈ 2.495 TL) ≈ 0,05 adet (son fiyat 1.097,39 $, felaket stopu 823,04 $)
+🟢 AL <b>LITE</b> — 51 $ (≈ 2.495 TL) ≈ 0,05 adet (son fiyat 1.045,78 $, felaket stopu 784,34 $)
+🟢 AL <b>WDC</b> — 51 $ (≈ 2.495 TL) ≈ 0,11 adet (son fiyat 462,56 $, felaket stopu 346,92 $)
+🟢 AL <b>STX</b> — 51 $ (≈ 2.495 TL) ≈ 0,05 adet (son fiyat 945,57 $, felaket stopu 709,18 $)
+🟢 AL <b>DELL</b> — 51 $ (≈ 2.495 TL) ≈ 0,09 adet (son fiyat 541,74 $, felaket stopu 406,31 $)
+🟢 AL <b>AMD</b> — 51 $ (≈ 2.495 TL) ≈ 0,08 adet (son fiyat 615,73 $, felaket stopu 461,80 $)
+🟢 AL <b>VLO</b> — 51 $ (≈ 2.495 TL) ≈ 0,12 adet (son fiyat 408,46 $, felaket stopu 306,35 $)
+🟢 AL <b>INTC</b> — 51 $ (≈ 2.495 TL) ≈ 0,42 adet (son fiyat 120,00 $, felaket stopu 90,00 $)
+🟢 AL <b>MPC</b> — 51 $ (≈ 2.495 TL) ≈ 0,12 adet (son fiyat 420,15 $, felaket stopu 315,11 $)
+
+💼 <b>Durum</b>
+ABD (S&P 500 büyükler) kolu: 2.035 $ | açık pozisyon 0 | nakit %100
+🌍 Toplam portföy: <b>99.786 TL</b> (zirveden %-0.2) | hedef BIST %0 / ABD %100 | USD/TRY 49,03
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+
+===== 2026-10-02 12:17 =====
+🤖 <b>Bot emirleri</b> (data/orders_us.json)
+<pre>BUY SNDK QTY=0.0285 AMT=50.88 STOP=1340.7675 MARKET_ON_OPEN 2026-10-02
+BUY MU QTY=0.0464 AMT=50.88 STOP=823.0425 MARKET_ON_OPEN 2026-10-02
+BUY LITE QTY=0.0487 AMT=50.88 STOP=784.335 MARKET_ON_OPEN 2026-10-02
+BUY WDC QTY=0.11 AMT=50.88 STOP=346.92 MARKET_ON_OPEN 2026-10-02
+BUY STX QTY=0.0538 AMT=50.88 STOP=709.1775 MARKET_ON_OPEN 2026-10-02
+BUY DELL QTY=0.0939 AMT=50.88 STOP=406.305 MARKET_ON_OPEN 2026-10-02
+BUY AMD QTY=0.0826 AMT=50.88 STOP=461.7975 MARKET_ON_OPEN 2026-10-02
+BUY VLO QTY=0.1246 AMT=50.88 STOP=306.345 MARKET_ON_OPEN 2026-10-02
+BUY INTC QTY=0.424 AMT=50.88 STOP=90.0 MARKET_ON_OPEN 2026-10-02
+BUY MPC QTY=0.1211 AMT=50.88 STOP=315.1125 MARKET_ON_OPEN 2026-10-02</pre>
