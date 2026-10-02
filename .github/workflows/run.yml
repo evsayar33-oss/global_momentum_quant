@@ -1,1 +1,79 @@
-e
+name: Global Momentum Quant
+
+on:
+  schedule:
+    # BIST: 18:45 TR (seans 18:00'de kapanır) + 20:15 TR yedek deneme
+    - cron: '45 15 * * 1-5'
+    - cron: '15 17 * * 1-5'
+    # ABD: 00:40 TR (kapanış 23:00 TR yaz / 00:00 TR kış) + 02:10 TR yedek deneme
+    - cron: '40 21 * * 1-5'
+    - cron: '10 23 * * 1-5'
+    # Aylık derin denetim: her ayın 2'si 09:20 TR
+    - cron: '20 6 2 * *'
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'bist / us / audit'
+        required: true
+        default: 'bist'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gmq-pipeline
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Paketleri yükle
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Veri önbelleği
+        uses: actions/cache@v4
+        with:
+          path: data_cache
+          key: gmq-data-${{ github.run_id }}
+          restore-keys: gmq-data-
+
+      - name: Görevi seç
+        id: task
+        run: |
+          S="${{ github.event.schedule }}"
+          T="${{ github.event.inputs.task }}"
+          if [ -n "$T" ]; then echo "task=$T" >> $GITHUB_OUTPUT
+          elif [ "$S" = "20 6 2 * *" ]; then echo "task=audit" >> $GITHUB_OUTPUT
+          elif [ "$S" = "45 15 * * 1-5" ] || [ "$S" = "15 17 * * 1-5" ]; then echo "task=bist" >> $GITHUB_OUTPUT
+          else echo "task=us" >> $GITHUB_OUTPUT; fi
+
+      - name: Çalıştır
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          TZ: Europe/Istanbul
+        run: python main.py ${{ steps.task.outputs.task }}
+
+      - name: Kaydet
+        run: |
+          git config --global user.name "GMQ-Bot"
+          git config --global user.email "bot@gmq.local"
+          git add -A data
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "GMQ ${{ steps.task.outputs.task }} $(date +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git pull --rebase -X theirs && git push && exit 0
+            sleep 5
+          done
+          exit 1
