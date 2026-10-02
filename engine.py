@@ -48,7 +48,7 @@ class MarketData:
             cum = f.iloc[::-1].cumprod().iloc[::-1].shift(-1).fillna(1.0)
             Wadj = {k: (W[k] * cum if k in ("o", "h", "l", "c") else W[k] / cum) for k in W}
             self.event = f.values.astype(float)
-        sc, U = SG.score(Wadj, self.spec, cfg["max_move"], C.LIQ_MIN_PCT)
+        sc, U = SG.score(Wadj, self.spec, cfg["max_move"], cfg.get("liq_min_pct", C.LIQ_MIN_PCT))
         self.o = W["o"].values.astype(float)
         self.c = W["c"].values.astype(float)
         self.c_ff = W["c"].ffill().values.astype(float)

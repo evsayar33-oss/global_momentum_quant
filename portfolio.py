@@ -51,7 +51,7 @@ def set_hist_rates(us_tbill=None):
 
 
 def new_state(capital_tl, fx_now):
-    w = dict(C.RP_DEFAULT)
+    w = dict(C.FIXED_WEIGHTS) if getattr(C, "FIXED_WEIGHTS", None) else dict(C.RP_DEFAULT)
     return {
         "version": C.ENGINE_VERSION,
         "created": None,
@@ -107,6 +107,8 @@ def process_day(state, mk, md: E.MarketData, i: int, fx: pd.Series, shadow_fn=No
         if rb is not None and ru is not None and len(rb) and len(ru):
             idx = rb.index.union(ru.index)
             pf["weights"] = E.rp_weights(rb.reindex(idx).dropna(), ru.reindex(idx).dropna())
+        if getattr(C, "FIXED_WEIGHTS", None):
+            pf["weights"] = dict(C.FIXED_WEIGHTS)
         pf["weights_month"] = month
 
     # hedef değer

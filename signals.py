@@ -32,11 +32,16 @@ def compute(W, names, max_move):
         S["hi52"] = c / c.rolling(252, min_periods=200).max()
     if "low_max" in need:
         S["low_max"] = -r.rolling(21, min_periods=15).max()
+    if "low_vol" in need:
+        S["low_vol"] = -r.rolling(60, min_periods=40).std()
+    if "amihud_illiq" in need:
+        vt = (c * v).where(v > 0)
+        S["amihud_illiq"] = (r.abs() / vt).rolling(20, min_periods=10).mean()
     if "clv" in need:
         S["clv"] = (((c - l) - (h - c)) / (h - l).replace(0, np.nan)).rolling(5).mean()
-    if need & {"resid_mom", "upvol_ratio", "pos_days", "overnight_mom"}:
+    if need & {"resid_mom", "upvol_ratio", "pos_days", "overnight_mom", "low_ivol"}:
         rv = r.where(valid)
-        if "resid_mom" in need:
+        if need & {"resid_mom", "low_ivol"}:
             m = rv.mean(axis=1)
             W_ = 252
             Erm = rv.mul(m, axis=0).rolling(W_, min_periods=150).mean()
@@ -47,6 +52,7 @@ def compute(W, names, max_move):
             res = rv.sub(beta.shift(1).mul(m, axis=0))
             rs = res.shift(21).rolling(231, min_periods=150)
             S["resid_mom"] = rs.sum() / rs.std()
+            S["low_ivol"] = -res.rolling(60, min_periods=40).std()
         if "upvol_ratio" in need:
             S["upvol_ratio"] = (v * (rv > 0)).rolling(20).sum() / v.rolling(20).sum().replace(0, np.nan)
         if "pos_days" in need:

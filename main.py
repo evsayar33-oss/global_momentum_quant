@@ -68,6 +68,11 @@ def pick_market_auto():
 
 # ------------------------------------------------------------------ günlük çalışma
 def run_market(mk):
+    fw = getattr(C, "FIXED_WEIGHTS", None)
+    st0 = (load_state() or {}).get("markets", {}).get(mk, {})
+    if fw and fw.get(mk, 1) <= 0 and not st0.get("positions") and not st0.get("pending"):
+        print(f"{mk}: ağırlık 0 ve açık pozisyon yok — bu pazar kapalı, atlanıyor.")
+        return
     fx = DA.get_fx(3)
     state = load_state()
     first = state is None

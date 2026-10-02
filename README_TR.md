@@ -2,32 +2,33 @@
 
 İki piyasayı (BIST ve ABD S&P 500) tek bir TL portföyü olarak yöneten, kendini denetleyen momentum sistemi.
 
-## Strateji
+## Strateji (v1.2 — %100 ABD büyük şirketler)
 
 | Katman | Kural |
 |---|---|
-| BIST kolu | 12 ay momentum + 52 hafta zirvesine yakınlık + düşük aşırı sıçrama → en iyi 10 hisse |
-| ABD kolu | S&P 500 kalıntı (piyasadan arındırılmış) momentum → en iyi 10 hisse |
-| Kademeli giriş | Her kol 4 dilim. Her hafta bir dilim yenilenir, her işlem **en fazla 21 işlem günü** tutulur |
+| Evren | S&P 500'ün en çok işlem gören ~%25'i (≈125 büyük şirket) |
+| Seçim | Kalıntı (piyasadan arındırılmış) momentum + 12 ay momentum → en iyi 10 hisse |
+| Kademeli giriş | 4 dilim. Her hafta bir dilim yenilenir, her işlem **en fazla 21 işlem günü** tutulur |
 | Felaket stopu | Kapanış girişin %25 altına inerse ertesi açılışta satılır |
-| Kollar arası ağırlık | Risk paritesi (63 günlük oynaklığın tersi, ayda bir; BIST %30–90 arası) |
-| Portföy sigortası | **Kapalı.** TL nakde çekildiği için reel bazda zarar verdi. `config.py` içinde `INS_ENABLED = True` ile açılabilir |
-| Aktarım | Bir kolun bütçesi nakitten büyükse sistem "şu kadar TL/$ aktar" der |
+| Sermaye | %100 ABD (`FIXED_WEIGHTS`). BIST kolu kodda duruyor; `FIXED_WEIGHTS = None` yapılırsa BIST+ABD risk paritesi döner |
+| Portföy sigortası | Kapalı |
+
+Bu yapı, ABD büyük şirketlerinde 72 sinyalin tekli, ikili ve üçlü kombinasyonları; 5/10/15/20 hisse ve 10/21 gün tutma seçenekleri arasından seçildi. Ölçüt "SPY'ı en sık geçmek" idi. Seçim yalnızca 2014–19 verisiyle yapıldı, 2020–26 hiç görülmeden test edildi.
 
 ## 13 yıllık test (canlı motorun kendisiyle, 2014-01 → 2026-09)
 
-| | Yıllık | En büyük düşüş | En uzun telafi | 12 aylık dönemlerin pozitif oranı |
+| | Yıllık | En büyük düşüş | SPY'ı geçtiği yıl | 12 aylık dönemlerde SPY'ı geçme |
 |---|---|---|---|---|
-| **Sistem (TL, nominal)** | **%53,2** | **−%28,4** | **14,9 ay** | **%99** (en kötü −%8,8) |
-| **Sistem (reel, TÜFE üstü)** | **%21,9** | −%29,0 | 20,4 ay | %82 |
-| Sistem (dolar bazında) | %19,9 | −%37,9 | 27,8 ay | %75 |
-| Sigortalı sürüm (TL) | %48,8 | −%20,6 | 9,9 ay | %100 |
-| XU100 | %25,6 | −%31,8 | 26,9 ay | %79 |
-| SPY (TL) | %43,0 | −%37,0 | 17,3 ay | %99 |
+| **Sistem (TL)** | **%66,8** | **−%43,5** | **10/12** | **%88** (eğitim %95 / test %80) |
+| Sistem (reel, TÜFE üstü) | %32,7 | −%44,9 | | |
+| Sistem (dolar) | %30,5 | −%36,5 | | |
+| Önceki BIST+ABD karma (TL) | %53,2 | −%28,4 | 5/12 | %61 |
+| SPY (TL) | %43,0 | −%37,0 | – | – |
 
-- **İşlem düzeyi:** BIST'te kârla kapanma %55,7, işlem başı net +%3,4, kâr faktörü 1,90. ABD'de kârla kapanma %57,1, işlem başı net +%2,2, kâr faktörü 1,82.
-- **Seçim:** Ayarlar yalnızca 2014–19 verisiyle seçildi. 2020–26 hiç görülmeden test edildi.
-- **Sınır:** Veri yalnızca bugün işlem gören hisseleri içeriyor, batan şirketler yok. Gerçek sonuç biraz daha düşük olabilir. Geçmiş, geleceğin garantisi değildir.
+- **İşlem düzeyi:** Kârla kapanma %56,7, işlem başı net +%2,45, kâr faktörü 1,77, felaket stopu işlemlerin %2,7'sinde tetiklendi.
+- **Risk:** En kötü ay −%26 (2020 Mart). En büyük düşüş SPY'dan biraz derin.
+- **Sınır:** Veri yalnızca bugünkü S&P 500 üyelerini içeriyor. Büyük şirketlerle sınırlamak bu hatayı azaltır ama sıfırlamaz; gerçek sonuç daha düşük olabilir.
+- **Kesirli hisse:** Sermayenin tamamı ABD'de, pozisyonlar küçük. Kesirli hisse alabilen bir aracı kurum gerekir.
 
 ## Bot için emir dosyası
 

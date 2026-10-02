@@ -68,6 +68,8 @@ def main():
     C.AUDIT_FILE = os.path.join(tmp, "audit.json")
     C.LOG_FILE = os.path.join(tmp, "messages.log")
     ok = True
+    saved_fw = getattr(C, "FIXED_WEIGHTS", None)
+    C.FIXED_WEIGHTS = None          # testler iki kolu birlikte sınar
     try:
         # 1) muhasebe: sabit fiyat, sıfır maliyet
         saved = {m: C.MARKETS[m]["cost_rt_pct"] for m in C.MARKETS}
@@ -169,6 +171,7 @@ def main():
         ok &= check("canlı akış = geçmiş test", abs(tot / ref_daily.iloc[-1] - 1) < 1e-6,
                     f"canlı {tot:,.2f} / test {ref_daily.iloc[-1]:,.2f}")
     finally:
+        C.FIXED_WEIGHTS = saved_fw
         C.DATA_DIR, C.STATE_FILE, C.TRADES_FILE, C.NAV_FILE, C.AUDIT_FILE, C.LOG_FILE = old_dirs
         shutil.rmtree(tmp, ignore_errors=True)
     print("\nSONUÇ:", "TÜM TESTLER GEÇTİ ✅" if ok else "HATA VAR ❌")

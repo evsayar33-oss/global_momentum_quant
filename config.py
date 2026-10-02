@@ -2,7 +2,8 @@
 
 Strateji (13 yıllık veride, rastgele seçim kıyaslı, eğitim 2014-19 / test 2020-26 ile seçildi):
   * BIST kolu : 12 ay momentum + 52 hafta zirvesine yakınlık + düşük aşırı-sıçrama, 10 hisse, 21 işlem günü
-  * ABD kolu  : S&P 500 kalıntı (piyasadan arındırılmış) momentum, 10 hisse, 21 işlem günü
+  * ABD kolu  : S&P 500'ün en likit ~125 hissesinde kalıntı momentum + 12 ay momentum, 10 hisse, 21 işlem günü
+  * Sermaye   : %100 ABD (FIXED_WEIGHTS). BIST kolu kodda duruyor, ağırlığı 0
   * Her kol 4 dilim: her dilim 21 günde bir yenilenir, dilimler 5'er gün kaydırılır (kademeli giriş)
   * Felaket stopu: kapanış girişin %25 altına inerse ertesi açılışta sat
   * Kollar arası ağırlık: risk paritesi (63 günlük oynaklığın tersi, ayda bir)
@@ -17,7 +18,7 @@ CAPITAL_TL = 100_000          # başlangıç sermayesi (TL). Mesajlardaki tutarl
 START_DATE = None             # None: ilk çalıştırma günü başlar. "2026-10-05" gibi bir tarih de verilebilir.
 
 # ---------------------------------------------------------------- strateji (araştırmayla birebir)
-ENGINE_VERSION = "1.1.0"
+ENGINE_VERSION = "1.2.0"
 HOLD_DAYS = 21                # dilim tutma süresi (işlem günü)
 N_TRANCHES = 4                # kademeli giriş dilim sayısı
 TRANCHE_STEP = 5              # dilimler arası gün kaydırması
@@ -34,15 +35,17 @@ MARKETS = {
         "universe_file": "data/universe_bist.json",
     },
     "us": {
-        "name": "ABD (S&P 500)", "ccy": "$", "suffix": "", "max_move": 0.40,
+        "name": "ABD (S&P 500 büyükler)", "ccy": "$", "suffix": "", "max_move": 0.40,
         "cost_rt_pct": 0.10,
-        "spec": [["resid_mom", 1]],
+        "liq_min_pct": 0.75,                       # yalnızca en likit %25 (≈125 büyük şirket)
+        "spec": [["resid_mom", 1], ["mom_12_1", 1]],
         "universe_file": "data/universe_us.json",
     },
 }
 
 # ---------------------------------------------------------------- portföy düzeyi
 RP_WINDOW = 63                # risk paritesi oynaklık penceresi
+FIXED_WEIGHTS = {"bist": 0.0, "us": 1.0}   # %100 ABD büyükler. None yapılırsa risk paritesi (BIST+ABD) çalışır
 RP_DEFAULT = {"bist": 0.64, "us": 0.36}   # yeterli geçmiş yokken (13 yıllık ortalama)
 RP_BOUNDS = (0.30, 0.90)      # BIST ağırlığı sınırları (aşırı uçlara karşı)
 REBAL_TOL = 0.05              # hedeften 5 puan sapınca aktarım önerisi
@@ -69,7 +72,8 @@ CANDIDATES = {                # önceden kayıtlı rakipler (araştırmada sağl
         "D_upvol_posdays": [["upvol_ratio", 1], ["pos_days", 1]],
     },
     "us": {
-        "A_resid_mom": [["resid_mom", 1]],
+        "A_resid_mom12": [["resid_mom", 1], ["mom_12_1", 1]],
+        "E_resid_mom": [["resid_mom", 1]],
         "B_overnight_mom": [["overnight_mom", 1]],
         "C_mom_12_1": [["mom_12_1", 1]],
         "D_resid_overnight": [["resid_mom", 1], ["overnight_mom", 1]],
