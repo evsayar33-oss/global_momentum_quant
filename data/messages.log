@@ -152,3 +152,45 @@ Kural: rakip, aktif stratejiyi son 36 ayda t>2 farkla 3 ay üst üste geçerse d
 ▫️ C_mom_12_1: tüm dönem %+2.43/dilim (t=2.7), son 36 ay %+4.51 (t=2.7, aktife göre t=2.1)
 ▫️ D_resid_overnight: tüm dönem %+1.98/dilim (t=2.3), son 36 ay %+3.49 (t=2.3, aktife göre t=0.8)
 Kural: rakip, aktif stratejiyi son 36 ayda t>2 farkla 3 ay üst üste geçerse değişir (yılda en fazla 1 kez).
+
+===== 2026-10-02 13:27 =====
+🚀 <b>Global Momentum Quant başladı</b>
+Başlangıç sermayesi: 100.000 TL
+• BIST (TL) hesabı: 64.000 TL
+• ABD ($) hesabı: 733 $
+Her kol 4 dilimde kurulur: ilk dilim yarın, sonrakiler 5'er işlem günü arayla. Her işlem en fazla 21 işlem günü (≈1 ay) tutulur. Felaket stopu: girişin %25 altı. Portföy sigortası: kapalı.
+
+===== 2026-10-02 13:28 =====
+🇹🇷 <b>BIST</b> — 2026-10-02 kapanışı
+
+📌 <b>Yarın AÇILIŞTA yapılacaklar</b>
+<u>Dilim 1</u> (bütçe 16.000 TL, 21 işlem günü tutulur)
+🟢 AL <b>INVES</b> — 1.600 TL ≈ 2 adet (son fiyat 701,00 TL, felaket stopu 525,75 TL)
+🟢 AL <b>AYGAZ</b> — 1.600 TL ≈ 5 adet (son fiyat 297,50 TL, felaket stopu 223,12 TL)
+🟢 AL <b>BIMAS</b> — 1.600 TL ≈ 4 adet (son fiyat 412,75 TL, felaket stopu 309,56 TL)
+🟢 AL <b>AGESA</b> — 1.600 TL ≈ 7 adet (son fiyat 233,70 TL, felaket stopu 175,28 TL)
+🟢 AL <b>GLYHO</b> — 1.600 TL ≈ 99 adet (son fiyat 16,15 TL, felaket stopu 12,11 TL)
+🟢 AL <b>TUPRS</b> — 1.600 TL ≈ 4 adet (son fiyat 389,00 TL, felaket stopu 291,75 TL)
+🟢 AL <b>SOKM</b> — 1.600 TL ≈ 28 adet (son fiyat 56,85 TL, felaket stopu 42,64 TL)
+🟢 AL <b>AKSGY</b> — 1.600 TL ≈ 172 adet (son fiyat 9,32 TL, felaket stopu 6,99 TL)
+🟢 AL <b>KLSYN</b> — 1.600 TL ≈ 111 adet (son fiyat 14,44 TL, felaket stopu 10,83 TL)
+🟢 AL <b>EBEBK</b> — 1.600 TL ≈ 20 adet (son fiyat 80,75 TL, felaket stopu 60,56 TL)
+
+💼 <b>Durum</b>
+BIST kolu: 64.067 TL | açık pozisyon 0 | nakit %100
+🌍 Toplam portföy: <b>100.067 TL</b> (zirveden %+0.0) | hedef BIST %64 / ABD %36 | USD/TRY 49,14
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+
+===== 2026-10-02 13:28 =====
+🤖 <b>Bot emirleri</b> (data/orders_bist.json)
+<pre>BUY INVES.IS QTY=2 AMT=1600.0 STOP=525.75 MARKET_ON_OPEN 2026-10-05
+BUY AYGAZ.IS QTY=5 AMT=1600.0 STOP=223.125 MARKET_ON_OPEN 2026-10-05
+BUY BIMAS.IS QTY=3 AMT=1600.0 STOP=309.5625 MARKET_ON_OPEN 2026-10-05
+BUY AGESA.IS QTY=6 AMT=1600.0 STOP=175.275 MARKET_ON_OPEN 2026-10-05
+BUY GLYHO.IS QTY=99 AMT=1600.0 STOP=12.1125 MARKET_ON_OPEN 2026-10-05
+BUY TUPRS.IS QTY=4 AMT=1600.0 STOP=291.75 MARKET_ON_OPEN 2026-10-05
+BUY SOKM.IS QTY=28 AMT=1600.0 STOP=42.6375 MARKET_ON_OPEN 2026-10-05
+BUY AKSGY.IS QTY=171 AMT=1600.0 STOP=6.99 MARKET_ON_OPEN 2026-10-05
+BUY KLSYN.IS QTY=110 AMT=1600.0 STOP=10.83 MARKET_ON_OPEN 2026-10-05
+BUY EBEBK.IS QTY=19 AMT=1600.0 STOP=60.5625 MARKET_ON_OPEN 2026-10-05</pre>
