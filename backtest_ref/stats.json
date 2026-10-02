@@ -1,8 +1,41 @@
 {
- "aciklama": "**13 yıllık geçmiş test** — canlı sistemin kendi motoru gün gün çalıştırıldı (2014-01 → 2026-09). Maliyetler, nakit faizi, felaket stopu ve risk paritesi dahil; portföy sigortası kapalı (karşılaştırma için sigortalı sürüm de gösterilir). Ayarlar 2014-19 verisiyle seçildi, 2020-26 hiç görülmeden test edildi. Not: veri yalnızca bugün işlem gören hisseleri içerir (batan şirketler yok), gerçek sonuçlar biraz daha düşük olabilir.",
+ "aciklama": "**13 yıllık geçmiş test** — canlı sistemin kendi motoru gün gün çalıştırıldı (2014-01 → 2026-09). Maliyetler, nakit faizi, felaket stopu ve risk paritesi dahil; sermayenin %100'ü ABD büyük şirketlerde; karşılaştırma için önceki BIST+ABD karma sürüm de gösterilir. Ayarlar 2014-19 verisiyle seçildi, 2020-26 hiç görülmeden test edildi. Not: veri yalnızca bugün işlem gören hisseleri içerir (batan şirketler yok), gerçek sonuçlar biraz daha düşük olabilir.",
  "ozet": [
   {
    "Seri": "Sistem (TL)",
+   "Dönem": "2014-2026",
+   "Yıllık getiri %": 66.8,
+   "En büyük düşüş %": -43.5,
+   "En uzun telafi (ay)": 16.9,
+   "Kârlı ay %": 69.0,
+   "En kötü ay %": -26.3,
+   "12 ay pozitif %": 99.0,
+   "En kötü 12 ay %": -10.3
+  },
+  {
+   "Seri": "Sistem (TL)",
+   "Dönem": "Eğitim 2014-19",
+   "Yıllık getiri %": 38.5,
+   "En büyük düşüş %": -43.5,
+   "En uzun telafi (ay)": 15.8,
+   "Kârlı ay %": 65.0,
+   "En kötü ay %": -23.0,
+   "12 ay pozitif %": 97.0,
+   "En kötü 12 ay %": -10.3
+  },
+  {
+   "Seri": "Sistem (TL)",
+   "Dönem": "Test 2020-26",
+   "Yıllık getiri %": 96.3,
+   "En büyük düşüş %": -35.2,
+   "En uzun telafi (ay)": 7.9,
+   "Kârlı ay %": 73.0,
+   "En kötü ay %": -26.3,
+   "12 ay pozitif %": 100.0,
+   "En kötü 12 ay %": 27.2
+  },
+  {
+   "Seri": "Önceki BIST+ABD karma (TL)",
    "Dönem": "2014-2026",
    "Yıllık getiri %": 53.2,
    "En büyük düşüş %": -28.4,
@@ -13,7 +46,7 @@
    "En kötü 12 ay %": -8.8
   },
   {
-   "Seri": "Sistem (TL)",
+   "Seri": "Önceki BIST+ABD karma (TL)",
    "Dönem": "Eğitim 2014-19",
    "Yıllık getiri %": 27.3,
    "En büyük düşüş %": -24.9,
@@ -24,7 +57,7 @@
    "En kötü 12 ay %": -8.8
   },
   {
-   "Seri": "Sistem (TL)",
+   "Seri": "Önceki BIST+ABD karma (TL)",
    "Dönem": "Test 2020-26",
    "Yıllık getiri %": 80.6,
    "En büyük düşüş %": -28.4,
@@ -33,39 +66,6 @@
    "En kötü ay %": -11.6,
    "12 ay pozitif %": 100.0,
    "En kötü 12 ay %": 22.1
-  },
-  {
-   "Seri": "Sigortalı sürüm (TL)",
-   "Dönem": "2014-2026",
-   "Yıllık getiri %": 48.8,
-   "En büyük düşüş %": -20.6,
-   "En uzun telafi (ay)": 9.9,
-   "Kârlı ay %": 80.0,
-   "En kötü ay %": -9.4,
-   "12 ay pozitif %": 100.0,
-   "En kötü 12 ay %": 3.4
-  },
-  {
-   "Seri": "Sigortalı sürüm (TL)",
-   "Dönem": "Eğitim 2014-19",
-   "Yıllık getiri %": 28.5,
-   "En büyük düşüş %": -12.7,
-   "En uzun telafi (ay)": 9.9,
-   "Kârlı ay %": 80.0,
-   "En kötü ay %": -9.4,
-   "12 ay pozitif %": 100.0,
-   "En kötü 12 ay %": 3.4
-  },
-  {
-   "Seri": "Sigortalı sürüm (TL)",
-   "Dönem": "Test 2020-26",
-   "Yıllık getiri %": 69.6,
-   "En büyük düşüş %": -20.6,
-   "En uzun telafi (ay)": 7.8,
-   "Kârlı ay %": 79.0,
-   "En kötü ay %": -7.6,
-   "12 ay pozitif %": 100.0,
-   "En kötü 12 ay %": 12.4
   },
   {
    "Seri": "XU100",
@@ -169,119 +169,119 @@
   {
    "Seri": "Sistem (dolar bazında)",
    "Dönem": "2014-2026",
-   "Yıllık getiri %": 19.9,
-   "En büyük düşüş %": -37.9,
-   "En uzun telafi (ay)": 27.8,
-   "Kârlı ay %": 59.0,
-   "En kötü ay %": -14.7,
-   "12 ay pozitif %": 75.0,
-   "En kötü 12 ay %": -23.5
+   "Yıllık getiri %": 30.5,
+   "En büyük düşüş %": -36.5,
+   "En uzun telafi (ay)": 29.2,
+   "Kârlı ay %": 65.0,
+   "En kötü ay %": -27.6,
+   "12 ay pozitif %": 89.0,
+   "En kötü 12 ay %": -22.9
   },
   {
    "Seri": "Sistem (reel, TÜFE üstü)",
    "Dönem": "2014-2026",
-   "Yıllık getiri %": 21.9,
-   "En büyük düşüş %": -29.0,
-   "En uzun telafi (ay)": 20.4,
-   "Kârlı ay %": 60.0,
-   "En kötü ay %": -13.0,
-   "12 ay pozitif %": 82.0,
-   "En kötü 12 ay %": -16.8
+   "Yıllık getiri %": 32.7,
+   "En büyük düşüş %": -44.9,
+   "En uzun telafi (ay)": 26.7,
+   "Kârlı ay %": 59.0,
+   "En kötü ay %": -27.6,
+   "12 ay pozitif %": 88.0,
+   "En kötü 12 ay %": -18.4
   }
  ],
  "yillik": [
   {
    "Yıl": 2015,
-   "Sistem (TL)": 22.9,
-   "Sigortalı sürüm (TL)": 22.9,
+   "Sistem (TL)": 36.4,
+   "Önceki BIST+ABD karma (TL)": 22.9,
    "XU100": -16.3,
    "SPY (TL)": 24.7,
    "Dolar (USD/TRY)": 25.7
   },
   {
    "Yıl": 2016,
-   "Sistem (TL)": 19.7,
-   "Sigortalı sürüm (TL)": 16.8,
+   "Sistem (TL)": 34.1,
+   "Önceki BIST+ABD karma (TL)": 19.7,
    "XU100": 8.9,
    "SPY (TL)": 32.1,
    "Dolar (USD/TRY)": 20.5
   },
   {
    "Yıl": 2017,
-   "Sistem (TL)": 48.1,
-   "Sigortalı sürüm (TL)": 48.7,
+   "Sistem (TL)": 36.6,
+   "Önceki BIST+ABD karma (TL)": 48.1,
    "XU100": 47.6,
    "SPY (TL)": 28.2,
    "Dolar (USD/TRY)": 7.4
   },
   {
    "Yıl": 2018,
-   "Sistem (TL)": 12.1,
-   "Sigortalı sürüm (TL)": 20.7,
+   "Sistem (TL)": 46.2,
+   "Önceki BIST+ABD karma (TL)": 12.1,
    "XU100": -20.9,
    "SPY (TL)": 30.8,
    "Dolar (USD/TRY)": 39.6
   },
   {
    "Yıl": 2019,
-   "Sistem (TL)": 30.3,
-   "Sigortalı sürüm (TL)": 30.3,
+   "Sistem (TL)": 55.4,
+   "Önceki BIST+ABD karma (TL)": 30.3,
    "XU100": 25.4,
    "SPY (TL)": 45.2,
    "Dolar (USD/TRY)": 12.8
   },
   {
    "Yıl": 2020,
-   "Sistem (TL)": 147.9,
-   "Sigortalı sürüm (TL)": 97.4,
+   "Sistem (TL)": 119.9,
+   "Önceki BIST+ABD karma (TL)": 147.9,
    "XU100": 29.1,
    "SPY (TL)": 44.0,
    "Dolar (USD/TRY)": 24.0
   },
   {
    "Yıl": 2021,
-   "Sistem (TL)": 72.7,
-   "Sigortalı sürüm (TL)": 50.8,
+   "Sistem (TL)": 110.7,
+   "Önceki BIST+ABD karma (TL)": 72.7,
    "XU100": 25.8,
    "SPY (TL)": 129.0,
    "Dolar (USD/TRY)": 80.2
   },
   {
    "Yıl": 2022,
-   "Sistem (TL)": 125.2,
-   "Sigortalı sürüm (TL)": 104.7,
+   "Sistem (TL)": 31.1,
+   "Önceki BIST+ABD karma (TL)": 125.2,
    "XU100": 196.6,
    "SPY (TL)": 13.3,
    "Dolar (USD/TRY)": 40.7
   },
   {
    "Yıl": 2023,
-   "Sistem (TL)": 70.0,
-   "Sigortalı sürüm (TL)": 61.8,
+   "Sistem (TL)": 85.4,
+   "Önceki BIST+ABD karma (TL)": 70.0,
    "XU100": 35.6,
    "SPY (TL)": 96.2,
    "Dolar (USD/TRY)": 57.8
   },
   {
    "Yıl": 2024,
-   "Sistem (TL)": 66.4,
-   "Sigortalı sürüm (TL)": 69.8,
+   "Sistem (TL)": 111.9,
+   "Önceki BIST+ABD karma (TL)": 66.4,
    "XU100": 31.6,
    "SPY (TL)": 47.5,
    "Dolar (USD/TRY)": 19.6
   },
   {
    "Yıl": 2025,
-   "Sistem (TL)": 34.1,
-   "Sigortalı sürüm (TL)": 32.5,
+   "Sistem (TL)": 72.1,
+   "Önceki BIST+ABD karma (TL)": 34.1,
    "XU100": 14.6,
    "SPY (TL)": 41.6,
    "Dolar (USD/TRY)": 21.7
   },
   {
    "Yıl": 2026,
-   "Sistem (TL)": 47.8,
-   "Sigortalı sürüm (TL)": 59.4,
+   "Sistem (TL)": 134.5,
+   "Önceki BIST+ABD karma (TL)": 47.8,
    "XU100": 8.8,
    "SPY (TL)": 27.9,
    "Dolar (USD/TRY)": 14.1
@@ -289,26 +289,15 @@
  ],
  "islem": [
   {
-   "Kol": "BIST",
-   "İşlem": 6219,
-   "Kârla kapanan %": 55.7,
-   "İşlem başı net %": 3.39,
-   "Ort. kazanç %": 12.85,
-   "Ort. kayıp %": -8.51,
-   "Kâr faktörü": 1.9,
-   "Felaket stopu %": 3.1,
-   "En kötü işlem %": -49.56
-  },
-  {
    "Kol": "ABD",
-   "İşlem": 6488,
-   "Kârla kapanan %": 57.1,
-   "İşlem başı net %": 2.21,
-   "Ort. kazanç %": 8.6,
-   "Ort. kayıp %": -6.3,
-   "Kâr faktörü": 1.82,
-   "Felaket stopu %": 1.9,
-   "En kötü işlem %": -35.32
+   "İşlem": 6186,
+   "Kârla kapanan %": 56.7,
+   "İşlem başı net %": 2.45,
+   "Ort. kazanç %": 9.93,
+   "Ort. kayıp %": -7.35,
+   "Kâr faktörü": 1.77,
+   "Felaket stopu %": 2.7,
+   "En kötü işlem %": -36.79
   }
  ]
 }
