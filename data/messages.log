@@ -250,3 +250,13 @@ Kural: rakip, aktif stratejiyi son 36 ayda t>2 farkla 3 ay üst üste geçerse d
 ▫️ D_resid_overnight: tüm dönem %+2.59/dilim (t=2.7), son 36 ay %+5.07 (t=3.0, aktife göre t=1.8)
 Kural: rakip, aktif stratejiyi son 36 ayda t>2 farkla 3 ay üst üste geçerse değişir (yılda en fazla 1 kez).
 ℹ️ Derin denetim: ABD (S&P 500) stratejisi A_resid_mom → C_mom_12_1 olarak değişti (son 36 ayda t=2.6 fark, 3 ay üst üste doğrulandı). Açık pozisyonlar kendi süresinde kapanır, yeni dilimler yeni stratejiyle kurulur.
+
+===== 2026-10-03 04:53 =====
+🇺🇸 <b>ABD (S&P 500)</b> — 2026-10-02 kapanışı
+
+💼 <b>Durum</b>
+ABD (S&P 500) kolu: 733 $ | açık pozisyon 10 | nakit %75
+🌍 Toplam portföy: <b>100.053 TL</b> (zirveden %-0.0) | hedef BIST %64 / ABD %36 | USD/TRY 49,11
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+📊 SPY karne (başlangıçtan, 1 gün): sistem %+0.1 / SPY %+0.9
