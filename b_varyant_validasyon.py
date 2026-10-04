@@ -533,7 +533,7 @@ def build_report(
         "| Dönem | BASE CAGR | B CAGR | B − BASE | BASE DD | B DD | B işlem win |",
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
-    for label, (s, e) in zip([x[0] for x in blocks], blocks):
+    for label, (s, e) in blocks:
         bb = block_metrics(base, s, e)
         bt = block_metrics(test, s, e)
         lines.append(
