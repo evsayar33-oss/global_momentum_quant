@@ -1,0 +1,75 @@
+name: Global Momentum Quant - BASE Failure Analysis
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Veri yılı. 14 = yaklaşık 13+ yıllık ölçüm + warm-up."
+        required: true
+        default: "14"
+      cost:
+        description: "Round-trip maliyet (%)"
+        required: true
+        default: "0.35"
+  schedule:
+    - cron: '15 15 * * 5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gmq-base-failure-analysis
+  cancel-in-progress: false
+
+jobs:
+  base-failure-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Repo'yu al
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Paketleri yükle
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install tabulate
+
+      - name: Sözdizimi kontrolü
+        run: |
+          python -m py_compile gmq_base_failure_analysis.py
+
+      - name: Synthetic smoke test
+        run: |
+          python gmq_base_failure_analysis.py --synthetic --out-dir smoke_test_output
+
+      - name: BASE Failure Analysis
+        env:
+          YEARS: ${{ inputs.years || '14' }}
+          COST: ${{ inputs.cost || '0.35' }}
+        run: |
+          mkdir -p gmq_base_failure_analysis_output
+          python gmq_base_failure_analysis.py \
+            --years "$YEARS" \
+            --cost "$COST" \
+            --out-dir gmq_base_failure_analysis_output
+
+      - name: Araştırma çıktıları artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-base-failure-analysis
+          path: |
+            gmq_base_failure_analysis_output/gmq_base_failure_analysis_raporu.md
+            gmq_base_failure_analysis_output/gmq_base_failure_analysis_trades.csv
+            gmq_base_failure_analysis_output/gmq_base_failure_analysis_baskets.csv
+            gmq_base_failure_analysis_output/gmq_base_failure_analysis_patterns.csv
+            gmq_base_failure_analysis_output/gmq_base_failure_analysis_buckets.csv
+          if-no-files-found: error
+          retention-days: 30
