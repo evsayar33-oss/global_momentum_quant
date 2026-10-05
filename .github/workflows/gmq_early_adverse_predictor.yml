@@ -1,0 +1,64 @@
+name: Global Momentum Quant - Early-Adverse Predictor
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Veri yılı"
+        required: true
+        default: "14"
+      cost:
+        description: "Round-trip maliyet (%)"
+        required: true
+        default: "0.35"
+  schedule:
+    - cron: '45 15 * * 5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gmq-early-adverse-predictor
+  cancel-in-progress: false
+
+jobs:
+  early-adverse-predictor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Repo'yu al
+        uses: actions/checkout@v4
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Paketleri yükle
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install tabulate scikit-learn
+      - name: Sözdizimi kontrolü
+        run: python -m py_compile gmq_early_adverse_predictor.py
+      - name: Synthetic smoke test
+        run: python gmq_early_adverse_predictor.py --synthetic --out-dir smoke_test_output
+      - name: Early-Adverse Predictor
+        env:
+          YEARS: ${{ inputs.years || '14' }}
+          COST: ${{ inputs.cost || '0.35' }}
+        run: |
+          mkdir -p gmq_early_adverse_predictor_output
+          python gmq_early_adverse_predictor.py --years "$YEARS" --cost "$COST" --out-dir gmq_early_adverse_predictor_output
+      - name: Araştırma çıktıları artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-early-adverse-predictor
+          path: |
+            gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_raporu.md
+            gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_trades.csv
+            gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_model.csv
+            gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_holdout.csv
+            gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_buckets.csv
+            gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_filter_scenarios.csv
+          if-no-files-found: error
+          retention-days: 30
