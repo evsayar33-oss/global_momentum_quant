@@ -282,12 +282,22 @@ def enrich_trades(trades: pd.DataFrame, market_data: dict, W: dict[str, dict[str
     out = []
     feature_cache = {}
     for market, md in market_data.items():
-        idx = pd.DatetimeIndex(W[market]["c"].index)
+        # MarketData removes low-coverage days (coverage < 30%) before it
+        # calculates score/U. Therefore md.score and md.U are indexed by
+        # md.dates, not necessarily by the raw W index. The previous version
+        # used W.index here, which produced a deterministic shape mismatch on
+        # real Yahoo data (for example (3582, 624)).
+        idx = pd.DatetimeIndex(md.dates)
+        cols = pd.Index(md.tickers)
+        Wm_aligned = {
+            k: W[market][k].reindex(index=idx, columns=cols)
+            for k in ("o", "h", "l", "c", "v")
+        }
         feature_cache[market] = {
             "idx": idx,
-            "score": _score_frame(md, idx, W[market]["c"].columns),
-            "U": _universe_frame(md, idx, W[market]["c"].columns),
-            "market": _market_features(W[market]),
+            "score": _score_frame(md, idx, cols),
+            "U": _universe_frame(md, idx, cols),
+            "market": _market_features(Wm_aligned),
         }
 
     for r in trades.to_dict("records"):
@@ -813,6 +823,8 @@ def run_synthetic(out_dir: Path):
 
     class MD:
         def __init__(self):
+            self.dates = list(dates)
+            self.tickers = list(tickers)
             self.score = score.to_numpy()
             self.U = U.to_numpy()
 
