@@ -1,0 +1,58 @@
+name: GMQ Tail Risk Adaptive Position Sizing
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: 'Historical years to download'
+        required: false
+        default: '14'
+      start:
+        description: 'Primary OOS start date'
+        required: false
+        default: '2022-01-01'
+      costs:
+        description: 'RT cost stress scenarios'
+        required: false
+        default: '0.35,0.50,0.75,1.00,1.25'
+
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install yfinance==0.2.66 scikit-learn==1.7.2 tabulate==0.9.0
+
+      - name: Verify research input
+        run: |
+          test -f research_inputs/gmq_full_trade_failure_tail_holdout_predictions.csv
+          python -m py_compile gmq_tail_risk_adaptive_sizing.py
+
+      - name: Smoke test
+        run: python gmq_tail_risk_adaptive_sizing.py --smoke
+
+      - name: Run full OOS A/B
+        run: |
+          python gmq_tail_risk_adaptive_sizing.py \
+            --years "${{ inputs.years }}" \
+            --start "${{ inputs.start }}" \
+            --costs "${{ inputs.costs }}"
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-tail-risk-adaptive-sizing-results
+          path: local_output/gmq_tail_risk_adaptive_sizing/
+          if-no-files-found: error
