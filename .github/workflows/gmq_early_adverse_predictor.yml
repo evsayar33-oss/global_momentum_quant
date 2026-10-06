@@ -1,4 +1,4 @@
-name: Global Momentum Quant - Early-Adverse Predictor
+name: Global Momentum Quant - Early-Adverse Predictor (Hardened v2)
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gmq-early-adverse-predictor-manual
+  group: gmq-early-adverse-predictor-hardened-v2
   cancel-in-progress: false
 
 jobs:
@@ -27,6 +27,7 @@ jobs:
     timeout-minutes: 360
     env:
       PYTHONUNBUFFERED: "1"
+      PYTHONFAULTHANDLER: "1"
 
     steps:
       - name: Repo'yu al
@@ -38,35 +39,58 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Paketleri yükle
+      - name: Veri bilimi bağımlılıklarını sabitle
+        shell: bash
         run: |
+          set -euxo pipefail
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install tabulate scikit-learn
+          # Reproducible research versions:
+          # requirements.txt currently allows newer yfinance releases.
+          pip install --upgrade --force-reinstall "yfinance==0.2.66" "scikit-learn==1.7.2"
+          pip install tabulate
+          pip check
 
-      - name: Sözdizimi kontrolü
+      - name: Sürüm ve sözdizimi kontrolü
+        shell: bash
         run: |
+          set -euxo pipefail
           python -m py_compile gmq_early_adverse_predictor.py
+          python -m py_compile gmq_early_adverse_predictor_hardened_runner.py
+          python - <<'PY'
+          import numpy, pandas, yfinance, sklearn
+          print("numpy", numpy.__version__)
+          print("pandas", pandas.__version__)
+          print("yfinance", yfinance.__version__)
+          print("scikit-learn", sklearn.__version__)
+          PY
 
       - name: Synthetic smoke test
+        shell: bash
         run: |
+          set -euxo pipefail
           rm -rf smoke_test_output
-          python gmq_early_adverse_predictor.py             --synthetic             --out-dir smoke_test_output
+          python -X faulthandler gmq_early_adverse_predictor.py \
+            --synthetic \
+            --out-dir smoke_test_output
 
       - name: Early-Adverse Predictor - gerçek araştırma
+        shell: bash
         env:
           YEARS: ${{ inputs.years }}
           COST: ${{ inputs.cost }}
+          OUT_DIR: gmq_early_adverse_predictor_output
         run: |
-          rm -rf gmq_early_adverse_predictor_output
-          mkdir -p gmq_early_adverse_predictor_output
-          python gmq_early_adverse_predictor.py             --years "$YEARS"             --cost "$COST"             --out-dir gmq_early_adverse_predictor_output
+          set -euxo pipefail
+          rm -rf "$OUT_DIR"
+          mkdir -p "$OUT_DIR"
+          python -X faulthandler gmq_early_adverse_predictor_hardened_runner.py
 
       - name: Araştırma çıktıları artifact
         if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: gmq-early-adverse-predictor
+          name: gmq-early-adverse-predictor-hardened-v2
           if-no-files-found: error
           retention-days: 30
           path: |
