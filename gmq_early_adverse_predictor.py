@@ -602,21 +602,21 @@ def run_project(years, cost_rt, out_dir):
     if trades.empty:
         raise RuntimeError("Feature dataset boş.")
 
-    train = trades[trades.period=="train"].copy()
-    hold = trades[trades.period=="holdout"].copy()
+    train = trades[trades["period"] == "train"].copy()
+    hold = trades[trades["period"] == "holdout"].copy()
     if train.empty or hold.empty:
         raise RuntimeError("Train/Holdout ayrımı boş.")
 
     model, used_features, preds, coefs = build_model(train, hold)
-    pm_tr = preds[preds.sample=="train"].copy()
-    pm_ho = preds[preds.sample=="holdout"].copy()
+    pm_tr = preds[preds["sample"] == "train"].copy()
+    pm_ho = preds[preds["sample"] == "holdout"].copy()
 
-    mt = metrics_binary(pm_tr.early_adverse, pm_tr.pred_risk)
-    mh = metrics_binary(pm_ho.early_adverse, pm_ho.pred_risk)
+    mt = metrics_binary(pm_tr["early_adverse"], pm_tr["pred_risk"])
+    mh = metrics_binary(pm_ho["early_adverse"], pm_ho["pred_risk"])
 
     uni = fixed_univariate_tests(train, hold)
 
-    thresholds = fixed_risk_thresholds(pm_tr.pred_risk.to_numpy())
+    thresholds = fixed_risk_thresholds(pm_tr["pred_risk"].to_numpy())
     filt_rows = []
     for name, th in thresholds.items():
         r = economic_filter_stats(pm_ho, "pred_risk", th, cost_rt)
@@ -681,7 +681,7 @@ def run_project(years, cost_rt, out_dir):
     stress.to_csv(out_dir/"gmq_early_adverse_predictor_filter_scenarios.csv", index=False)
 
     print("=== EARLY-ADVERSE PREDICTOR ===")
-    print(f"Trades={len(trades)} | EarlyAdverse={trades.early_adverse.mean()*100:.2f}%")
+    print(f"Trades={len(trades)} | EarlyAdverse={trades["early_adverse"].mean()*100:.2f}%")
     print(f"Train ROC-AUC={mt['roc_auc']:.4f} | Holdout ROC-AUC={mh['roc_auc']:.4f}")
     print(f"Train PR-AUC={mt['pr_auc']:.4f} | Holdout PR-AUC={mh['pr_auc']:.4f}")
     print(f"Artifacts: {out_dir}")
