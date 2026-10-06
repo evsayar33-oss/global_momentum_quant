@@ -1,1 +1,1 @@
-e
+Early-Adverse Predictor synthetic smoke test PASS
