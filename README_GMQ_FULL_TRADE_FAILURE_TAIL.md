@@ -133,3 +133,7 @@ Bu paket kendi başına canlı filtre üretmez. Bir aday ancak şu aşamaları g
 `predictive signal → holdout stability → BIST/US consistency → cost stress → full production portfolio A/B → bootstrap/period robustness → no material drawdown regression`
 
 Sonuç ne olursa olsun mevcut BASE sistemi değiştirilmez.
+
+
+## Dependency fix
+The research writes Markdown tables via `pandas.DataFrame.to_markdown()`, so `tabulate==0.9.0` is explicitly installed.
