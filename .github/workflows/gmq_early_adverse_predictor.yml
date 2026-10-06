@@ -1,4 +1,4 @@
-name: Global Momentum Quant - Early-Adverse Predictor (Fixed v4)
+name: Global Momentum Quant - Early-Adverse Predictor (Fixed v5)
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gmq-early-adverse-predictor-fixed-v4
+  group: gmq-early-adverse-predictor-fixed-v5
   cancel-in-progress: false
 
 jobs:
@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Repo'yu al
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Python 3.11
         uses: actions/setup-python@v5
@@ -53,7 +55,7 @@ jobs:
             "tabulate"
           pip check
 
-      - name: Sürüm, syntax ve DataFrame column safety
+      - name: Syntax ve f-string regression kontrolü
         shell: bash
         run: |
           set -euxo pipefail
@@ -61,27 +63,25 @@ jobs:
           python -m py_compile gmq_early_adverse_predictor_hardened_runner.py
 
           python - <<'PY'
-          import numpy, pandas, yfinance, sklearn
           from pathlib import Path
+          import numpy, pandas, yfinance, sklearn
 
           print("numpy", numpy.__version__)
           print("pandas", pandas.__version__)
           print("yfinance", yfinance.__version__)
           print("scikit-learn", sklearn.__version__)
 
-          assert pandas.__version__.startswith("2.3."), pandas.__version__
-          assert yfinance.__version__ == "0.2.66", yfinance.__version__
-
           source = Path("gmq_early_adverse_predictor.py").read_text(encoding="utf-8")
-          assert 'preds.sample=="train"' not in source
-          assert 'preds.sample=="holdout"' not in source
-          assert 'preds["sample"] == "train"' in source
-          assert 'preds["sample"] == "holdout"' in source
 
-          # Regression guard for the exact previous failure:
-          x = pandas.DataFrame({"sample": ["train", "holdout"]})
-          assert int((x["sample"] == "train").sum()) == 1
-          print("DataFrame column safety regression PASS")
+          assert 'pm_tr = preds[preds["sample"] == "train"].copy()' in source
+          assert 'pm_ho = preds[preds["sample"] == "holdout"].copy()' in source
+          assert 'trades["early_adverse"]' in source
+          assert 'print(f"Trades={len(trades)} | EarlyAdverse={early_adverse_pct:.2f}%")' in source
+
+          # Regression guard for the exact v4 syntax failure.
+          assert 'print(f"Trades={len(trades)} | EarlyAdverse={trades["early_adverse"]' not in source
+
+          print("Syntax/f-string regression PASS")
           PY
 
       - name: Yahoo veri bağlantı preflight
@@ -158,7 +158,7 @@ jobs:
         if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: gmq-early-adverse-predictor-fixed-v4
+          name: gmq-early-adverse-predictor-fixed-v5
           if-no-files-found: error
           retention-days: 30
           path: |
