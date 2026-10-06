@@ -1,0 +1,7 @@
+actual_class,pred_healthy,pred_temporary_adverse,pred_harmful_adverse,sample
+actual_healthy,2537,1064,1202,train
+actual_temporary_adverse,558,494,392,train
+actual_harmful_adverse,786,562,587,train
+actual_healthy,1544,619,674,holdout
+actual_temporary_adverse,403,209,237,holdout
+actual_harmful_adverse,498,261,317,holdout
