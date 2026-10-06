@@ -681,7 +681,8 @@ def run_project(years, cost_rt, out_dir):
     stress.to_csv(out_dir/"gmq_early_adverse_predictor_filter_scenarios.csv", index=False)
 
     print("=== EARLY-ADVERSE PREDICTOR ===")
-    print(f"Trades={len(trades)} | EarlyAdverse={trades["early_adverse"].mean()*100:.2f}%")
+    early_adverse_pct = float(trades["early_adverse"].mean() * 100.0)
+    print(f"Trades={len(trades)} | EarlyAdverse={early_adverse_pct:.2f}%")
     print(f"Train ROC-AUC={mt['roc_auc']:.4f} | Holdout ROC-AUC={mh['roc_auc']:.4f}")
     print(f"Train PR-AUC={mt['pr_auc']:.4f} | Holdout PR-AUC={mh['pr_auc']:.4f}")
     print(f"Artifacts: {out_dir}")
