@@ -1,0 +1,86 @@
+name: Global Momentum Quant - Economic Entry Risk Test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gmq-economic-entry-risk-test
+  cancel-in-progress: false
+
+jobs:
+  economic-entry-risk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONUNBUFFERED: "1"
+      PYTHONFAULTHANDLER: "1"
+
+    steps:
+      - name: Repo'yu al
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Bağımlılıkları kur
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python -m pip install --upgrade pip
+          pip install "pandas==2.3.3" "numpy==2.2.6" "scikit-learn==1.7.2" tabulate
+          pip check
+
+      - name: Syntax ve dataset contract
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python -m py_compile gmq_economic_entry_risk_test.py
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          p = Path("research_inputs/gmq_early_adverse_predictor_trades.csv")
+          assert p.exists(), p
+          df = pd.read_csv(p, nrows=5)
+          required = {
+              "market","ticker","signal_date","entry_date","ret_pct","early_adverse",
+              "score_pctile","ret_5d_pct","ret_21d_pct","ret_63d_pct",
+              "vol20_ann_pct","atr14_pct","gap_pct","gap_atr",
+              "market_breadth_5d","market_breadth_21d",
+              "market_median_1d_pct","market_median_21d_pct","market_median_63d_pct",
+              "market_dispersion_1d_pct","stock_vs_market_21d_pp",
+              "momentum_extension_z"
+          }
+          missing = required - set(df.columns)
+          assert not missing, missing
+          print("Dataset contract PASS")
+          PY
+
+      - name: Economic Entry Risk Test
+        run: |
+          set -euxo pipefail
+          rm -rf gmq_economic_entry_risk_output
+          python -X faulthandler gmq_economic_entry_risk_test.py \
+            --input research_inputs/gmq_early_adverse_predictor_trades.csv \
+            --out-dir gmq_economic_entry_risk_output
+
+      - name: Araştırma çıktıları artifact
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-economic-entry-risk-test
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            gmq_economic_entry_risk_output/gmq_economic_entry_risk_raporu.md
+            gmq_economic_entry_risk_output/gmq_economic_entry_risk_trades.csv
+            gmq_economic_entry_risk_output/gmq_economic_entry_risk_holdout.csv
+            gmq_economic_entry_risk_output/gmq_economic_entry_risk_deciles.csv
+            gmq_economic_entry_risk_output/gmq_economic_entry_risk_filter_scenarios.csv
+            gmq_economic_entry_risk_output/gmq_economic_entry_risk_confusion_matrix.csv
+            gmq_economic_entry_risk_output/gmq_economic_entry_risk_market_breakdown.csv
