@@ -14,16 +14,19 @@ on:
         default: "0.35"
         type: string
 
-# Bu workflow SADECE manuel başlatılır.
-# Schedule bilinçli olarak kaldırılmıştır; otomatik/pasif bir çalışma başlatmaz.
-
 permissions:
   contents: read
 
+concurrency:
+  group: gmq-early-adverse-predictor-manual
+  cancel-in-progress: false
+
 jobs:
   early-adverse-predictor:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 360
+    env:
+      PYTHONUNBUFFERED: "1"
 
     steps:
       - name: Repo'yu al
@@ -42,38 +45,30 @@ jobs:
           pip install tabulate scikit-learn
 
       - name: Sözdizimi kontrolü
-        env:
-          PYTHONUNBUFFERED: "1"
         run: |
           python -m py_compile gmq_early_adverse_predictor.py
 
       - name: Synthetic smoke test
-        env:
-          PYTHONUNBUFFERED: "1"
         run: |
           rm -rf smoke_test_output
-          python -u gmq_early_adverse_predictor.py \
-            --synthetic \
-            --out-dir smoke_test_output
+          python gmq_early_adverse_predictor.py             --synthetic             --out-dir smoke_test_output
 
-      - name: Early-Adverse Predictor — gerçek araştırma
+      - name: Early-Adverse Predictor - gerçek araştırma
         env:
-          PYTHONUNBUFFERED: "1"
           YEARS: ${{ inputs.years }}
           COST: ${{ inputs.cost }}
         run: |
           rm -rf gmq_early_adverse_predictor_output
           mkdir -p gmq_early_adverse_predictor_output
-          python -u gmq_early_adverse_predictor.py \
-            --years "$YEARS" \
-            --cost "$COST" \
-            --out-dir gmq_early_adverse_predictor_output
+          python gmq_early_adverse_predictor.py             --years "$YEARS"             --cost "$COST"             --out-dir gmq_early_adverse_predictor_output
 
       - name: Araştırma çıktıları artifact
         if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
           name: gmq-early-adverse-predictor
+          if-no-files-found: error
+          retention-days: 30
           path: |
             gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_raporu.md
             gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_trades.csv
@@ -81,5 +76,3 @@ jobs:
             gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_holdout.csv
             gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_buckets.csv
             gmq_early_adverse_predictor_output/gmq_early_adverse_predictor_filter_scenarios.csv
-          if-no-files-found: error
-          retention-days: 30
