@@ -1,4 +1,4 @@
-name: Global Momentum Quant - Early-Adverse Predictor (Hardened v2)
+name: Global Momentum Quant - Early-Adverse Predictor (Hardened v3)
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gmq-early-adverse-predictor-hardened-v2
+  group: gmq-early-adverse-predictor-hardened-v3
   cancel-in-progress: false
 
 jobs:
@@ -39,16 +39,18 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Veri bilimi bağımlılıklarını sabitle
+      - name: Uyumlu araştırma ortamını kur
         shell: bash
         run: |
           set -euxo pipefail
           python -m pip install --upgrade pip
+
+          # yfinance 0.2.66 + pandas 3.x kombinasyonunu kullanma.
+          # yfinance 0.2.66 sabitlenmiş araştırma sürümüdür; pandas da
+          # 2.3.x'e sabitlenerek ortamın deterministik olması sağlanır.
           pip install -r requirements.txt
-          # Reproducible research versions:
-          # requirements.txt currently allows newer yfinance releases.
-          pip install --upgrade --force-reinstall "yfinance==0.2.66" "scikit-learn==1.7.2"
-          pip install tabulate
+          pip install --upgrade --force-reinstall             "pandas==2.3.3"             "numpy==2.2.6"             "yfinance==0.2.66"             "scikit-learn==1.7.2"             "tabulate"
+
           pip check
 
       - name: Sürüm ve sözdizimi kontrolü
@@ -57,12 +59,46 @@ jobs:
           set -euxo pipefail
           python -m py_compile gmq_early_adverse_predictor.py
           python -m py_compile gmq_early_adverse_predictor_hardened_runner.py
+
           python - <<'PY'
           import numpy, pandas, yfinance, sklearn
           print("numpy", numpy.__version__)
           print("pandas", pandas.__version__)
           print("yfinance", yfinance.__version__)
           print("scikit-learn", sklearn.__version__)
+
+          assert pandas.__version__.startswith("2.3."), pandas.__version__
+          assert yfinance.__version__ == "0.2.66", yfinance.__version__
+          PY
+
+      - name: Yahoo veri bağlantı preflight
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python - <<'PY'
+          import yfinance as yf
+
+          checks = {
+              "BIST": ["THYAO.IS", "BIMAS.IS"],
+              "US": ["AAPL", "MSFT"],
+              "FX": ["TRY=X"],
+              "IRX": ["^IRX"],
+          }
+
+          for group, symbols in checks.items():
+              print(f"--- {group} ---")
+              d = yf.download(
+                  symbols,
+                  period="5d",
+                  interval="1d",
+                  auto_adjust=False,
+                  progress=False,
+                  threads=False,
+              )
+              print("rows:", 0 if d is None else len(d))
+              if d is None or d.empty:
+                  raise RuntimeError(f"Yahoo preflight boş: {group}")
+          print("Yahoo veri bağlantı preflight PASS")
           PY
 
       - name: Synthetic smoke test
@@ -70,9 +106,7 @@ jobs:
         run: |
           set -euxo pipefail
           rm -rf smoke_test_output
-          python -X faulthandler gmq_early_adverse_predictor.py \
-            --synthetic \
-            --out-dir smoke_test_output
+          python -X faulthandler gmq_early_adverse_predictor.py             --synthetic             --out-dir smoke_test_output
 
       - name: Early-Adverse Predictor - gerçek araştırma
         shell: bash
@@ -86,11 +120,29 @@ jobs:
           mkdir -p "$OUT_DIR"
           python -X faulthandler gmq_early_adverse_predictor_hardened_runner.py
 
+      - name: Başarısız araştırmada debug özeti
+        if: ${{ failure() }}
+        shell: bash
+        run: |
+          echo "=== DEBUG DIRECTORY ==="
+          pwd
+          echo "=== DATA CACHE ==="
+          if [ -d data_cache ]; then
+            du -sh data_cache || true
+            find data_cache -maxdepth 2 -type f -printf '%p %k KB\n' | head -50 || true
+          else
+            echo "data_cache yok"
+          fi
+          echo "=== OUTPUT DIRECTORY ==="
+          if [ -d gmq_early_adverse_predictor_output ]; then
+            find gmq_early_adverse_predictor_output -maxdepth 1 -type f -printf '%p %k KB\n' || true
+          fi
+
       - name: Araştırma çıktıları artifact
         if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: gmq-early-adverse-predictor-hardened-v2
+          name: gmq-early-adverse-predictor-hardened-v3
           if-no-files-found: error
           retention-days: 30
           path: |
