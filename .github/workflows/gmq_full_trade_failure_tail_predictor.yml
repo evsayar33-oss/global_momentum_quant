@@ -1,0 +1,46 @@
+name: GMQ Full Trade Failure Tail Predictor
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install research dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas==2.3.3 numpy==2.2.6 scikit-learn==1.7.2
+
+      - name: Verify input exists
+        run: |
+          test -f research/input/gmq_early_adverse_predictor_trades.csv
+          ls -lh research/input/gmq_early_adverse_predictor_trades.csv
+
+      - name: Run research
+        run: |
+          python gmq_full_trade_failure_tail_predictor.py \
+            --input research/input/gmq_early_adverse_predictor_trades.csv \
+            --out research/results_full_trade_failure_tail
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-full-trade-failure-tail-results
+          path: research/results_full_trade_failure_tail
+          if-no-files-found: error
+          retention-days: 30
