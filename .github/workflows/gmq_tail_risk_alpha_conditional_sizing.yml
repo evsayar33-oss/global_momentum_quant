@@ -1,0 +1,66 @@
+name: GMQ Tail-Risk x Alpha Conditional Sizing
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Historical years"
+        required: false
+        default: "14"
+      cost_rt:
+        description: "Primary RT cost (%)"
+        required: false
+        default: "0.35"
+
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install research dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r gmq_tail_risk_alpha_requirements.txt
+
+      - name: Verify imports
+        run: |
+          python - <<'PY'
+          import pandas, numpy, sklearn, tabulate
+          print("deps ok", pandas.__version__, numpy.__version__, sklearn.__version__)
+          PY
+
+      - name: Syntax check
+        run: python -m py_compile gmq_tail_risk_alpha_conditional_sizing.py
+
+      - name: Synthetic smoke test
+        run: python gmq_tail_risk_alpha_conditional_sizing.py --synthetic --out smoke_tail_alpha
+
+      - name: Run production-aligned research
+        env:
+          YEARS_INPUT: ${{ github.event.inputs.years || '14' }}
+          COST_INPUT: ${{ github.event.inputs.cost_rt || '0.35' }}
+        run: |
+          rm -rf research/results_tail_risk_alpha_conditional
+          python gmq_tail_risk_alpha_conditional_sizing.py \
+            --years "$YEARS_INPUT" \
+            --cost "$COST_INPUT" \
+            --out research/results_tail_risk_alpha_conditional
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-tail-risk-alpha-conditional-results
+          path: |
+            research/results_tail_risk_alpha_conditional/*.csv
+            research/results_tail_risk_alpha_conditional/*.md
+          if-no-files-found: error
+          retention-days: 30
