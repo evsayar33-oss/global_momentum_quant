@@ -3,92 +3,142 @@
  "created": "2026-10-02",
  "markets": {
   "bist": {
-   "n": 0,
-   "last_date": "2026-10-02",
-   "cash": 64066.66689251388,
-   "positions": [],
-   "pending": [
+   "n": 3,
+   "last_date": "2026-10-07",
+   "cash": 48233.73372148975,
+   "positions": [
     {
-     "side": "buy",
+     "id": "bist-1-INVES-0",
      "t": "INVES",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 2.3147896977391014,
+     "entry_px": 691.2075,
+     "entry_raw": 690.0,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 706.0,
+     "cycle_end": 21,
+     "last_px": 713.5
     },
     {
-     "side": "buy",
+     "id": "bist-1-AYGAZ-0",
      "t": "AYGAZ",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 5.507603073930966,
+     "entry_px": 290.5075,
+     "entry_raw": 290.0,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 297.25,
+     "cycle_end": 21,
+     "last_px": 286.5
     },
     {
-     "side": "buy",
+     "id": "bist-1-BIMAS-0",
      "t": "BIMAS",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 3.8556545357633802,
+     "entry_px": 414.97493749999995,
+     "entry_raw": 414.25,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 413.5,
+     "cycle_end": 21,
+     "last_px": 394.25
     },
     {
-     "side": "buy",
+     "id": "bist-1-AGESA-0",
      "t": "AGESA",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 6.739261145316372,
+     "entry_px": 237.41474999999997,
+     "entry_raw": 237.0,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 236.1999969482422,
+     "cycle_end": 21,
+     "last_px": 228.3000030517578
     },
     {
-     "side": "buy",
+     "id": "bist-1-GLYHO-0",
      "t": "GLYHO",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 98.28953178092185,
+     "entry_px": 16.2784375,
+     "entry_raw": 16.25,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 16.700000762939453,
+     "cycle_end": 21,
+     "last_px": 17.040000915527344
     },
     {
-     "side": "buy",
+     "id": "bist-1-TUPRS-0",
      "t": "TUPRS",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 4.231006334940345,
+     "entry_px": 378.160625,
+     "entry_raw": 377.5,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 391.25,
+     "cycle_end": 21,
+     "last_px": 379.75
     },
     {
-     "side": "buy",
+     "id": "bist-1-SOKM-0",
      "t": "SOKM",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 27.85012962399138,
+     "entry_px": 57.4503609714508,
+     "entry_raw": 57.349998474121094,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 56.5,
+     "cycle_end": 21,
+     "last_px": 55.0
     },
     {
-     "side": "buy",
+     "id": "bist-1-AKSGY-0",
      "t": "AKSGY",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 168.481536768429,
+     "entry_px": 9.496589541435242,
+     "entry_raw": 9.479999542236328,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 9.569999694824219,
+     "cycle_end": 21,
+     "last_px": 9.329999923706055
     },
     {
-     "side": "buy",
+     "id": "bist-1-KLSYN-0",
      "t": "KLSYN",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 109.84902996082448,
+     "entry_px": 14.56544496178627,
+     "entry_raw": 14.539999961853027,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 14.800000190734863,
+     "cycle_end": 21,
+     "last_px": 14.329999923706055
     },
     {
-     "side": "buy",
+     "id": "bist-1-EBEBK-0",
      "t": "EBEBK",
-     "amount": 1600.0,
-     "full": 1600.0,
      "tranche": 0,
-     "cycle_end": 21
+     "qty": 19.418904455197328,
+     "entry_px": 82.39393749999999,
+     "entry_raw": 82.25,
+     "entry_date": "2026-10-05",
+     "ref_date": "2026-10-05",
+     "ref_px": 81.0,
+     "cycle_end": 21,
+     "last_px": 76.75
     }
    ],
+   "pending": [],
    "cycles": [
     {
      "k": 0,
@@ -491,10 +541,25 @@
      "2026-10-02",
      64066.6669,
      64066.6669
+    ],
+    [
+     "2026-10-05",
+     64272.3204,
+     48133.4032
+    ],
+    [
+     "2026-10-06",
+     64134.7018,
+     48183.5424
+    ],
+    [
+     "2026-10-07",
+     63971.7353,
+     48233.7337
     ]
    ],
    "trades": [],
-   "peak": 64066.66689251388,
+   "peak": 64272.320371499685,
    "paused": false,
    "spec_name": "B_mom12_hi52",
    "events": [
@@ -605,11 +670,149 @@
      "total_tl": 100066.6669,
      "dd": 0.0,
      "fx": 49.14398956298828
+    },
+    {
+     "date": "2026-10-05",
+     "fills": [
+      {
+       "market": "bist",
+       "ticker": "INVES",
+       "side": "AL",
+       "px": 690.0,
+       "qty": 2.3147896977391014,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "AYGAZ",
+       "side": "AL",
+       "px": 290.0,
+       "qty": 5.507603073930966,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "BIMAS",
+       "side": "AL",
+       "px": 414.25,
+       "qty": 3.8556545357633802,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "AGESA",
+       "side": "AL",
+       "px": 237.0,
+       "qty": 6.739261145316372,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "GLYHO",
+       "side": "AL",
+       "px": 16.25,
+       "qty": 98.28953178092185,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "TUPRS",
+       "side": "AL",
+       "px": 377.5,
+       "qty": 4.231006334940345,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "SOKM",
+       "side": "AL",
+       "px": 57.35,
+       "qty": 27.85012962399138,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "AKSGY",
+       "side": "AL",
+       "px": 9.48,
+       "qty": 168.481536768429,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "KLSYN",
+       "side": "AL",
+       "px": 14.54,
+       "qty": 109.84902996082448,
+       "tranche": 0
+      },
+      {
+       "market": "bist",
+       "ticker": "EBEBK",
+       "side": "AL",
+       "px": 82.25,
+       "qty": 19.418904455197328,
+       "tranche": 0
+      }
+     ],
+     "orders": [],
+     "stops": [],
+     "notes": [],
+     "shortfall": 0.0,
+     "nav": 64272.320371499685,
+     "transfer": null,
+     "insurance": null,
+     "weights": {
+      "bist": 0.64,
+      "us": 0.36
+     },
+     "vol_scale": 1.0,
+     "total_tl": 100413.99611722335,
+     "dd": 0.0,
+     "fx": 49.15489959716797
+    },
+    {
+     "date": "2026-10-06",
+     "fills": [],
+     "orders": [],
+     "stops": [],
+     "notes": [],
+     "shortfall": 0.0,
+     "nav": 64134.70183352263,
+     "transfer": null,
+     "insurance": null,
+     "weights": {
+      "bist": 0.64,
+      "us": 0.36
+     },
+     "vol_scale": 1.0,
+     "total_tl": 100265.71648099556,
+     "dd": -0.0014766829521920544,
+     "fx": 49.14039993286133
+    },
+    {
+     "date": "2026-10-07",
+     "fills": [],
+     "orders": [],
+     "stops": [],
+     "notes": [],
+     "shortfall": 0.0,
+     "nav": 63971.735321911154,
+     "transfer": null,
+     "insurance": null,
+     "weights": {
+      "bist": 0.64,
+      "us": 0.36
+     },
+     "vol_scale": 1.0,
+     "total_tl": 100139.43954029464,
+     "dd": -0.00273424609661177,
+     "fx": 49.19029998779297
     }
    ],
-   "perf": 1.0,
-   "perf_peak": 1.0,
-   "nav_post": 64066.6669,
+   "perf": 0.9985182372582583,
+   "perf_peak": 1.0032099921839386,
+   "nav_post": 63971.7353,
    "warned": {},
    "audit_status": "veri birikiyor"
   },
@@ -1333,9 +1536,9 @@
  },
  "pf": {
   "capital_tl": 100000,
-  "peak_tl": 100208.34261722336,
+  "peak_tl": 100413.99611722335,
   "insurance": false,
-  "dd": 0.0,
+  "dd": -0.00273424609661177,
   "weights": {
    "bist": 0.64,
    "us": 0.36
@@ -1345,7 +1548,7 @@
    "bist": false,
    "us": false
   },
-  "fx": 49.15489959716797,
+  "fx": 49.19029998779297,
   "transfers": [],
   "nav_tl": [],
   "shadow": {
