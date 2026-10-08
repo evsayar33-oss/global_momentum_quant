@@ -1,23 +1,26 @@
-GMQ Cross-Sectional Alpha Quality / Capital Efficiency V1
-==========================================================
+GMQ MOMENTUM ENTRY TIMING / CHASE AVOIDANCE V1 — INSTALL MAP
 
-COPY / ADD:
-- gmq_cross_sectional_alpha_quality_capital_efficiency_v1.py -> repo root
-- gmq_tail_risk_alpha_conditional_sizing.py -> repo root (research helper)
-- gmq_cross_sectional_alpha_quality_requirements.txt -> repo root
-- .github/workflows/gmq_cross_sectional_alpha_quality_capital_efficiency_v1.yml
-- README_GMQ_CROSS_SECTIONAL_ALPHA_QUALITY_CAPITAL_EFFICIENCY_V1.md
+COPY/ADD TO REPOSITORY ROOT:
+  gmq_momentum_entry_timing_chase_avoidance_v1.py
+  gmq_momentum_entry_timing_requirements.txt
 
-DO NOT CHANGE:
-- config.py
-- engine.py
-- portfolio.py
-- signals.py
-- data.py
-- state/order/NAV/trade production files
+COPY/ADD TO .github/workflows/:
+  gmq_momentum_entry_timing_chase_avoidance_v1.yml
+
+REQUIRED EXISTING RESEARCH HELPER FILES:
+  gmq_tail_risk_alpha_conditional_sizing.py
+  gmq_early_adverse_predictor.py
+
+LEAVE UNCHANGED:
+  engine.py
+  portfolio.py
+  config.py
+  signals.py
+  data.py
+  state/order/NAV/trade live files
 
 RUN:
-GitHub Actions -> GMQ Cross-Sectional Alpha Quality / Capital Efficiency V1 -> Run workflow
+  Actions -> GMQ Momentum Entry Timing / Chase Avoidance V1 -> Run workflow
 
-PRIMARY POLICY:
-CE_BALANCED = bottom 20% of same-day market cohort at 0.80x BUY allocation.
+LOCAL SMOKE:
+  python gmq_momentum_entry_timing_chase_avoidance_v1.py --synthetic

@@ -1,0 +1,7 @@
+This research package requires the previously installed research layer:
+- gmq_early_adverse_predictor.py
+
+Reason:
+- gmq_tail_risk_alpha_conditional_sizing.py reuses its validated trade-feature builder.
+
+Production files remain unchanged.
