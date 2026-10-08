@@ -1,0 +1,47 @@
+name: GMQ Alpha-Quality Conditional Allocation V1 - Walk-Forward Validation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r gmq_alpha_quality_requirements.txt
+
+      - name: Validate research syntax
+        run: |
+          python -m py_compile gmq_alpha_quality_walk_forward_validation_v1.py
+          python -m py_compile gmq_alpha_quality_conditional_allocation_v1.py
+          python -m py_compile gmq_tail_risk_alpha_conditional_sizing.py
+
+      - name: Synthetic smoke test
+        run: |
+          python gmq_alpha_quality_walk_forward_validation_v1.py --synthetic --start 2018-01-01 --refit-months 6
+
+      - name: Run frozen walk-forward validation
+        run: |
+          python gmq_alpha_quality_walk_forward_validation_v1.py --years 14 --start 2018-01-01 --refit-months 6
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-alpha-quality-walk-forward-validation-v1-results
+          path: research/results_alpha_quality_walk_forward_validation_v1/
+          if-no-files-found: error
