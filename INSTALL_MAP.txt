@@ -1,27 +1,23 @@
-GMQ Alpha-Quality Conditional Allocation V1 — Walk-Forward Validation
+GMQ Cross-Sectional Alpha Quality / Capital Efficiency V1
+==========================================================
 
-COPY TO REPOSITORY ROOT:
-- gmq_alpha_quality_walk_forward_validation_v1.py
-- gmq_alpha_quality_conditional_allocation_v1.py
-- gmq_tail_risk_alpha_conditional_sizing.py
-- gmq_alpha_quality_requirements.txt
-- README_GMQ_ALPHA_QUALITY_WALK_FORWARD_VALIDATION_V1.md
+COPY / ADD:
+- gmq_cross_sectional_alpha_quality_capital_efficiency_v1.py -> repo root
+- gmq_tail_risk_alpha_conditional_sizing.py -> repo root (research helper)
+- gmq_cross_sectional_alpha_quality_requirements.txt -> repo root
+- .github/workflows/gmq_cross_sectional_alpha_quality_capital_efficiency_v1.yml
+- README_GMQ_CROSS_SECTIONAL_ALPHA_QUALITY_CAPITAL_EFFICIENCY_V1.md
 
-COPY TO:
-- .github/workflows/gmq_alpha_quality_walk_forward_validation_v1.yml
-
-DO NOT REPLACE OR EDIT:
+DO NOT CHANGE:
+- config.py
 - engine.py
 - portfolio.py
-- config.py
 - signals.py
+- data.py
 - state/order/NAV/trade production files
 
 RUN:
-Actions -> GMQ Alpha-Quality Conditional Allocation V1 - Walk-Forward Validation -> Run workflow
+GitHub Actions -> GMQ Cross-Sectional Alpha Quality / Capital Efficiency V1 -> Run workflow
 
-FROZEN TEST:
-- WF start: 2018-01-01
-- Refit: 6 months
-- Years: 14
-- Primary policy: COND_STRONG
+PRIMARY POLICY:
+CE_BALANCED = bottom 20% of same-day market cohort at 0.80x BUY allocation.
