@@ -1,0 +1,27 @@
+GMQ Alpha-Quality Conditional Allocation V1 — Walk-Forward Validation
+
+COPY TO REPOSITORY ROOT:
+- gmq_alpha_quality_walk_forward_validation_v1.py
+- gmq_alpha_quality_conditional_allocation_v1.py
+- gmq_tail_risk_alpha_conditional_sizing.py
+- gmq_alpha_quality_requirements.txt
+- README_GMQ_ALPHA_QUALITY_WALK_FORWARD_VALIDATION_V1.md
+
+COPY TO:
+- .github/workflows/gmq_alpha_quality_walk_forward_validation_v1.yml
+
+DO NOT REPLACE OR EDIT:
+- engine.py
+- portfolio.py
+- config.py
+- signals.py
+- state/order/NAV/trade production files
+
+RUN:
+Actions -> GMQ Alpha-Quality Conditional Allocation V1 - Walk-Forward Validation -> Run workflow
+
+FROZEN TEST:
+- WF start: 2018-01-01
+- Refit: 6 months
+- Years: 14
+- Primary policy: COND_STRONG
