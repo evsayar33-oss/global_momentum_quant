@@ -1,0 +1,66 @@
+name: GMQ Momentum Entry Timing / Chase Avoidance V4
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Historical years"
+        required: false
+        default: "14"
+      start:
+        description: "Research evaluation start"
+        required: false
+        default: "2018-01-01"
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install research dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r gmq_momentum_entry_timing_requirements.txt
+
+      - name: Compile V4 research script
+        run: |
+          python -m py_compile gmq_momentum_entry_timing_chase_avoidance_v4.py
+
+      - name: Synthetic smoke
+        run: |
+          python gmq_momentum_entry_timing_chase_avoidance_v4.py \
+            --synthetic \
+            --out research/smoke_momentum_entry_timing_chase_avoidance_v4
+
+      - name: Verify helper dependencies
+        run: |
+          test -f gmq_tail_risk_alpha_conditional_sizing.py
+          test -f gmq_early_adverse_predictor.py
+
+      - name: Run execution-verified research
+        env:
+          YFINANCE_CACHE_DIR: ${{ github.workspace }}/.yfinance-cache
+        run: |
+          python gmq_momentum_entry_timing_chase_avoidance_v4.py \
+            --years "${{ inputs.years || '14' }}" \
+            --start "${{ inputs.start || '2018-01-01' }}" \
+            --out research/results_momentum_entry_timing_chase_avoidance_v4
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-momentum-entry-timing-chase-avoidance-v4-results
+          path: research/results_momentum_entry_timing_chase_avoidance_v4/
+          if-no-files-found: error
+          retention-days: 30
