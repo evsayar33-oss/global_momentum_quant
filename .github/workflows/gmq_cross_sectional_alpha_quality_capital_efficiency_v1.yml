@@ -1,0 +1,51 @@
+name: GMQ Cross-Sectional Alpha Quality / Capital Efficiency V1
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Historical years"
+        required: false
+        default: "14"
+      start:
+        description: "Primary OOS start"
+        required: false
+        default: "2018-01-01"
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install research dependencies
+        run: python -m pip install --upgrade pip && pip install -r gmq_cross_sectional_alpha_quality_requirements.txt
+
+      - name: Synthetic smoke
+        run: python gmq_cross_sectional_alpha_quality_capital_efficiency_v1.py --synthetic --out research/smoke_cross_sectional_alpha_quality_v1
+
+      - name: Run production-aligned research
+        env:
+          YFINANCE_CACHE_DIR: ${{ github.workspace }}/.yfinance-cache
+        run: |
+          python gmq_cross_sectional_alpha_quality_capital_efficiency_v1.py \
+            --years "${{ inputs.years || '14' }}" \
+            --start "${{ inputs.start || '2018-01-01' }}" \
+            --out research/results_cross_sectional_alpha_quality_capital_efficiency_v1
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-cross-sectional-alpha-quality-capital-efficiency-v1-results
+          path: research/results_cross_sectional_alpha_quality_capital_efficiency_v1/
+          if-no-files-found: error
