@@ -231,7 +231,11 @@ def six_month_calendar(last_date: pd.Timestamp, start: pd.Timestamp) -> pd.DataF
     return pd.DataFrame(rows)
 
 
-def fold_metrics(runs: Dict[str, Tuple[dict, pd.Series]], calendar: pd.DataFrame) -> pd.DataFrame:
+def fold_metrics(
+    runs: Dict[str, Tuple[dict, pd.Series]],
+    calendar: pd.DataFrame,
+    metrics_fn,
+) -> pd.DataFrame:
     rows = []
     base_daily = runs["BASE"][1]
     for row in calendar.to_dict("records"):
@@ -240,13 +244,13 @@ def fold_metrics(runs: Dict[str, Tuple[dict, pd.Series]], calendar: pd.DataFrame
         b = base_daily[(base_daily.index >= t0) & (base_daily.index < t1)]
         if len(b) < 2:
             continue
-        bm = metrics_from_daily(b)
+        bm = metrics_fn(b)
         b_ret = float(b.iloc[-1] / b.iloc[0] - 1)
         for name, (_st, daily) in runs.items():
             s = daily[(daily.index >= t0) & (daily.index < t1)]
             if len(s) < 2:
                 continue
-            m = metrics_from_daily(s)
+            m = metrics_fn(s)
             period_ret = float(s.iloc[-1] / s.iloc[0] - 1)
             rows.append({
                 "fold": int(row["fold"]),
@@ -466,7 +470,7 @@ def main() -> None:
     metrics.to_csv(out_dir / "gmq_momentum_entry_timing_chase_avoidance_v1_metrics.csv", index=False)
 
     calendar = six_month_calendar(last_date, start)
-    folds = fold_metrics(runs, calendar)
+    folds = fold_metrics(runs, calendar, metrics_from_daily)
     folds.to_csv(out_dir / "gmq_momentum_entry_timing_chase_avoidance_v1_folds.csv", index=False)
 
     primary_daily = runs[PRIMARY_POLICY][1]
