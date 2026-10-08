@@ -1,0 +1,71 @@
+name: GMQ - Asymmetric Tail-Risk Allocation V1 Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Historical years to download"
+        required: false
+        default: "14"
+      start:
+        description: "OOS portfolio start date"
+        required: false
+        default: "2022-01-01"
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install research dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r gmq_asymmetric_tail_risk_requirements.txt
+
+      - name: Python compile check
+        run: |
+          python -m py_compile \
+            gmq_asymmetric_tail_risk_allocation_v1.py \
+            gmq_tail_risk_alpha_conditional_sizing.py \
+            gmq_early_adverse_predictor.py
+
+      - name: Synthetic smoke test
+        run: |
+          python gmq_asymmetric_tail_risk_allocation_v1.py \
+            --synthetic \
+            --out research/results_asymmetric_tail_risk_v1_smoke
+
+      - name: Production-path OOS research
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python gmq_asymmetric_tail_risk_allocation_v1.py \
+            --years "${{ inputs.years }}" \
+            --start "${{ inputs.start }}" \
+            --out research/results_asymmetric_tail_risk_v1
+
+      - name: Package research artifacts
+        run: |
+          tar -czf gmq_asymmetric_tail_risk_allocation_v1_artifacts.tar.gz \
+            research/results_asymmetric_tail_risk_v1 \
+            research/results_asymmetric_tail_risk_v1_smoke
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-asymmetric-tail-risk-allocation-v1
+          path: |
+            gmq_asymmetric_tail_risk_allocation_v1_artifacts.tar.gz
+            research/results_asymmetric_tail_risk_v1/*.md
+            research/results_asymmetric_tail_risk_v1/*.csv
