@@ -1,0 +1,85 @@
+name: GMQ Momentum Entry Timing / Chase Avoidance V4.2.1 — BASE Replay Diagnostics
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Historical years to request from the existing market-data layer"
+        required: false
+        default: "14"
+        type: string
+      start:
+        description: "Evaluation start date (YYYY-MM-DD)"
+        required: false
+        default: "2018-01-01"
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  replay-diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install research dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r gmq_momentum_entry_timing_requirements.txt
+
+      - name: Compile diagnostic scripts
+        run: |
+          python -m py_compile gmq_momentum_entry_timing_chase_avoidance_v4_2_diagnostic.py
+          python -m py_compile gmq_momentum_entry_timing_chase_avoidance_v4_2_replay_diagnostic.py
+
+      - name: Synthetic self-test
+        run: python gmq_momentum_entry_timing_chase_avoidance_v4_2_replay_diagnostic.py --self-test
+
+      - name: Verify existing project dependencies
+        run: |
+          test -f config.py
+          test -f data.py
+          test -f engine.py
+          test -f portfolio.py
+          test -f gmq_early_adverse_predictor.py
+          test -f gmq_tail_risk_alpha_conditional_sizing.py
+          test -f gmq_momentum_entry_timing_chase_avoidance_v3.py
+          test -f gmq_momentum_entry_timing_chase_avoidance_v4_1.py
+
+      - name: Download and audit latest V2, V3 and V4.1 artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python gmq_momentum_entry_timing_chase_avoidance_v4_2_diagnostic.py \
+            --fetch-latest-artifacts \
+            --out research/_gmq_v4_2_prior_artifact_audit
+
+      - name: Replay BASE once and reconcile populations
+        env:
+          YFINANCE_CACHE_DIR: ${{ github.workspace }}/.yfinance-cache
+        run: |
+          python gmq_momentum_entry_timing_chase_avoidance_v4_2_replay_diagnostic.py \
+            --years "${{ inputs.years || '14' }}" \
+            --start "${{ inputs.start || '2018-01-01' }}" \
+            --prior-audit-dir research/_gmq_v4_2_prior_artifact_audit \
+            --out research/results_momentum_entry_timing_chase_avoidance_v4_2_replay
+
+      - name: Upload BASE replay diagnostic outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-momentum-entry-timing-chase-avoidance-v4-2-replay-diagnostic
+          path: research/results_momentum_entry_timing_chase_avoidance_v4_2_replay/
+          if-no-files-found: warn
+          retention-days: 30
