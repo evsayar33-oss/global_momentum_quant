@@ -32,7 +32,7 @@ import config as C
 import engine as E
 import portfolio as P
 
-PROTOCOL_VERSION = "1.2"
+PROTOCOL_VERSION = "1.3"
 MODE = "all"                # "all": karma portföy (v1.1) · "us": yalnızca ABD kolu, USD bazlı ölçüm (v1.2)
 US_ONLY = {"bist": 0.0, "us": 1.0}
 SEED = 1701
@@ -236,6 +236,11 @@ class Feat:
         self.atr = trv.reindex(idx).rolling(14, min_periods=10).mean().values
         self.o, self.h, self.l, self.c = o.values, h.values, l.values, c.values
         self.sd63 = sd63.values
+        liq = tv.rolling(20, min_periods=10).median()
+        self.liq_pct = liq.where(U).rank(axis=1, pct=True).values
+        self.vol_pct = sd63.where(U).rank(axis=1, pct=True).values
+        self.z21_pct = z21.where(U).rank(axis=1, pct=True).values
+        self.ret21_pct = (c / c.shift(21) - 1).where(U).rank(axis=1, pct=True).values
 
     def xs_pct(self, arr, i):
         row = (arr[i] if np.ndim(arr) == 2 else arr).astype(float).copy()
@@ -482,7 +487,7 @@ class World:
         daily_tl = nav.groupby("date")["total_tl"].last().sort_index()
         fxd = self.fx.reindex(daily_tl.index.union(self.fx.index)).ffill().reindex(daily_tl.index)
         daily_usd = daily_tl / fxd
-        daily = daily_usd if MODE == "us" else daily_tl
+        daily = daily_usd if MODE in ("us", "anatomy") else daily_tl
         tr = []
         for mk in ("bist", "us"):
             for t in state["markets"][mk]["trades"]:
@@ -776,6 +781,135 @@ def train_h6(feat, world, train_end, val_rng):
 
 
 # ====================================================================== ana akış
+ANAT_T = 2.0          # yıllar arası t eşiği
+ANAT_CONS = 0.75      # yılların en az %75'inde aynı yön
+ANAT_MAX = 3          # en fazla aday
+
+
+def anatomy_features():
+    """(ad, düzey, işlev(f, i, js)) — hepsi karar günü i kapanışında bilinir."""
+    S, M = "hisse", "piyasa"
+    def sc(f, i, js):
+        return f.xs_pct(f.md.score, i)[js]
+    return [
+        ("momentum_skoru_yuzdelik", S, sc),
+        ("zirveye_yakinlik_hi52", S, lambda f, i, js: f.hi52[i, js]),
+        ("oynaklik_yuzdelik", S, lambda f, i, js: f.vol_pct[i, js]),
+        ("oynaklik_gecisi_21_126", S, lambda f, i, js: f.vratio[i, js]),
+        ("gap_riski", S, lambda f, i, js: f.gap_risk[i, js]),
+        ("katilim_ciro", S, lambda f, i, js: f.part[i, js]),
+        ("ciro_sicramasi_yuzdelik", S, lambda f, i, js: f.z21_pct[i, js]),
+        ("likidite_yuzdelik", S, lambda f, i, js: f.liq_pct[i, js]),
+        ("son_gun_soku", S, lambda f, i, js: f.shock1[i, js]),
+        ("getiri_5g", S, lambda f, i, js: f.ret5[i, js]),
+        ("getiri_21g_yuzdelik", S, lambda f, i, js: f.ret21_pct[i, js]),
+        ("piyasa_genisligi", M, lambda f, i, js: np.full(len(js), f.breadth[i])),
+        ("piyasa_getiri_21g", M, lambda f, i, js: np.full(len(js), f.mret21[i])),
+        ("piyasa_oynakligi_126g", M, lambda f, i, js: np.full(len(js), f.mvol[i])),
+        ("piyasa_trend_200g", M, lambda f, i, js: np.full(len(js), float(f.bull[i]))),
+        ("piyasa_24ay_ayi", M, lambda f, i, js: np.full(len(js), float(f.bear24[i]))),
+        ("kur_degisimi_21g", M, lambda f, i, js: np.full(len(js), f.fx21[i])),
+    ]
+
+
+def winner_anatomy(world, feat, trades, a_, b_):
+    """Eğitim döneminde BASE işlemlerinin özelliklere göre kazanma haritası + tutarlılık seçimi."""
+    tr = window_trades(trades, a_, b_)
+    feats = anatomy_features()
+    rows = []
+    for mk in ("bist", "us"):
+        t = tr[tr["market"] == mk].reset_index(drop=True)
+        if t.empty:
+            continue
+        md, f = world.md[mk], feat[mk]
+        ii = np.array([max(0, (md.didx.get(d, 1) or 1) - 1) for d in t["entry_date"]])
+        jj = np.array([md.tidx.get(x, -1) for x in t["ticker"]])
+        ok = jj >= 0
+        t, ii, jj = t[ok].reset_index(drop=True), ii[ok], jj[ok]
+        base = {"market": mk, "year": t["entry_date"].dt.year.values, "ret": t["ret_pct"].astype(float).values}
+        for nm, lvl, fn in feats:
+            if nm == "kur_degisimi_21g" and mk != "bist":
+                continue
+            vals = np.array([fn(f, i, np.array([j]))[0] for i, j in zip(ii, jj)], dtype=float)
+            rows.append({"feature": nm, "level": lvl, **base, "x": vals})
+    qrows, yrows, srows, specs = [], [], [], []
+    for r in rows:
+        df = pd.DataFrame({"year": r["year"], "ret": r["ret"], "x": r["x"]}).dropna()
+        if len(df) < 200 or df["x"].nunique() < 2:
+            continue
+        if df["x"].nunique() <= 2:                       # ikili özellik (ör. trend, ayı piyasası)
+            df["q"] = (df["x"] > df["x"].min()).astype(int) + 1
+            edges = [df["x"].min(), df["x"].max()]
+        else:
+            edges = list(np.quantile(df["x"], [0.2, 0.4, 0.6, 0.8]))
+            df["q"] = np.searchsorted(edges, df["x"].values, side="right") + 1
+        qs = df.groupby("q")["ret"].agg(["count", "mean", lambda x: (x > 0).mean() * 100])
+        qs.columns = ["n", "net", "wr"]
+        for q, v in qs.iterrows():
+            qrows.append({"feature": r["feature"], "market": r["market"], "dilim": int(q), "n": int(v["n"]),
+                          "win_rate_pct": v["wr"], "expectancy_pct": v["net"]})
+        ics = []
+        for y, g in df.groupby("year"):
+            if len(g) >= 40 and g["x"].nunique() > 1:
+                ic = g["x"].rank().corr(g["ret"].rank())
+                ics.append(ic)
+                yrows.append({"feature": r["feature"], "market": r["market"], "year": int(y), "n": len(g), "rank_ic": ic})
+        ics = np.array([x for x in ics if np.isfinite(x)])
+        if len(ics) < 4:
+            continue
+        m, sd = ics.mean(), ics.std(ddof=1)
+        tt = m / sd * math.sqrt(len(ics)) if sd > 0 else 0.0
+        cons = float(np.mean(np.sign(ics) == np.sign(m)))
+        bq, wq = (qs.index.max(), qs.index.min()) if m > 0 else (qs.index.min(), qs.index.max())
+        srows.append({"feature": r["feature"], "market": r["market"], "level": r["level"], "n": len(df),
+                      "years": len(ics), "ic_mean": m, "t_years": tt, "consistency": cons,
+                      "best_q_wr": qs.loc[bq, "wr"], "best_q_net": qs.loc[bq, "net"],
+                      "worst_q_wr": qs.loc[wq, "wr"], "worst_q_net": qs.loc[wq, "net"],
+                      "worst_cut": (edges[0] if m > 0 else edges[-1]), "sign": int(np.sign(m)), "selected": False})
+    summ = pd.DataFrame(srows)
+    sel = []
+    if len(summ):
+        elig = summ[(summ["t_years"].abs() >= ANAT_T) & (summ["consistency"] >= ANAT_CONS)].copy()
+        elig = elig.reindex(elig["t_years"].abs().sort_values(ascending=False).index)
+        seen = set()
+        for k, r in elig.iterrows():
+            if len(sel) >= ANAT_MAX:
+                break
+            key = (r["feature"], r["market"])
+            if key in seen:
+                continue
+            seen.add(key)
+            summ.loc[k, "selected"] = True
+            sel.append(r.to_dict())
+    fmap = {nm: (lvl, fn) for nm, lvl, fn in anatomy_features()}
+    pols = []
+    for r in sel:
+        lvl, fn = fmap[r["feature"]]
+        mk, sg, cut = r["market"], r["sign"], float(r["worst_cut"])
+        name = f"A_{r['feature']}_{mk}"
+        if lvl == "hisse":
+            def flag(f, i, fn=fn, sg=sg, cut=cut):
+                js = np.arange(len(f.cols))
+                v = fn(f, i, js)
+                return np.where(np.isfinite(v), (v <= cut) if sg > 0 else (v >= cut), False)
+            pols.append(Policy(name, "ANAT", "filter",
+                               f"{r['feature']} ({mk}) en kötü dilimdeki ({'≤' if sg > 0 else '≥'} {cut:.4g}) aday elenir",
+                               markets=(mk,), pick=make_filter_pick(feat, flag)))
+        else:
+            def gate(m_, f, i, fn=fn, sg=sg, cut=cut, mk=mk):
+                if m_ != mk:
+                    return 1.0
+                v = fn(f, i, np.array([0]))[0]
+                bad = np.isfinite(v) and ((v <= cut) if sg > 0 else (v >= cut))
+                return GATE_MULT if bad else 1.0
+            pols.append(Policy(name, "ANAT", "gate",
+                               f"{r['feature']} ({mk}) en kötü dilimdeyken ({'≤' if sg > 0 else '≥'} {cut:.4g}) yeni dilim ×0.5",
+                               markets=(mk,), gate=gate))
+    return {"tables": {"quintiles": pd.DataFrame(qrows), "yearly_ic": pd.DataFrame(yrows), "summary": summ},
+            "policies": pols, "selected": [{k: r[k] for k in ("feature", "market", "t_years", "consistency", "worst_cut", "sign")} for r in sel],
+            "n_trades": int(len(tr))}
+
+
 def sha256(path):
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -800,7 +934,7 @@ def main():
     ap.add_argument("--boot", type=int, default=BOOT_B)
     ap.add_argument("--out-dir", default="gmq_new_hypotheses_output")
     ap.add_argument("--synthetic", action="store_true")
-    ap.add_argument("--mode", choices=["all", "us"], default="all",
+    ap.add_argument("--mode", choices=["all", "us", "anatomy"], default="all",
                     help="all: karma portföy (v1.1) · us: yalnızca ABD kolu + 'karma mı %100 ABD mi' sorusu, USD bazlı (v1.2)")
     ap.add_argument("--force-winner", default=None, help="YALNIZCA --synthetic ile: kilitli test kod yolunu sınamak için")
     a = ap.parse_args()
@@ -811,7 +945,7 @@ def main():
     t0 = time.time()
     np.random.seed(SEED)
     manifest = {"protocol_version": PROTOCOL_VERSION, "mode": MODE,
-                "currency_for_portfolio_metrics": "USD" if MODE == "us" else "TL", "seed": SEED, "synthetic": a.synthetic,
+                "currency_for_portfolio_metrics": "USD" if MODE in ("us", "anatomy") else "TL", "seed": SEED, "synthetic": a.synthetic,
                 "started": pd.Timestamp.now().isoformat(timespec="seconds"),
                 "commit": os.environ.get("GITHUB_SHA") or _git_hash(), "engine_version": C.ENGINE_VERSION,
                 "params": {"TEST_MONTHS": TEST_MONTHS, "VAL_MONTHS": VAL_MONTHS, "EMBARGO_CAL_DAYS": EMBARGO_CAL_DAYS,
@@ -895,10 +1029,20 @@ def main():
                        "mvol_q70": float(np.nanquantile(f.mvol[msk], 0.70)),
                        "fx21_q90": float(np.nanquantile(f.fx21[msk], 0.90)) if np.isfinite(f.fx21[msk]).any() else np.inf}
         manifest["frozen_thresholds"] = thr
-        log("🧠 H6 yarışan-risk modeli (yalnızca eğitim penceresi)…")
-        h6, h6_diag = train_h6(feat, world, val_start, (val_start, test_start))
-        pd.DataFrame(h6_diag).to_csv(out / "h6_model_diagnostics.csv", index=False)
-        policies = build_policies(feat, thr, h6)
+        anat = None
+        if MODE == "anatomy":
+            log("🔬 Kazananların anatomisi (yalnızca eğitim dönemi BASE işlemleri)…")
+            anat = winner_anatomy(world, feat, base_pre["trades"], world.start, val_start)
+            for nm_, df_ in anat["tables"].items():
+                df_.to_csv(out / f"anatomy_{nm_}.csv", index=False)
+            h6_diag = []
+            policies = [Policy("BASE", "BASE", "base", "Üretim mantığı (değişiklik yok)")] + anat["policies"]
+            manifest["anatomy_selected"] = anat["selected"]
+        else:
+            log("🧠 H6 yarışan-risk modeli (yalnızca eğitim penceresi)…")
+            h6, h6_diag = train_h6(feat, world, val_start, (val_start, test_start))
+            pd.DataFrame(h6_diag).to_csv(out / "h6_model_diagnostics.csv", index=False)
+            policies = build_policies(feat, thr, h6)
         alloc = None
         if MODE == "us":
             kept = [policies[0]]
@@ -934,8 +1078,8 @@ def main():
         for pol in policies[1:]:
             log(f"▶ {pol.name}")
             results[pol.name] = world.run(pol, feat, test_start - pd.Timedelta(days=1))
-        gate_share = {mk: float(np.mean([results[n]["gate_share"][mk] for n in ("H1_breadth_gate", "H8_momentum_crash_state")
-                                         if n in results])) for mk in ("bist", "us")}
+        _gs = {mk: [results[n]["gate_share"][mk] for n in results if results[n]["gate_share"][mk] > 0] for mk in ("bist", "us")}
+        gate_share = {mk: float(np.mean(v)) if v else 0.15 for mk, v in _gs.items()}
         gate_share = {mk: max(v, 0.05) for mk, v in gate_share.items()}
         plac = placebo_policies(feat, a.placebo_n, gate_share)
         if MODE == "us":
@@ -1197,6 +1341,18 @@ def main():
                            f"[{fmt(lk['monthly_diff_ci95'][0], 2)}, {fmt(lk['monthly_diff_ci95'][1], 2)}] · kapılar: "
                            + ", ".join(f"{k} {'✅' if v else '❌'}" for k, v in lk.get("gates", {}).items()))
             rep += [f"**Soru 0 sonucu: {lk.get('verdict')}**", ""]
+        if anat is not None:
+            rep += ["## Kazananların anatomisi (yalnızca eğitim dönemi, BASE'in gerçek işlemleri)", "",
+                    f"Eğitim işlemleri: {anat['n_trades']} · ölçüt: yıllık sıra korelasyonunun (özellik ↔ işlem getirisi) "
+                    f"yıllar arası t ≥ {ANAT_T} VE yılların en az %{int(ANAT_CONS * 100)}'ında aynı yön", "",
+                    "| Özellik | Piyasa | Tür | Yıllık IC ort. | t (yıllar) | Aynı yön | En iyi dilim WR / net | En kötü dilim WR / net | Seçildi |",
+                    "|---|---|---|---|---|---|---|---|---|"]
+            for r in anat["tables"]["summary"].sort_values("t_years", key=lambda x: -x.abs()).to_dict("records"):
+                rep.append(f"| {r['feature']} | {r['market']} | {r['level']} | {fmt(r['ic_mean'], 3)} | {fmt(r['t_years'], 2)} | "
+                           f"{fmt(r['consistency'] * 100, 0)}% | {fmt(r['best_q_wr'], 1)}% / {fmt(r['best_q_net'], 2)} | "
+                           f"{fmt(r['worst_q_wr'], 1)}% / {fmt(r['worst_q_net'], 2)} | {'✅' if r['selected'] else ''} |")
+            rep += ["", "Seçilen özellikler adaya şöyle çevrildi: hisse düzeyi → en kötü dilime düşen aday elenir ve sıradakiyle "
+                        "doldurulur; piyasa düzeyi → piyasa en kötü dilimdeyken o kolun yeni dilim bütçesi ×0.5.", ""]
         rep += ["## Doğrulama — aday tablosu (kilitli pencere hariç)", "",
                 "| Aday | Piyasa | Eğitim fark | Doğrulama fark | t | Holm p | Plasebo sırası | Ölçülebilir en küçük etki (test) | Seçildi |",
                 "|---|---|---|---|---|---|---|---|---|"]
@@ -1242,7 +1398,7 @@ def _git_hash():
 
 
 def write_report(out, manifest, decision, body):
-    title = "ABD Kolu (USD bazlı)" if MODE == "us" else "Karma Portföy"
+    title = {"us": "ABD Kolu (USD bazlı)", "anatomy": "Kazananların Anatomisi (karma portföy, USD bazlı)"}.get(MODE, "Karma Portföy")
     lines = [f"# GMQ Yeni Hipotezler — {title} — Nihai Karar Raporu (protokol v{PROTOCOL_VERSION})", "",
              f"**KARAR: {decision.get('decision')}**", "",
              f"Kilitli pencere açıldı mı: {'evet' if decision.get('locked_window_opened') else 'hayır'} · "

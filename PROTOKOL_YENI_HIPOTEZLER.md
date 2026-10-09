@@ -1,4 +1,4 @@
-# GMQ — Kapsamlı Yeni Hipotezler Test Protokolü (v1.2)
+# GMQ — Kapsamlı Yeni Hipotezler Test Protokolü (v1.3)
 
 **Belge türü:** Önceden tanımlı araştırma ve doğrulama protokolü. `gmq_new_hypotheses_test.py` bu belgeyi uygular.
 **v1.0 → v1.1:** Orijinal plandaki (GMQ_Kapsamli_Yeni_Hipotezler_Test_Plani.pdf) bütün kurallar geçerlidir.
@@ -139,3 +139,33 @@ Dolar bazında referans backtestte yalnızca ABD kolu yıllık %17.8, karma port
 - Bu soru ile (varsa) seçilen tek aday aynı kilitli çalıştırmada, birer kez değerlendirilir.
 
 **Ek çıktı:** `q0_us100_vs_karma.csv`.
+
+---
+
+## §G. v1.3 — Kazananların anatomisi (`--mode anatomy`, karma portföy, USD bazlı)
+
+**Gerekçe:** v1.1 (karma) ve v1.2 (ABD kolu) sonuçları: 16 literatür adayından hiçbiri BASE'i geçemedi; v1.2'de karma
+portföy %100 ABD'den daha iyi çıktı (USD Sharpe eğitim 1.06 vs 0.93, doğrulama 1.05 vs 0.56) → karma yapı korunur.
+v1.3, adayları literatürden değil **sistemin kendi kazanan/kaybeden işlemlerinden** türetir.
+
+**Aşama 1 — Anatomi (yalnızca eğitim dönemi, BASE'in gerçek işlemleri):**
+- Her işlem, karar günü (giriş öncesi kapanış) bilinen 17 özellikle eşleştirilir: 11 hisse düzeyi (momentum skoru, 52 hafta
+  zirvesine yakınlık, oynaklık, oynaklık geçişi, gap riski, ciro katılımı, ciro sıçraması, likidite, son gün şoku, 5g ve 21g getiri)
+  ve 6 piyasa düzeyi (genişlik, 21g piyasa getirisi, 126g piyasa oynaklığı, 200g trend, 24 ay ayı piyasası, kur 21g — yalnız BIST).
+- Her özellik için 5'li dilim tablosu (kazanma oranı, işlem başı net) ve **her eğitim yılı için ayrı** sıra korelasyonu (özellik ↔ getiri).
+- **Seçim ölçütü (önceden sabit):** yıllık korelasyonların yıllar arası t ≥ 2.0 VE yılların ≥ %75'inde aynı yön. Tek güçlü yıldan
+  gelen etki bu ölçütü geçemez. En güçlü en fazla 3 (özellik, piyasa) çifti aday olur.
+
+**Aşama 2 — Adaya çevirme (mekanik, ayar yok):**
+- Hisse düzeyi → en kötü dilime (eğitim işlemlerinin %20/%80 sınırı) düşen aday elenir, sıradakiyle doldurulur.
+- Piyasa düzeyi → piyasa en kötü dilimdeyken o kolun yeni dilim bütçesi ×0.5.
+- Aday yalnızca bulunduğu piyasaya uygulanır.
+
+**Aşama 3 — Doğrulama ve kilitli test:** v1.1 ile aynı (Holm, White RC, plasebo %90, seçim ölçütleri, PASS kapısı).
+Portföy ölçümleri USD bazındadır. Kilitli pencere yalnızca doğrulamayı geçen tek aday için açılır.
+
+**Ek çıktılar:** `anatomy_summary.csv` (özellik başına yıllık IC, t, tutarlılık, en iyi/en kötü dilim), `anatomy_quintiles.csv`,
+`anatomy_yearly_ic.csv`.
+
+**Not (duman testinden):** Tamamen rastgele sentetik veride bile 3 özellik eğitim ölçütünü geçti, biri doğrulamayı da geçti ve
+kilitli testte elendi. Anatomi tek başına kanıt değildir; kanıt doğrulama + plasebo + kilitli testtir.
