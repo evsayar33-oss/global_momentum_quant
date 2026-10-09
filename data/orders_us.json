@@ -1,17 +1,188 @@
 {
  "schema": "gmq.orders.v1",
- "generated_at": "2026-10-08T05:41:14",
+ "generated_at": "2026-10-09T04:25:32",
  "market": "us",
- "signal_date": "2026-10-07",
- "execute_date": "2026-10-08",
+ "signal_date": "2026-10-08",
+ "execute_date": "2026-10-09",
  "currency": "USD",
- "usdtry": 49.1956,
- "orders": [],
+ "usdtry": 49.2121,
+ "orders": [
+  {
+   "id": "us-2026-10-08-1-SNDK-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "SNDK",
+   "yahoo_symbol": "SNDK",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.0114,
+   "amount": 18.35,
+   "ref_price": 1609.4599609375,
+   "stop_price": 1207.095,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-LITE-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "LITE",
+   "yahoo_symbol": "LITE",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.0175,
+   "amount": 18.35,
+   "ref_price": 1048.5999755859375,
+   "stop_price": 786.45,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-MU-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "MU",
+   "yahoo_symbol": "MU",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.0177,
+   "amount": 18.35,
+   "ref_price": 1035.8399658203125,
+   "stop_price": 776.88,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-MRNA-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "MRNA",
+   "yahoo_symbol": "MRNA",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.0931,
+   "amount": 18.35,
+   "ref_price": 197.0,
+   "stop_price": 147.75,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-WDC-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "WDC",
+   "yahoo_symbol": "WDC",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.0467,
+   "amount": 18.35,
+   "ref_price": 393.30999755859375,
+   "stop_price": 294.9825,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-STX-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "STX",
+   "yahoo_symbol": "STX",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.0237,
+   "amount": 18.35,
+   "ref_price": 774.8300170898438,
+   "stop_price": 581.1225,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-DELL-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "DELL",
+   "yahoo_symbol": "DELL",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.0319,
+   "amount": 18.35,
+   "ref_price": 574.5499877929688,
+   "stop_price": 430.9125,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-BE-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "BE",
+   "yahoo_symbol": "BE",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.0673,
+   "amount": 18.35,
+   "ref_price": 272.82000732421875,
+   "stop_price": 204.615,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-INTC-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "INTC",
+   "yahoo_symbol": "INTC",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.1714,
+   "amount": 18.35,
+   "ref_price": 107.08000183105469,
+   "stop_price": 80.31,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  },
+  {
+   "id": "us-2026-10-08-1-TER-BUY",
+   "market": "us",
+   "action": "BUY",
+   "symbol": "TER",
+   "yahoo_symbol": "TER",
+   "order_type": "MARKET_ON_OPEN",
+   "execute_date": "2026-10-09",
+   "currency": "USD",
+   "tranche": 1,
+   "quantity": 0.046,
+   "amount": 18.35,
+   "ref_price": 398.7200012207031,
+   "stop_price": 299.04,
+   "exit_date_est": "2026-11-09",
+   "reason": "new_entry"
+  }
+ ],
  "transfer": null,
  "portfolio": {
-  "total_try": 100092.37,
-  "market_value": 734.22,
-  "cash": 549.43,
+  "total_try": 100348.54,
+  "market_value": 732.57,
+  "cash": 549.51,
   "weights": {
    "bist": 0.64,
    "us": 0.36
@@ -26,10 +197,10 @@
    "tranche": 0,
    "quantity": 0.0103,
    "entry_price": 1773.12,
-   "last_price": 1692.42,
+   "last_price": 1609.46,
    "stop_price": 1329.84,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "MU",
@@ -37,10 +208,10 @@
    "tranche": 0,
    "quantity": 0.0166,
    "entry_price": 1107.35,
-   "last_price": 1088.0,
+   "last_price": 1035.84,
    "stop_price": 830.5125,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "JNJ",
@@ -48,10 +219,10 @@
    "tranche": 0,
    "quantity": 0.0707,
    "entry_price": 259.38,
-   "last_price": 258.45,
+   "last_price": 256.48,
    "stop_price": 194.535,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "VLO",
@@ -59,10 +230,10 @@
    "tranche": 0,
    "quantity": 0.0454,
    "entry_price": 403.79,
-   "last_price": 424.1,
+   "last_price": 443.8,
    "stop_price": 302.8425,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "LITE",
@@ -70,10 +241,10 @@
    "tranche": 0,
    "quantity": 0.0174,
    "entry_price": 1053.26,
-   "last_price": 1111.0699,
+   "last_price": 1048.6,
    "stop_price": 789.945,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "MPC",
@@ -81,10 +252,10 @@
    "tranche": 0,
    "quantity": 0.0441,
    "entry_price": 415.88,
-   "last_price": 442.26,
+   "last_price": 463.34,
    "stop_price": 311.91,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "MRK",
@@ -92,10 +263,10 @@
    "tranche": 0,
    "quantity": 0.1276,
    "entry_price": 143.77,
-   "last_price": 142.79,
+   "last_price": 142.38,
    "stop_price": 107.8275,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "WDC",
@@ -103,10 +274,10 @@
    "tranche": 0,
    "quantity": 0.0433,
    "entry_price": 423.2,
-   "last_price": 405.42,
+   "last_price": 393.31,
    "stop_price": 317.4,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "STX",
@@ -114,10 +285,10 @@
    "tranche": 0,
    "quantity": 0.0223,
    "entry_price": 822.56,
-   "last_price": 807.57,
+   "last_price": 774.83,
    "stop_price": 616.92,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   },
   {
    "symbol": "PSX",
@@ -125,10 +296,10 @@
    "tranche": 0,
    "quantity": 0.0701,
    "entry_price": 261.52,
-   "last_price": 271.62,
+   "last_price": 281.6,
    "stop_price": 196.14,
    "entry_date": "2026-10-02",
-   "days_left": 17
+   "days_left": 16
   }
  ]
 }

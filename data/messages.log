@@ -270,3 +270,39 @@ BIST kolu: 63.972 TL | açık pozisyon 10 | nakit %75
 🌍 Toplam portföy: <b>100.139 TL</b> (zirveden %-0.3) | hedef BIST %64 / ABD %36 | USD/TRY 49,19
 🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
 🧪 Öz denetim: veri birikiyor
+
+===== 2026-10-09 04:25 =====
+🇺🇸 <b>ABD (S&P 500)</b> — 2026-10-08 kapanışı
+
+📌 <b>Yarın AÇILIŞTA yapılacaklar</b>
+<u>Dilim 2</u> (bütçe 184 $, 21 işlem günü tutulur)
+🟢 AL <b>SNDK</b> — 18 $ (≈ 903 TL) ≈ 0,01 adet (son fiyat 1.609,46 $, felaket stopu 1.207,10 $)
+🟢 AL <b>LITE</b> — 18 $ (≈ 903 TL) ≈ 0,02 adet (son fiyat 1.048,60 $, felaket stopu 786,45 $)
+🟢 AL <b>MU</b> — 18 $ (≈ 903 TL) ≈ 0,02 adet (son fiyat 1.035,84 $, felaket stopu 776,88 $)
+🟢 AL <b>MRNA</b> — 18 $ (≈ 903 TL) ≈ 0,09 adet (son fiyat 197,00 $, felaket stopu 147,75 $)
+🟢 AL <b>WDC</b> — 18 $ (≈ 903 TL) ≈ 0,05 adet (son fiyat 393,31 $, felaket stopu 294,98 $)
+🟢 AL <b>STX</b> — 18 $ (≈ 903 TL) ≈ 0,02 adet (son fiyat 774,83 $, felaket stopu 581,12 $)
+🟢 AL <b>DELL</b> — 18 $ (≈ 903 TL) ≈ 0,03 adet (son fiyat 574,55 $, felaket stopu 430,91 $)
+🟢 AL <b>BE</b> — 18 $ (≈ 903 TL) ≈ 0,07 adet (son fiyat 272,82 $, felaket stopu 204,62 $)
+🟢 AL <b>INTC</b> — 18 $ (≈ 903 TL) ≈ 0,17 adet (son fiyat 107,08 $, felaket stopu 80,31 $)
+🟢 AL <b>TER</b> — 18 $ (≈ 903 TL) ≈ 0,05 adet (son fiyat 398,72 $, felaket stopu 299,04 $)
+
+💼 <b>Durum</b>
+ABD (S&P 500) kolu: 733 $ | açık pozisyon 10 | nakit %75
+🌍 Toplam portföy: <b>100.349 TL</b> (zirveden %-0.1) | hedef BIST %64 / ABD %36 | USD/TRY 49,21
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+📊 SPY karne (başlangıçtan, 7 gün): sistem %+0.4 / SPY %+1.7
+
+===== 2026-10-09 04:25 =====
+🤖 <b>Bot emirleri</b> (data/orders_us.json)
+<pre>BUY SNDK QTY=0.0114 AMT=18.35 STOP=1207.095 MARKET_ON_OPEN 2026-10-09
+BUY LITE QTY=0.0175 AMT=18.35 STOP=786.45 MARKET_ON_OPEN 2026-10-09
+BUY MU QTY=0.0177 AMT=18.35 STOP=776.88 MARKET_ON_OPEN 2026-10-09
+BUY MRNA QTY=0.0931 AMT=18.35 STOP=147.75 MARKET_ON_OPEN 2026-10-09
+BUY WDC QTY=0.0467 AMT=18.35 STOP=294.9825 MARKET_ON_OPEN 2026-10-09
+BUY STX QTY=0.0237 AMT=18.35 STOP=581.1225 MARKET_ON_OPEN 2026-10-09
+BUY DELL QTY=0.0319 AMT=18.35 STOP=430.9125 MARKET_ON_OPEN 2026-10-09
+BUY BE QTY=0.0673 AMT=18.35 STOP=204.615 MARKET_ON_OPEN 2026-10-09
+BUY INTC QTY=0.1714 AMT=18.35 STOP=80.31 MARKET_ON_OPEN 2026-10-09
+BUY TER QTY=0.046 AMT=18.35 STOP=299.04 MARKET_ON_OPEN 2026-10-09</pre>
