@@ -1,4 +1,4 @@
-name: GMQ Momentum Entry Timing / Chase Avoidance V4 — Runtime Fix
+name: GMQ Momentum Entry Timing / Chase Avoidance V4 — Start Alignment Fix
 
 on:
   workflow_dispatch:
@@ -20,35 +20,46 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
       - name: Install research dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r gmq_momentum_entry_timing_requirements.txt
-      - name: Fix and verify V4 helper import
+      - name: Align helper and backtest start dates
         run: |
           python - <<'PY'
           from pathlib import Path
           p = Path("gmq_momentum_entry_timing_chase_avoidance_v4.py")
-          if not p.is_file():
-              raise SystemExit(f"Missing research script: {p}")
-          source = p.read_text(encoding="utf-8")
+          s = p.read_text(encoding="utf-8")
           wrong = "import gmq_tail_risk_alpha_conditional_sizing as mod"
           right = "import gmq_early_adverse_predictor as mod"
-          if wrong in source:
-              source = source.replace(wrong, right)
-              p.write_text(source, encoding="utf-8")
-          elif right not in source:
-              raise SystemExit("Unexpected helper loader; refusing unsafe patch.")
-          import gmq_early_adverse_predictor as helper
-          if not callable(getattr(helper, "build_trade_dataset", None)):
-              raise SystemExit("Helper preflight failed: build_trade_dataset missing.")
-          print("HELPER PREFLIGHT OK")
+          if wrong in s:
+              s = s.replace(wrong, right)
+          if right not in s:
+              raise SystemExit("Unexpected helper loader; stopping safely.")
+          old_run = "runs = run_engine_backtest(md_b, md_u, fx, start, last_date, PRIMARY_COST_RT, run_lookups, C.CAPITAL_TL)"
+          new_run = "runs = run_engine_backtest(md_b, md_u, fx, start_full, last_date, PRIMARY_COST_RT, run_lookups, C.CAPITAL_TL)"
+          old_base = "base_rerun = run_engine_backtest(md_b, md_u, fx, start, last_date, PRIMARY_COST_RT, None, C.CAPITAL_TL)"
+          new_base = "base_rerun = run_engine_backtest(md_b, md_u, fx, start_full, last_date, PRIMARY_COST_RT, None, C.CAPITAL_TL)"
+          if old_run in s:
+              s = s.replace(old_run, new_run, 1)
+          elif new_run not in s:
+              raise SystemExit("Policy backtest call did not match expected source.")
+          if old_base in s:
+              s = s.replace(old_base, new_base, 1)
+          elif new_base not in s:
+              raise SystemExit("BASE backtest call did not match expected source.")
+          anchor = '    runs["BASE"] = (base_state, base_daily, pd.DataFrame())'
+          addition = anchor + "\n\n    # Shared warm-up simulation; score only the requested evaluation window.\n    for _name, (_st, _daily, _audit) in list(runs.items()):\n        runs[_name] = (_st, _daily.loc[_daily.index >= start].copy(), _audit)\n    base_daily = runs[\"BASE\"][1]"
+          if addition not in s:
+              if anchor not in s:
+                  raise SystemExit("Could not find BASE assignment for evaluation-window trim.")
+              s = s.replace(anchor, addition, 1)
+          p.write_text(s, encoding="utf-8")
+          print("PATCH OK: helper import and shared simulation start")
           PY
           python -m py_compile gmq_momentum_entry_timing_chase_avoidance_v4.py
       - name: Synthetic smoke
@@ -71,7 +82,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gmq-momentum-entry-timing-chase-avoidance-v4-results
+          name: gmq-momentum-entry-timing-chase-avoidance-v4-alignment-results
           path: |
             research/results_momentum_entry_timing_chase_avoidance_v4/
             research/smoke_momentum_entry_timing_chase_avoidance_v4/
