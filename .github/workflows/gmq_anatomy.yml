@@ -1,0 +1,68 @@
+name: GMQ - Kazananların Anatomisi Testi (protokol v1.3)
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Veri yılı (14 = yaklaşık 12.5 yıl ölçüm + ısınma)"
+        required: true
+        default: "14"
+      placebo_n:
+        description: "Her tip için plasebo sayısı (filtre / sıralama / kapı)"
+        required: true
+        default: "6"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gmq-anatomy
+  cancel-in-progress: false
+
+jobs:
+  new-hypotheses:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    env:
+      PYTHONUNBUFFERED: "1"
+      PYTHONFAULTHANDLER: "1"
+
+    steps:
+      - name: Repo'yu al
+        uses: actions/checkout@v5
+
+      - name: Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Paketleri yükle
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Sözdizimi kontrolü
+        run: python -m py_compile gmq_new_hypotheses_test.py
+
+      - name: Sentetik duman testi (internetsiz, tüm kod yolları)
+        run: |
+          python gmq_new_hypotheses_test.py --mode anatomy --synthetic --placebo-n 1 --boot 300 --out-dir smoke_anatomy
+
+      - name: Gerçek veriyle test
+        env:
+          YEARS: ${{ inputs.years }}
+          PLACEBO_N: ${{ inputs.placebo_n }}
+        run: |
+          python -X faulthandler gmq_new_hypotheses_test.py \
+            --mode anatomy --years "$YEARS" --placebo-n "$PLACEBO_N" \
+            --out-dir gmq_anatomy_output
+
+      - name: Sonuç arşivi
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-anatomy-results
+          path: gmq_anatomy_output/
+          if-no-files-found: warn
+          retention-days: 30
