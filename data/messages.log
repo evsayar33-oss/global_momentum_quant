@@ -306,3 +306,38 @@ BUY DELL QTY=0.0319 AMT=18.35 STOP=430.9125 MARKET_ON_OPEN 2026-10-09
 BUY BE QTY=0.0673 AMT=18.35 STOP=204.615 MARKET_ON_OPEN 2026-10-09
 BUY INTC QTY=0.1714 AMT=18.35 STOP=80.31 MARKET_ON_OPEN 2026-10-09
 BUY TER QTY=0.046 AMT=18.35 STOP=299.04 MARKET_ON_OPEN 2026-10-09</pre>
+
+===== 2026-10-09 23:20 =====
+🇹🇷 <b>BIST</b> — 2026-10-09 kapanışı
+
+📌 <b>Yarın AÇILIŞTA yapılacaklar</b>
+<u>Dilim 2</u> (bütçe 16.088 TL, 21 işlem günü tutulur)
+🟢 AL <b>CELHA</b> — 1.609 TL ≈ 48 adet (son fiyat 33,32 TL, felaket stopu 24,99 TL)
+🟢 AL <b>AKFIS</b> — 1.609 TL ≈ 90 adet (son fiyat 17,83 TL, felaket stopu 13,37 TL)
+🟢 AL <b>TKFEN</b> — 1.609 TL ≈ 6 adet (son fiyat 265,00 TL, felaket stopu 198,75 TL)
+🟢 AL <b>GMTAS</b> — 1.609 TL ≈ 33 adet (son fiyat 49,00 TL, felaket stopu 36,75 TL)
+🟢 AL <b>TUPRS</b> — 1.609 TL ≈ 4 adet (son fiyat 386,25 TL, felaket stopu 289,69 TL)
+🟢 AL <b>RYGYO</b> — 1.609 TL ≈ 32 adet (son fiyat 49,68 TL, felaket stopu 37,26 TL)
+🟢 AL <b>INVES</b> — 1.609 TL ≈ 2 adet (son fiyat 731,00 TL, felaket stopu 548,25 TL)
+🟢 AL <b>OZSUB</b> — 1.609 TL ≈ 43 adet (son fiyat 37,56 TL, felaket stopu 28,17 TL)
+🟢 AL <b>ISDMR</b> — 1.609 TL ≈ 24 adet (son fiyat 65,90 TL, felaket stopu 49,42 TL)
+🟢 AL <b>KLSYN</b> — 1.609 TL ≈ 115 adet (son fiyat 14,03 TL, felaket stopu 10,52 TL)
+
+💼 <b>Durum</b>
+BIST kolu: 64.467 TL | açık pozisyon 10 | nakit %75
+🌍 Toplam portföy: <b>100.599 TL</b> (zirveden %+0.0) | hedef BIST %64 / ABD %36 | USD/TRY 49,32
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+
+===== 2026-10-09 23:20 =====
+🤖 <b>Bot emirleri</b> (data/orders_bist.json)
+<pre>BUY CELHA.IS QTY=48 AMT=1608.78 STOP=24.99 MARKET_ON_OPEN 2026-10-12
+BUY AKFIS.IS QTY=90 AMT=1608.78 STOP=13.3725 MARKET_ON_OPEN 2026-10-12
+BUY TKFEN.IS QTY=6 AMT=1608.78 STOP=198.75 MARKET_ON_OPEN 2026-10-12
+BUY GMTAS.IS QTY=32 AMT=1608.78 STOP=36.75 MARKET_ON_OPEN 2026-10-12
+BUY TUPRS.IS QTY=4 AMT=1608.78 STOP=289.6875 MARKET_ON_OPEN 2026-10-12
+BUY RYGYO.IS QTY=32 AMT=1608.78 STOP=37.26 MARKET_ON_OPEN 2026-10-12
+BUY INVES.IS QTY=2 AMT=1608.78 STOP=548.25 MARKET_ON_OPEN 2026-10-12
+BUY OZSUB.IS QTY=42 AMT=1608.78 STOP=28.17 MARKET_ON_OPEN 2026-10-12
+BUY ISDMR.IS QTY=24 AMT=1608.78 STOP=49.425 MARKET_ON_OPEN 2026-10-12
+BUY KLSYN.IS QTY=114 AMT=1608.78 STOP=10.5225 MARKET_ON_OPEN 2026-10-12</pre>
