@@ -1,4 +1,4 @@
-# GMQ — Kapsamlı Yeni Hipotezler Test Protokolü (v1.1)
+# GMQ — Kapsamlı Yeni Hipotezler Test Protokolü (v1.2)
 
 **Belge türü:** Önceden tanımlı araştırma ve doğrulama protokolü. `gmq_new_hypotheses_test.py` bu belgeyi uygular.
 **v1.0 → v1.1:** Orijinal plandaki (GMQ_Kapsamli_Yeni_Hipotezler_Test_Plani.pdf) bütün kurallar geçerlidir.
@@ -114,3 +114,28 @@ SHA-256), `reproducibility_notes.md` + v1.1 ekleri: `power_analysis.csv`, `multi
 - Yahoo verisi sonradan revize olabilir; Wikipedia değişiklik tablosu eksik olabilir.
 - Üretim stratejisi 2014–2026'nın tamamı görülerek tasarlandığı için kilitli pencere BASE için tamamen "görülmemiş" değildir; adaylar için öyledir.
 - Gerçekçi beklenti: çoğu adayın FAIL ya da INCONCLUSIVE çıkması. Bu, canlı sistemi korumuş olmak demektir.
+
+---
+
+## §F. v1.2 — ABD kolu modu (`--mode us`, USD bazlı)
+
+**Gerekçe:** v1.1 sonucu (9 Eki 2026): 9 adayın hiçbiri karma portföyde BASE'i geçemedi; kilitli pencere açılmadı.
+Dolar bazında referans backtestte yalnızca ABD kolu yıllık %17.8, karma portföy %16.2 verdi (TL rakamları kur nedeniyle yanıltıcı).
+
+**Değişen tanımlar (diğer tüm kurallar v1.1 ile aynı):**
+- **BASE = %100 ABD** (üretim ABD kolu, `FIXED_WEIGHTS = {bist: 0, us: 1}`). Adaylar yalnızca ABD koluna uygulanır;
+  H2 ve H7 (yalnızca BIST'e özgü) bu modda yoktur.
+- **Portföy ölçümleri USD bazındadır** (yıllık getiri, oynaklık, Sharpe, en büyük düşüş). İşlem başı net beklenti zaten USD'dir.
+- **Hedef:** 2014–2019'un zayıf dönemini "düzeltmek" değil, **hem eğitim (zayıf dönem dahil) hem doğrulama dönemlerinde**
+  BASE'i geçmektir. Aday seçim ölçütü 2 (eğitimde de fark > 0) bunu zorunlu kılar. Belirli bir dönemi düzeltmeye yönelik ayar yapılmaz.
+- Bölme ve kilitli pencere v1.1 ile aynı. Kilitli pencere v1.1 çalışmasında **açılmadığı** için temizdir.
+
+**Soru 0 — %100 ABD mi, karma (BIST + ABD) mi?** (önceden kayıtlı, adaylardan ayrı soru)
+- Ölçüt: USD bazlı portföy Sharpe'ı. Hem eğitimde hem doğrulamada %100 ABD Sharpe ≥ karma Sharpe ise soru kilitli teste gider;
+  aksi halde karma portföy korunur ve kilitli pencere bu soru için açılmaz.
+- Kilitli test kapıları (hepsi gerekli): %100 ABD Sharpe ≥ karma, yıllık getiri ≥ karma, en büyük düşüş karmadan 5 puandan fazla kötü değil.
+  Aylık getiri farkının blok-bootstrap %95 güven aralığı raporlanır.
+- Sonuç olumlu olsa bile önce gölge çalışma yapılır; üretim ağırlığı doğrudan değiştirilmez.
+- Bu soru ile (varsa) seçilen tek aday aynı kilitli çalıştırmada, birer kez değerlendirilir.
+
+**Ek çıktı:** `q0_us100_vs_karma.csv`.

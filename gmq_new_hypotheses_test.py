@@ -32,7 +32,9 @@ import config as C
 import engine as E
 import portfolio as P
 
-PROTOCOL_VERSION = "1.1"
+PROTOCOL_VERSION = "1.2"
+MODE = "all"                # "all": karma portföy (v1.1) · "us": yalnızca ABD kolu, USD bazlı ölçüm (v1.2)
+US_ONLY = {"bist": 0.0, "us": 1.0}
 SEED = 1701
 BOOT_B = 2000
 BLOCK_MONTHS = 3
@@ -294,11 +296,12 @@ def fill_filtered(md, order, flagged, n):
 # ====================================================================== politikalar
 class Policy:
     def __init__(self, name, family, kind, desc, markets=("bist", "us"), pick=None, gate=None, spec=None,
-                 volscale=False, ptype=None):
+                 volscale=False, ptype=None, weights=None):
         self.name, self.family, self.kind, self.desc = name, family, kind, desc
         self.markets = set(markets)
         self.pick, self.gate, self.spec, self.volscale = pick, gate, spec, volscale
         self.ptype = ptype or kind                      # plasebo eşleşme tipi: filter / rerank / gate
+        self.weights = weights                          # None: moda göre varsayılan · "KARMA": üretim risk paritesi
 
 
 def make_filter_pick(feat_by_mk, flag_fn):
@@ -437,6 +440,7 @@ class World:
         gate_log = {"bist": [0, 0], "us": [0, 0]}
         orig_step = E.step_market
         old_vt = C.VOL_TARGET
+        old_w = C.FIXED_WEIGHTS
         try:
             for mk, md in mds.items():
                 md.fc = self.base_fc[mk] * cost_mult
@@ -454,6 +458,10 @@ class World:
                     return orig_step(md, i, st, ctx)
                 E.step_market = wrapped
             C.VOL_TARGET = bool(pol.volscale)
+            if pol.weights == "KARMA":
+                C.FIXED_WEIGHTS = None
+            elif MODE == "us":
+                C.FIXED_WEIGHTS = dict(US_ONLY)
             state = P.new_state(100_000.0, P.fx_at(self.fx, self.start))
             days = sorted(set(d for d in mds["bist"].dates + mds["us"].dates if self.start <= d <= pd.Timestamp(end)))
             for d in days:
@@ -464,23 +472,30 @@ class World:
         finally:
             E.step_market = orig_step
             C.VOL_TARGET = old_vt
+            C.FIXED_WEIGHTS = old_w
             for mk, md in mds.items():
                 md.fc = self.base_fc[mk]
                 if "picks" in md.__dict__:
                     del md.__dict__["picks"]
         nav = pd.DataFrame(state["pf"]["nav_tl"], columns=["date", "mk", "total_tl", "fx"])
         nav["date"] = pd.to_datetime(nav["date"])
-        daily = nav.groupby("date")["total_tl"].last().sort_index()
+        daily_tl = nav.groupby("date")["total_tl"].last().sort_index()
+        fxd = self.fx.reindex(daily_tl.index.union(self.fx.index)).ffill().reindex(daily_tl.index)
+        daily_usd = daily_tl / fxd
+        daily = daily_usd if MODE == "us" else daily_tl
         tr = []
         for mk in ("bist", "us"):
             for t in state["markets"][mk]["trades"]:
                 tr.append(dict(t, market=mk))
         trades = pd.DataFrame(tr)
+        if MODE == "us" and len(trades):
+            trades = trades[trades["market"] == "us"].reset_index(drop=True)
         if len(trades):
             trades["entry_date"] = pd.to_datetime(trades["entry_date"])
             trades["exit_date"] = pd.to_datetime(trades["exit_date"])
         share = {mk: (g[1] / g[0] if g[0] else 0.0) for mk, g in gate_log.items()}
-        return {"daily": daily, "trades": trades, "state": state, "gate_share": share}
+        return {"daily": daily, "daily_tl": daily_tl, "daily_usd": daily_usd, "trades": trades, "state": state,
+                "gate_share": share}
 
 
 # ====================================================================== ölçümler
@@ -785,13 +800,18 @@ def main():
     ap.add_argument("--boot", type=int, default=BOOT_B)
     ap.add_argument("--out-dir", default="gmq_new_hypotheses_output")
     ap.add_argument("--synthetic", action="store_true")
+    ap.add_argument("--mode", choices=["all", "us"], default="all",
+                    help="all: karma portföy (v1.1) · us: yalnızca ABD kolu + 'karma mı %100 ABD mi' sorusu, USD bazlı (v1.2)")
     ap.add_argument("--force-winner", default=None, help="YALNIZCA --synthetic ile: kilitli test kod yolunu sınamak için")
     a = ap.parse_args()
+    global MODE
+    MODE = a.mode
     out = Path(a.out_dir)
     out.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     np.random.seed(SEED)
-    manifest = {"protocol_version": PROTOCOL_VERSION, "seed": SEED, "synthetic": a.synthetic,
+    manifest = {"protocol_version": PROTOCOL_VERSION, "mode": MODE,
+                "currency_for_portfolio_metrics": "USD" if MODE == "us" else "TL", "seed": SEED, "synthetic": a.synthetic,
                 "started": pd.Timestamp.now().isoformat(timespec="seconds"),
                 "commit": os.environ.get("GITHUB_SHA") or _git_hash(), "engine_version": C.ENGINE_VERSION,
                 "params": {"TEST_MONTHS": TEST_MONTHS, "VAL_MONTHS": VAL_MONTHS, "EMBARGO_CAL_DAYS": EMBARGO_CAL_DAYS,
@@ -844,9 +864,10 @@ def main():
         # motor paritesi: backtest_ref (yalnızca test öncesi dönemde; kilitli pencereye bakılmaz)
         ref_path = Path(C.REF_DIR) / "equity.csv"
         if ref_path.exists() and not a.synthetic:
-            ref = pd.read_csv(ref_path, parse_dates=["date"]).set_index("date")["Sistem (TL)"]
+            ref = pd.read_csv(ref_path, parse_dates=["date"]).set_index("date")[
+                "Sistem (TL)" if MODE == "all" else "%100 ABD büyükler (TL)"]
             ref = ref[(ref.index >= world.start) & (ref.index < test_start)]
-            ours = base_pre["daily"]
+            ours = base_pre["daily_tl"]
             if len(ref) > 50:
                 yrs = (ref.index[-1] - ref.index[0]).days / 365.25
                 ref_cagr = ((ref.iloc[-1] / ref.iloc[0]) ** (1 / yrs) - 1) * 100
@@ -878,6 +899,17 @@ def main():
         h6, h6_diag = train_h6(feat, world, val_start, (val_start, test_start))
         pd.DataFrame(h6_diag).to_csv(out / "h6_model_diagnostics.csv", index=False)
         policies = build_policies(feat, thr, h6)
+        alloc = None
+        if MODE == "us":
+            kept = [policies[0]]
+            policies[0].desc = "Üretim mantığı, yalnızca ABD kolu (%100 ABD, risk paritesi yok)"
+            for p in policies[1:]:
+                p.markets &= {"us"}
+                if p.markets:
+                    kept.append(p)
+            policies = kept
+            alloc = Policy("KARMA_BIST_US", "Q0", "allocation", "Üretimdeki karma portföy (BIST + ABD, risk paritesi)",
+                           weights="KARMA")
 
         # ---- güç analizi (v1.1 madde 1) — test öncesi BASE verisi ile
         months_pre = pd.period_range(world.start, val_start - pd.Timedelta(days=1), freq="M")
@@ -906,6 +938,11 @@ def main():
                                          if n in results])) for mk in ("bist", "us")}
         gate_share = {mk: max(v, 0.05) for mk, v in gate_share.items()}
         plac = placebo_policies(feat, a.placebo_n, gate_share)
+        if MODE == "us":
+            for p in plac:
+                p.markets &= {"us"}
+            log(f"▶ {alloc.name} (Soru 0: karma mı %100 ABD mi)")
+            results[alloc.name] = world.run(alloc, feat, test_start - pd.Timedelta(days=1))
         for pol in plac:
             log(f"▶ {pol.name}")
             results[pol.name] = world.run(pol, feat, test_start - pd.Timedelta(days=1))
@@ -919,7 +956,7 @@ def main():
             for w, (a_, b_) in windows.items():
                 trw = window_trades(res["trades"], a_, b_)
                 m = metrics(nav_window(res["daily"], a_, b_), trw)
-                pol = next((p for p in policies + plac if p.name == name), None)
+                pol = next((p for p in policies + plac + ([alloc] if alloc else []) if p.name == name), None)
                 rows.append({"candidate": name, "family": pol.family if pol else "BASE", "kind": pol.kind if pol else "base",
                              "window": w, **m, "gate_active_share_bist": res["gate_share"]["bist"],
                              "gate_active_share_us": res["gate_share"]["us"]})
@@ -999,8 +1036,59 @@ def main():
         manifest["selected_candidate"] = winner
         manifest["white_rc_p"] = rc_p
 
+        # ---- Soru 0 (yalnızca ABD modu): %100 ABD mi, karma mı? (USD, portföy düzeyi)
+        q0 = None
+        if alloc is not None:
+            q0 = {"rows": [], "send": False}
+            sh = {}
+            for w in windows:
+                for nm in ("BASE", alloc.name):
+                    r_ = cmp_df[(cmp_df.candidate == nm) & (cmp_df.window == w)].iloc[0]
+                    sh[(nm, w)] = r_
+                    q0["rows"].append({"window": w, "policy": "%100 ABD" if nm == "BASE" else "KARMA (BIST+ABD)",
+                                       "cagr_usd_pct": r_.get("cagr_pct"), "vol_usd_pct": r_.get("vol_pct"),
+                                       "sharpe_usd": r_.get("sharpe"), "mdd_usd_pct": r_.get("mdd_pct")})
+                a_, b_ = windows[w]
+                mb_ = monthly_returns(nav_window(results["BASE"]["daily_usd"], a_, b_))
+                mk_ = monthly_returns(nav_window(results[alloc.name]["daily_usd"], a_, b_))
+                d_ = (mb_ - mk_).dropna()
+                q0[f"{w}_monthly_diff_mean_pct"] = float(d_.mean() * 100) if len(d_) else np.nan
+            q0["send"] = all(sh[("BASE", w)].get("sharpe", -9) >= sh[(alloc.name, w)].get("sharpe", 9) for w in windows)
+            manifest["q0_sent_to_locked"] = q0["send"]
+
         # ---- kilitli test (yalnızca seçilen aday, bir kez)
         locked_rows, stress_rows, regime_rows = [], [], []
+        if q0 is not None and q0["send"]:
+            log("🔓 Kilitli test (Soru 0): %100 ABD vs KARMA")
+            fb = world.run(policies[0], feat, end)
+            fk = world.run(alloc, feat, end)
+            mb0 = metrics(nav_window(fb["daily_usd"], test_start, end + pd.Timedelta(days=1)), None)
+            mk0 = metrics(nav_window(fk["daily_usd"], test_start, end + pd.Timedelta(days=1)), None)
+            rb_, rk_ = monthly_returns(nav_window(fb["daily_usd"], test_start, end + pd.Timedelta(days=1))), \
+                monthly_returns(nav_window(fk["daily_usd"], test_start, end + pd.Timedelta(days=1)))
+            dd_ = (rb_ - rk_).dropna().values
+            rng0 = np.random.default_rng(SEED)
+            if len(dd_) >= 6:
+                ix0 = block_indices(len(dd_), a.boot, rng0)
+                bm = dd_[ix0].mean(1) * 100
+                ci0 = [float(np.quantile(bm, 0.025)), float(np.quantile(bm, 0.975))]
+            else:
+                ci0 = [np.nan, np.nan]
+            g0 = {"sharpe_us100>=karma": mb0.get("sharpe", -9) >= mk0.get("sharpe", 9),
+                  "cagr_us100>=karma": mb0.get("cagr_pct", -9) >= mk0.get("cagr_pct", 9),
+                  "mdd_not_worse_5pp": mb0.get("mdd_pct", -99) >= mk0.get("mdd_pct", 0) - 5.0}
+            q0["locked"] = {"us100": mb0, "karma": mk0, "monthly_diff_mean_pct": float(dd_.mean() * 100) if len(dd_) else np.nan,
+                            "monthly_diff_ci95": ci0, "gates": g0,
+                            "verdict": ("%100 ABD tercih edilebilir (gölge çalışma ile)" if all(g0.values())
+                                        else "Kanıt yetersiz: karma portföy korunur")}
+            for nm, m_ in (("%100 ABD", mb0), ("KARMA (BIST+ABD)", mk0)):
+                q0["rows"].append({"window": "locked_test", "policy": nm, "cagr_usd_pct": m_.get("cagr_pct"),
+                                   "vol_usd_pct": m_.get("vol_pct"), "sharpe_usd": m_.get("sharpe"), "mdd_usd_pct": m_.get("mdd_pct")})
+        elif q0 is not None:
+            q0["locked"] = {"verdict": "Doğrulama ölçütü geçilmedi (eğitim VE doğrulamada %100 ABD Sharpe ≥ karma gerekir): karma portföy korunur; kilitli pencere bu soru için açılmadı"}
+        if q0 is not None:
+            pd.DataFrame(q0["rows"]).to_csv(out / "q0_us100_vs_karma.csv", index=False)
+            manifest["q0"] = {k: v for k, v in q0.items() if k != "rows"}
         if winner is None:
             decision = {"decision": "FAIL — doğrulamada seçim ölçütlerini geçen aday yok (kilitli pencere AÇILMADI, gelecekteki test için korunuyor)",
                         "locked_window_opened": False}
@@ -1095,6 +1183,20 @@ def main():
             rep += ["1. **BASE'e karşı net iyileşme var mı?** Doğrulamada istatistiksel ölçütleri geçen aday çıkmadı.",
                     "2. **Win rate ve düşüş:** Aday bazında eğitim/doğrulama değerleri candidate_comparison.csv'de.",
                     f"3. **Üretime aday mı?** Hayır. {decision['decision']}", ""]
+        if q0 is not None:
+            rep += ["## Soru 0: %100 ABD mi, karma (BIST+ABD) mi? — dolar bazında", "",
+                    "| Dönem | Portföy | Yıllık getiri (USD) | Oynaklık | Sharpe | En büyük düşüş |", "|---|---|---|---|---|---|"]
+            for r in q0["rows"]:
+                rep.append(f"| {r['window']} | {r['policy']} | {fmt(r['cagr_usd_pct'], 1)}% | {fmt(r['vol_usd_pct'], 1)}% | "
+                           f"{fmt(r['sharpe_usd'], 2)} | {fmt(r['mdd_usd_pct'], 1)}% |")
+            rep += ["", f"Aylık getiri farkı (%100 ABD − karma): eğitim {fmt(q0.get('train_monthly_diff_mean_pct'), 2)} puan/ay · "
+                        f"doğrulama {fmt(q0.get('validation_monthly_diff_mean_pct'), 2)} puan/ay"]
+            lk = q0.get("locked", {})
+            if lk.get("monthly_diff_ci95"):
+                rep.append(f"Kilitli test aylık fark: {fmt(lk.get('monthly_diff_mean_pct'), 2)} puan/ay, %95 GA "
+                           f"[{fmt(lk['monthly_diff_ci95'][0], 2)}, {fmt(lk['monthly_diff_ci95'][1], 2)}] · kapılar: "
+                           + ", ".join(f"{k} {'✅' if v else '❌'}" for k, v in lk.get("gates", {}).items()))
+            rep += [f"**Soru 0 sonucu: {lk.get('verdict')}**", ""]
         rep += ["## Doğrulama — aday tablosu (kilitli pencere hariç)", "",
                 "| Aday | Piyasa | Eğitim fark | Doğrulama fark | t | Holm p | Plasebo sırası | Ölçülebilir en küçük etki (test) | Seçildi |",
                 "|---|---|---|---|---|---|---|---|---|"]
@@ -1140,7 +1242,8 @@ def _git_hash():
 
 
 def write_report(out, manifest, decision, body):
-    lines = [f"# GMQ Yeni Hipotezler — Nihai Karar Raporu (protokol v{PROTOCOL_VERSION})", "",
+    title = "ABD Kolu (USD bazlı)" if MODE == "us" else "Karma Portföy"
+    lines = [f"# GMQ Yeni Hipotezler — {title} — Nihai Karar Raporu (protokol v{PROTOCOL_VERSION})", "",
              f"**KARAR: {decision.get('decision')}**", "",
              f"Kilitli pencere açıldı mı: {'evet' if decision.get('locked_window_opened') else 'hayır'} · "
              f"bölme: {json.dumps(manifest.get('split', {}), ensure_ascii=False)}", ""]
