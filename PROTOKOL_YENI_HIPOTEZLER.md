@@ -1,4 +1,4 @@
-# GMQ — Kapsamlı Yeni Hipotezler Test Protokolü (v1.3)
+# GMQ — Kapsamlı Yeni Hipotezler Test Protokolü (v1.4)
 
 **Belge türü:** Önceden tanımlı araştırma ve doğrulama protokolü. `gmq_new_hypotheses_test.py` bu belgeyi uygular.
 **v1.0 → v1.1:** Orijinal plandaki (GMQ_Kapsamli_Yeni_Hipotezler_Test_Plani.pdf) bütün kurallar geçerlidir.
@@ -169,3 +169,27 @@ Portföy ölçümleri USD bazındadır. Kilitli pencere yalnızca doğrulamayı 
 
 **Not (duman testinden):** Tamamen rastgele sentetik veride bile 3 özellik eğitim ölçütünü geçti, biri doğrulamayı da geçti ve
 kilitli testte elendi. Anatomi tek başına kanıt değildir; kanıt doğrulama + plasebo + kilitli testtir.
+
+---
+
+## §H. v1.4 — SEC temel veri sinyalleri (`--mode fundamentals`, karma portföy, USD bazlı)
+
+**Gerekçe:** v1.1–v1.3'te fiyat/hacimden türetilen 28 adayın hiçbiri kanıt eşiğini geçemedi. v1.4, GMQ'nun hiç kullanmadığı
+bir bilgi türünü ekler: ABD şirketlerinin SEC'e dosyaladığı finansal tablolar (data.sec.gov companyfacts API, ücretsiz).
+
+**Zaman doğruluğu (kalite kapısının parçası):**
+- Her değer SEC'e **ilk dosyalandığı** tarihten sonraki günden itibaren kullanılır; aynı dönem için sonradan dosyalanan
+  düzeltmeler yok sayılır.
+- Q4 kazancı yalnızca yıllık raporda varsa Q4 = yıllık − 3 çeyrek; bilinme tarihi = yıllık raporun dosyalanması.
+- SUE yalnızca dosyalamadan sonraki 91 gün, GP/A 15 ay geçerlidir. Eksik veri nötr kabul edilir (sıfırla doldurulmaz).
+- Eğitim döneminde ABD evren-günlerinin en az %30'unda veri yoksa ilgili aday NOT TESTABLE olur.
+
+**Adaylar (literatürden önceden sabit; eğitim tanısı seçimi etkilemez):**
+| Kod | Tanım | Kaynak |
+|---|---|---|
+| F1 | Son bilançoda kazanç sürprizi (SUE) evrenin en kötü %20'sindeki aday elenir | Bernard & Thomas (1989), bilanço sonrası kayma |
+| F2 | Brüt kârlılığı (GP/A) evrenin en kötü %20'sindeki aday elenir | Novy-Marx (2013), kalite |
+| F3 | Sıralama = 0.75 × üretim skoru + 0.125 × SUE + 0.125 × GP/A yüzdeliği | birleşik |
+
+Doğrulama, plasebo (yalnız ABD kolunda), Holm, White RC ve kilitli test kuralları v1.1 ile aynıdır.
+**Ek çıktılar:** `fundamentals_train_diagnostic.csv` (eğitim döneminde her sinyalin yıllık IC'si), `fundamentals_coverage.csv`.

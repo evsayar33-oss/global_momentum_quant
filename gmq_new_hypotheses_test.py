@@ -32,7 +32,7 @@ import config as C
 import engine as E
 import portfolio as P
 
-PROTOCOL_VERSION = "1.3"
+PROTOCOL_VERSION = "1.4"
 MODE = "all"                # "all": karma portföy (v1.1) · "us": yalnızca ABD kolu, USD bazlı ölçüm (v1.2)
 US_ONLY = {"bist": 0.0, "us": 1.0}
 SEED = 1701
@@ -487,7 +487,7 @@ class World:
         daily_tl = nav.groupby("date")["total_tl"].last().sort_index()
         fxd = self.fx.reindex(daily_tl.index.union(self.fx.index)).ffill().reindex(daily_tl.index)
         daily_usd = daily_tl / fxd
-        daily = daily_usd if MODE in ("us", "anatomy") else daily_tl
+        daily = daily_usd if MODE in ("us", "anatomy", "fundamentals") else daily_tl
         tr = []
         for mk in ("bist", "us"):
             for t in state["markets"][mk]["trades"]:
@@ -781,6 +781,75 @@ def train_h6(feat, world, train_end, val_rng):
 
 
 # ====================================================================== ana akış
+def build_fundamentals(world, feat, synthetic, trades, train_end):
+    import gmq_sec_fundamentals as SF
+    md = world.md["us"]
+    tick = list(md.tickers)
+    if synthetic:
+        res, miss = SF.synthetic_panels(md.dates, tick), []
+    else:
+        res, miss = SF.download_all(tick, log=log)
+    sue, gpa = SF.to_panels(res, md.dates, tick)
+    U = md.U
+    dq, pols = [], []
+    sue_a, gpa_a = sue.values, gpa.values
+
+    def xs(arr, i):
+        row = arr[i]
+        m = U[i] & np.isfinite(row)
+        out = np.full(len(row), np.nan)
+        if m.sum() >= 30:
+            out[m] = pd.Series(row[m]).rank(pct=True).values
+        return out
+    pre = np.array([d < train_end for d in md.dates]) & (np.arange(len(md.dates)) >= WARMUP_IDX)
+    cov = {}
+    for nm, arr in (("SUE", sue_a), ("GP/A", gpa_a)):
+        num = (np.isfinite(arr) & U)[pre].sum()
+        den = U[pre].sum()
+        cov[nm] = float(num / max(den, 1))
+        dq.append({"check": f"coverage_{nm}_train", "market": "us", "value": round(cov[nm], 3),
+                   "status": "PASS" if cov[nm] >= 0.30 else "FAIL",
+                   "note": f"SEC'te bulunamayan hisse: {len(miss)}; bilinme = dosyalamadan sonraki gün"})
+    dq.append({"check": "fundamentals_point_in_time", "market": "us", "value": "ilk dosyalanan değer; düzeltmeler yok sayıldı",
+               "status": "PASS", "note": "SUE taze: 91 gün, GP/A geçerli: 15 ay"})
+    # eğitim tanısı (seçim için kullanılmaz)
+    tr = window_trades(trades, world.start, train_end)
+    tr = tr[tr["market"] == "us"]
+    diag = []
+    for nm, arr in (("SUE (kazanç sürprizi)", sue_a), ("GP/A (brüt kârlılık)", gpa_a)):
+        xs_v, yrs, rets = [], [], []
+        for d, t, r in zip(tr["entry_date"], tr["ticker"], tr["ret_pct"]):
+            i = max(0, (md.didx.get(d, 1) or 1) - 1)
+            j = md.tidx.get(t)
+            if j is not None and np.isfinite(arr[i, j]):
+                xs_v.append(arr[i, j]); yrs.append(d.year); rets.append(r)
+        df = pd.DataFrame({"x": xs_v, "y": yrs, "r": rets})
+        ics = [g["x"].rank().corr(g["r"].rank()) for _, g in df.groupby("y") if len(g) >= 40]
+        ics = np.array([x for x in ics if np.isfinite(x)])
+        m_ = ics.mean() if len(ics) else np.nan
+        t_ = m_ / ics.std(ddof=1) * math.sqrt(len(ics)) if len(ics) > 2 and ics.std(ddof=1) > 0 else np.nan
+        diag.append({"signal": nm, "coverage_train": cov["SUE" if nm.startswith("SUE") else "GP/A"], "n_trades": len(df),
+                     "years": len(ics), "ic_mean": m_, "t_years": t_,
+                     "consistency": float(np.mean(np.sign(ics) == np.sign(m_))) if len(ics) else np.nan})
+    if cov["SUE"] >= 0.30:
+        pols.append(Policy("F1_PEAD_negative_surprise_filter", "F1", "filter",
+                           "ABD: son bilançoda (≤91 gün) kazanç sürprizi evrenin en kötü %20'sindeki aday elenir (Bernard–Thomas PEAD)",
+                           markets=("us",), pick=make_filter_pick(feat, lambda f, i: np.nan_to_num(xs(sue_a, i), nan=1.0) <= 0.20)))
+    if cov["GP/A"] >= 0.30:
+        pols.append(Policy("F2_low_quality_filter", "F2", "filter",
+                           "ABD: brüt kârlılığı (GP/A) evrenin en kötü %20'sindeki aday elenir (Novy-Marx kalite)",
+                           markets=("us",), pick=make_filter_pick(feat, lambda f, i: np.nan_to_num(xs(gpa_a, i), nan=1.0) <= 0.20)))
+    if cov["SUE"] >= 0.30 and cov["GP/A"] >= 0.30:
+        def comp(f, i):
+            a_, b_ = xs(sue_a, i), xs(gpa_a, i)
+            return 0.5 * np.where(np.isfinite(a_), a_, 0.5) + 0.5 * np.where(np.isfinite(b_), b_, 0.5)
+        pols.append(Policy("F3_PEAD_quality_rerank", "F3", "rerank",
+                           "ABD: sıralama = 0.75×üretim skoru + 0.125×SUE + 0.125×GP/A yüzdeliği (eksik = nötr)",
+                           markets=("us",), pick=make_rerank_pick(feat, comp)))
+    return {"policies": pols, "dq": dq, "tables": {"train_diagnostic": pd.DataFrame(diag),
+            "coverage": pd.DataFrame([{"signal": k, "coverage_train": v} for k, v in cov.items()])}}
+
+
 ANAT_T = 2.0          # yıllar arası t eşiği
 ANAT_CONS = 0.75      # yılların en az %75'inde aynı yön
 ANAT_MAX = 3          # en fazla aday
@@ -934,7 +1003,7 @@ def main():
     ap.add_argument("--boot", type=int, default=BOOT_B)
     ap.add_argument("--out-dir", default="gmq_new_hypotheses_output")
     ap.add_argument("--synthetic", action="store_true")
-    ap.add_argument("--mode", choices=["all", "us", "anatomy"], default="all",
+    ap.add_argument("--mode", choices=["all", "us", "anatomy", "fundamentals"], default="all",
                     help="all: karma portföy (v1.1) · us: yalnızca ABD kolu + 'karma mı %100 ABD mi' sorusu, USD bazlı (v1.2)")
     ap.add_argument("--force-winner", default=None, help="YALNIZCA --synthetic ile: kilitli test kod yolunu sınamak için")
     a = ap.parse_args()
@@ -945,7 +1014,7 @@ def main():
     t0 = time.time()
     np.random.seed(SEED)
     manifest = {"protocol_version": PROTOCOL_VERSION, "mode": MODE,
-                "currency_for_portfolio_metrics": "USD" if MODE in ("us", "anatomy") else "TL", "seed": SEED, "synthetic": a.synthetic,
+                "currency_for_portfolio_metrics": "USD" if MODE in ("us", "anatomy", "fundamentals") else "TL", "seed": SEED, "synthetic": a.synthetic,
                 "started": pd.Timestamp.now().isoformat(timespec="seconds"),
                 "commit": os.environ.get("GITHUB_SHA") or _git_hash(), "engine_version": C.ENGINE_VERSION,
                 "params": {"TEST_MONTHS": TEST_MONTHS, "VAL_MONTHS": VAL_MONTHS, "EMBARGO_CAL_DAYS": EMBARGO_CAL_DAYS,
@@ -1030,7 +1099,19 @@ def main():
                        "fx21_q90": float(np.nanquantile(f.fx21[msk], 0.90)) if np.isfinite(f.fx21[msk]).any() else np.inf}
         manifest["frozen_thresholds"] = thr
         anat = None
-        if MODE == "anatomy":
+        fund = None
+        if MODE == "fundamentals":
+            log("📑 SEC EDGAR temel veriler (zaman açısından doğru)…")
+            fund = build_fundamentals(world, feat, a.synthetic, base_pre["trades"], val_start)
+            for nm_, df_ in fund["tables"].items():
+                df_.to_csv(out / f"fundamentals_{nm_}.csv", index=False)
+            dq_rows.extend(fund["dq"])
+            pd.DataFrame(dq_rows).to_csv(out / "data_quality_report.csv", index=False)
+            h6_diag = []
+            policies = [Policy("BASE", "BASE", "base", "Üretim mantığı (değişiklik yok)")] + fund["policies"]
+            if len(policies) == 1:
+                raise RuntimeError("NOT TESTABLE — SEC temel veri kapsaması yetersiz (ayrıntı data_quality_report.csv)")
+        elif MODE == "anatomy":
             log("🔬 Kazananların anatomisi (yalnızca eğitim dönemi BASE işlemleri)…")
             anat = winner_anatomy(world, feat, base_pre["trades"], world.start, val_start)
             for nm_, df_ in anat["tables"].items():
@@ -1082,6 +1163,9 @@ def main():
         gate_share = {mk: float(np.mean(v)) if v else 0.15 for mk, v in _gs.items()}
         gate_share = {mk: max(v, 0.05) for mk, v in gate_share.items()}
         plac = placebo_policies(feat, a.placebo_n, gate_share)
+        if MODE == "fundamentals":
+            for p in plac:
+                p.markets &= {"us"}
         if MODE == "us":
             for p in plac:
                 p.markets &= {"us"}
@@ -1341,6 +1425,13 @@ def main():
                            f"[{fmt(lk['monthly_diff_ci95'][0], 2)}, {fmt(lk['monthly_diff_ci95'][1], 2)}] · kapılar: "
                            + ", ".join(f"{k} {'✅' if v else '❌'}" for k, v in lk.get("gates", {}).items()))
             rep += [f"**Soru 0 sonucu: {lk.get('verdict')}**", ""]
+        if fund is not None:
+            rep += ["## SEC temel veri sinyalleri — eğitim dönemi tanısı (BASE'in gerçek ABD işlemleri)", "",
+                    "| Sinyal | Kapsama (eğitim, evren-gün) | Yıllık IC ort. | t (yıllar) | Aynı yön | Yıl sayısı |", "|---|---|---|---|---|---|"]
+            for r in fund["tables"]["train_diagnostic"].to_dict("records"):
+                rep.append(f"| {r['signal']} | %{fmt(r['coverage_train'] * 100, 0)} | {fmt(r['ic_mean'], 3)} | {fmt(r['t_years'], 2)} | "
+                           f"{fmt(r['consistency'] * 100, 0)}% | {r['years']} |")
+            rep += ["", "Not: Bu tanı adayları SEÇMEK için kullanılmadı; adaylar literatürden önceden sabitlendi (protokol §H).", ""]
         if anat is not None:
             rep += ["## Kazananların anatomisi (yalnızca eğitim dönemi, BASE'in gerçek işlemleri)", "",
                     f"Eğitim işlemleri: {anat['n_trades']} · ölçüt: yıllık sıra korelasyonunun (özellik ↔ işlem getirisi) "
@@ -1398,7 +1489,7 @@ def _git_hash():
 
 
 def write_report(out, manifest, decision, body):
-    title = {"us": "ABD Kolu (USD bazlı)", "anatomy": "Kazananların Anatomisi (karma portföy, USD bazlı)"}.get(MODE, "Karma Portföy")
+    title = {"us": "ABD Kolu (USD bazlı)", "fundamentals": "SEC Temel Veri Sinyalleri (karma portföy, USD bazlı)", "anatomy": "Kazananların Anatomisi (karma portföy, USD bazlı)"}.get(MODE, "Karma Portföy")
     lines = [f"# GMQ Yeni Hipotezler — {title} — Nihai Karar Raporu (protokol v{PROTOCOL_VERSION})", "",
              f"**KARAR: {decision.get('decision')}**", "",
              f"Kilitli pencere açıldı mı: {'evet' if decision.get('locked_window_opened') else 'hayır'} · "
