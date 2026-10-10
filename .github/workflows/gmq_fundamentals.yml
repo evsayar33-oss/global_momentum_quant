@@ -49,6 +49,12 @@ jobs:
         run: |
           python gmq_new_hypotheses_test.py --mode fundamentals --synthetic --placebo-n 1 --boot 300 --out-dir smoke_fund
 
+      - name: SEC erişim kontrolü (simülasyondan önce)
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          python -c "import sys, gmq_sec_fundamentals as SF; sys.exit(0 if SF.preflight() else 1)"
+
       - name: SEC verisi önbelleği
         uses: actions/cache@v4
         with:
@@ -58,7 +64,7 @@ jobs:
 
       - name: Gerçek veriyle test
         env:
-          SEC_USER_AGENT: "GMQ Research gmq-research@users.noreply.github.com"
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           YEARS: ${{ inputs.years }}
           PLACEBO_N: ${{ inputs.placebo_n }}
         run: |
