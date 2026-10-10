@@ -18,7 +18,7 @@ import time
 import numpy as np
 import pandas as pd
 
-UA = os.environ.get("SEC_USER_AGENT", "GMQ Research gmq-research@users.noreply.github.com")
+UA = os.environ.get("SEC_USER_AGENT") or "GMQ Research gmq-research@users.noreply.github.com"
 EPS_TAGS = ("EarningsPerShareDiluted", "EarningsPerShareBasic")
 GP_TAGS = ("GrossProfit",)
 REV_TAGS = ("Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet",
@@ -28,18 +28,38 @@ SUE_FRESH_DAYS = 91
 GPA_FRESH_DAYS = 456
 
 
+LAST_ERROR = {"status": None, "body": ""}
+
+
 def _get(url, session, retries=3):
     for a in range(retries):
         try:
             r = session.get(url, headers={"User-Agent": UA, "Accept-Encoding": "gzip, deflate"}, timeout=40)
             if r.status_code == 200:
                 return r.json()
+            LAST_ERROR.update(status=r.status_code, body=r.text[:300].replace("\n", " "))
             if r.status_code == 404:
                 return None
-        except Exception:
-            pass
-        time.sleep(1.5 * (a + 1))
+        except Exception as exc:
+            LAST_ERROR.update(status="exception", body=str(exc)[:300])
+        time.sleep(2.0 * (a + 1))
     return None
+
+
+def preflight():
+    """Workflow başında: SEC erişimini dener, durumu açıkça yazar. Başarısızsa False."""
+    import requests
+    s = requests.Session()
+    m = ticker_cik_map(s)
+    ok = len(m) > 1000
+    test = _get("https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json", s) if ok else None   # Apple
+    ok = ok and test is not None
+    print(f"SEC preflight: {'BAŞARILI' if ok else 'BAŞARISIZ'} · ticker sayısı={len(m)} · User-Agent='{UA}'")
+    if not ok:
+        print(f"   son hata: {LAST_ERROR}")
+        print("   Çözüm: GitHub repo → Settings → Secrets and variables → Actions → New repository secret")
+        print("   Ad: SEC_USER_AGENT   Değer: 'Ad Soyad eposta@adresiniz.com' (SEC gerçek iletişim bilgisi ister)")
+    return ok
 
 
 def ticker_cik_map(session):
@@ -47,6 +67,17 @@ def ticker_cik_map(session):
     out = {}
     for v in (js or {}).values():
         out[str(v["ticker"]).upper().replace(".", "-")] = int(v["cik_str"])
+    if not out:                                     # yedek kaynak: düz metin liste
+        try:
+            r = session.get("https://www.sec.gov/include/ticker.txt", headers={"User-Agent": UA}, timeout=40)
+            if r.status_code == 200:
+                for line in r.text.splitlines():
+                    t, c = line.strip().split("\t")
+                    out[t.upper().replace(".", "-")] = int(c)
+            else:
+                LAST_ERROR.update(status=r.status_code, body=r.text[:300].replace("\n", " "))
+        except Exception as exc:
+            LAST_ERROR.update(status="exception", body=str(exc)[:300])
     return out
 
 
@@ -156,7 +187,7 @@ def download_all(tickers, cache_dir="data_cache/sec_parsed", log=print):
     s = requests.Session()
     cmap = ticker_cik_map(s)
     if not cmap:
-        raise RuntimeError("SEC ticker→CIK listesi alınamadı (User-Agent / ağ)")
+        raise RuntimeError(f"SEC ticker→CIK listesi alınamadı: {LAST_ERROR}. SEC_USER_AGENT secret'ına gerçek 'Ad Soyad e-posta' girin")
     res, miss = {}, []
     for k, t in enumerate(tickers):
         cik = cmap.get(t)
