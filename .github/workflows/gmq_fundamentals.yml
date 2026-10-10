@@ -1,0 +1,76 @@
+name: GMQ - SEC Temel Veri Testi (protokol v1.4)
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Veri yılı (14 = yaklaşık 12.5 yıl ölçüm + ısınma)"
+        required: true
+        default: "14"
+      placebo_n:
+        description: "Her tip için plasebo sayısı (filtre / sıralama / kapı)"
+        required: true
+        default: "6"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gmq-fundamentals
+  cancel-in-progress: false
+
+jobs:
+  new-hypotheses:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    env:
+      PYTHONUNBUFFERED: "1"
+      PYTHONFAULTHANDLER: "1"
+
+    steps:
+      - name: Repo'yu al
+        uses: actions/checkout@v5
+
+      - name: Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Paketleri yükle
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Sözdizimi kontrolü
+        run: python -m py_compile gmq_new_hypotheses_test.py
+
+      - name: Sentetik duman testi (internetsiz, tüm kod yolları)
+        run: |
+          python gmq_new_hypotheses_test.py --mode fundamentals --synthetic --placebo-n 1 --boot 300 --out-dir smoke_fund
+
+      - name: SEC verisi önbelleği
+        uses: actions/cache@v4
+        with:
+          path: data_cache/sec_parsed
+          key: gmq-sec-${{ github.run_id }}
+          restore-keys: gmq-sec-
+
+      - name: Gerçek veriyle test
+        env:
+          SEC_USER_AGENT: "GMQ Research gmq-research@users.noreply.github.com"
+          YEARS: ${{ inputs.years }}
+          PLACEBO_N: ${{ inputs.placebo_n }}
+        run: |
+          python -X faulthandler gmq_new_hypotheses_test.py \
+            --mode fundamentals --years "$YEARS" --placebo-n "$PLACEBO_N" \
+            --out-dir gmq_fundamentals_output
+
+      - name: Sonuç arşivi
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmq-fundamentals-results
+          path: gmq_fundamentals_output/
+          if-no-files-found: warn
+          retention-days: 30
