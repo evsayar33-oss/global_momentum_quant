@@ -65,6 +65,14 @@ jobs:
           TZ: Europe/Istanbul
         run: python main.py ${{ steps.task.outputs.task }}
 
+      - name: F1 gölge kaydı (yalnız ABD; canlı emirleri etkilemez)
+        if: steps.task.outputs.task == 'us'
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python gmq_f1_shadow.py
+
       - name: Kaydet
         run: |
           git config --global user.name "GMQ-Bot"
