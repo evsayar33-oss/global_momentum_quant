@@ -1,188 +1,17 @@
 {
  "schema": "gmq.orders.v1",
- "generated_at": "2026-10-09T23:20:58",
+ "generated_at": "2026-10-13T23:50:42",
  "market": "bist",
- "signal_date": "2026-10-09",
- "execute_date": "2026-10-12",
+ "signal_date": "2026-10-13",
+ "execute_date": "2026-10-14",
  "currency": "TRY",
- "usdtry": 49.3225,
- "orders": [
-  {
-   "id": "bist-2026-10-09-1-CELHA-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "CELHA",
-   "yahoo_symbol": "CELHA.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 48,
-   "amount": 1608.78,
-   "ref_price": 33.31999969482422,
-   "stop_price": 24.99,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-AKFIS-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "AKFIS",
-   "yahoo_symbol": "AKFIS.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 90,
-   "amount": 1608.78,
-   "ref_price": 17.829999923706055,
-   "stop_price": 13.3725,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-TKFEN-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "TKFEN",
-   "yahoo_symbol": "TKFEN.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 6,
-   "amount": 1608.78,
-   "ref_price": 265.0,
-   "stop_price": 198.75,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-GMTAS-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "GMTAS",
-   "yahoo_symbol": "GMTAS.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 32,
-   "amount": 1608.78,
-   "ref_price": 49.0,
-   "stop_price": 36.75,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-TUPRS-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "TUPRS",
-   "yahoo_symbol": "TUPRS.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 4,
-   "amount": 1608.78,
-   "ref_price": 386.25,
-   "stop_price": 289.6875,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-RYGYO-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "RYGYO",
-   "yahoo_symbol": "RYGYO.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 32,
-   "amount": 1608.78,
-   "ref_price": 49.68000030517578,
-   "stop_price": 37.26,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-INVES-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "INVES",
-   "yahoo_symbol": "INVES.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 2,
-   "amount": 1608.78,
-   "ref_price": 731.0,
-   "stop_price": 548.25,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-OZSUB-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "OZSUB",
-   "yahoo_symbol": "OZSUB.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 42,
-   "amount": 1608.78,
-   "ref_price": 37.560001373291016,
-   "stop_price": 28.17,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-ISDMR-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "ISDMR",
-   "yahoo_symbol": "ISDMR.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 24,
-   "amount": 1608.78,
-   "ref_price": 65.9000015258789,
-   "stop_price": 49.425,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  },
-  {
-   "id": "bist-2026-10-09-1-KLSYN-BUY",
-   "market": "bist",
-   "action": "BUY",
-   "symbol": "KLSYN",
-   "yahoo_symbol": "KLSYN.IS",
-   "order_type": "MARKET_ON_OPEN",
-   "execute_date": "2026-10-12",
-   "currency": "TRY",
-   "tranche": 1,
-   "quantity": 114,
-   "amount": 1608.78,
-   "ref_price": 14.029999732971191,
-   "stop_price": 10.5225,
-   "exit_date_est": "2026-11-10",
-   "reason": "new_entry"
-  }
- ],
+ "usdtry": 49.36,
+ "orders": [],
  "transfer": null,
  "portfolio": {
-  "total_try": 100599.29,
-  "market_value": 64467.23,
-  "cash": 48334.27,
+  "total_try": 99674.93,
+  "market_value": 64064.8,
+  "cash": 32330.43,
   "weights": {
    "bist": 0.64,
    "us": 0.36
@@ -197,10 +26,10 @@
    "tranche": 0,
    "quantity": 2,
    "entry_price": 690.0,
-   "last_price": 731.0,
+   "last_price": 733.0,
    "stop_price": 517.5,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "AYGAZ",
@@ -208,10 +37,10 @@
    "tranche": 0,
    "quantity": 5,
    "entry_price": 290.0,
-   "last_price": 291.5,
+   "last_price": 294.0,
    "stop_price": 217.5,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "BIMAS",
@@ -219,10 +48,10 @@
    "tranche": 0,
    "quantity": 3,
    "entry_price": 414.25,
-   "last_price": 402.75,
+   "last_price": 411.25,
    "stop_price": 310.6875,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "AGESA",
@@ -230,10 +59,10 @@
    "tranche": 0,
    "quantity": 6,
    "entry_price": 237.0,
-   "last_price": 230.6,
+   "last_price": 231.6,
    "stop_price": 177.75,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "GLYHO",
@@ -241,10 +70,10 @@
    "tranche": 0,
    "quantity": 98,
    "entry_price": 16.25,
-   "last_price": 17.33,
+   "last_price": 17.65,
    "stop_price": 12.1875,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "TUPRS",
@@ -252,10 +81,10 @@
    "tranche": 0,
    "quantity": 4,
    "entry_price": 377.5,
-   "last_price": 386.25,
+   "last_price": 385.75,
    "stop_price": 283.125,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "SOKM",
@@ -263,10 +92,10 @@
    "tranche": 0,
    "quantity": 27,
    "entry_price": 57.35,
-   "last_price": 58.2,
+   "last_price": 57.95,
    "stop_price": 43.0125,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "AKSGY",
@@ -274,10 +103,10 @@
    "tranche": 0,
    "quantity": 168,
    "entry_price": 9.48,
-   "last_price": 9.54,
+   "last_price": 9.43,
    "stop_price": 7.11,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "KLSYN",
@@ -285,10 +114,10 @@
    "tranche": 0,
    "quantity": 109,
    "entry_price": 14.54,
-   "last_price": 14.03,
+   "last_price": 14.29,
    "stop_price": 10.905,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
   },
   {
    "symbol": "EBEBK",
@@ -296,10 +125,120 @@
    "tranche": 0,
    "quantity": 19,
    "entry_price": 82.25,
-   "last_price": 83.5,
+   "last_price": 82.35,
    "stop_price": 61.6875,
    "entry_date": "2026-10-05",
-   "days_left": 16
+   "days_left": 14
+  },
+  {
+   "symbol": "CELHA",
+   "yahoo_symbol": "CELHA.IS",
+   "tranche": 1,
+   "quantity": 47,
+   "entry_price": 33.5,
+   "last_price": 30.4,
+   "stop_price": 25.125,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "AKFIS",
+   "yahoo_symbol": "AKFIS.IS",
+   "tranche": 1,
+   "quantity": 89,
+   "entry_price": 17.9,
+   "last_price": 16.47,
+   "stop_price": 13.425,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "TKFEN",
+   "yahoo_symbol": "TKFEN.IS",
+   "tranche": 1,
+   "quantity": 6,
+   "entry_price": 266.0,
+   "last_price": 231.8,
+   "stop_price": 199.5,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "GMTAS",
+   "yahoo_symbol": "GMTAS.IS",
+   "tranche": 1,
+   "quantity": 33,
+   "entry_price": 48.3,
+   "last_price": 49.0,
+   "stop_price": 36.225,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "TUPRS",
+   "yahoo_symbol": "TUPRS.IS",
+   "tranche": 1,
+   "quantity": 4,
+   "entry_price": 382.0,
+   "last_price": 385.75,
+   "stop_price": 286.5,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "RYGYO",
+   "yahoo_symbol": "RYGYO.IS",
+   "tranche": 1,
+   "quantity": 32,
+   "entry_price": 49.84,
+   "last_price": 49.18,
+   "stop_price": 37.38,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "INVES",
+   "yahoo_symbol": "INVES.IS",
+   "tranche": 1,
+   "quantity": 2,
+   "entry_price": 731.0,
+   "last_price": 733.0,
+   "stop_price": 548.25,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "OZSUB",
+   "yahoo_symbol": "OZSUB.IS",
+   "tranche": 1,
+   "quantity": 42,
+   "entry_price": 37.56,
+   "last_price": 36.98,
+   "stop_price": 28.17,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "ISDMR",
+   "yahoo_symbol": "ISDMR.IS",
+   "tranche": 1,
+   "quantity": 24,
+   "entry_price": 65.85,
+   "last_price": 62.4,
+   "stop_price": 49.3875,
+   "entry_date": "2026-10-12",
+   "days_left": 19
+  },
+  {
+   "symbol": "KLSYN",
+   "yahoo_symbol": "KLSYN.IS",
+   "tranche": 1,
+   "quantity": 115,
+   "entry_price": 13.91,
+   "last_price": 14.29,
+   "stop_price": 10.4325,
+   "entry_date": "2026-10-12",
+   "days_left": 19
   }
  ]
 }

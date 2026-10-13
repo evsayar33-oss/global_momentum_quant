@@ -3,9 +3,9 @@
  "created": "2026-10-02",
  "markets": {
   "bist": {
-   "n": 5,
-   "last_date": "2026-10-09",
-   "cash": 48334.27334446856,
+   "n": 7,
+   "last_date": "2026-10-13",
+   "cash": 32330.42539180774,
    "positions": [
     {
      "id": "bist-1-INVES-0",
@@ -18,7 +18,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 706.0,
      "cycle_end": 21,
-     "last_px": 731.0
+     "last_px": 733.0
     },
     {
      "id": "bist-1-AYGAZ-0",
@@ -31,7 +31,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 297.25,
      "cycle_end": 21,
-     "last_px": 291.5
+     "last_px": 294.0
     },
     {
      "id": "bist-1-BIMAS-0",
@@ -44,7 +44,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 413.5,
      "cycle_end": 21,
-     "last_px": 402.75
+     "last_px": 411.25
     },
     {
      "id": "bist-1-AGESA-0",
@@ -57,7 +57,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 236.1999969482422,
      "cycle_end": 21,
-     "last_px": 230.60000610351562
+     "last_px": 231.60000610351562
     },
     {
      "id": "bist-1-GLYHO-0",
@@ -70,7 +70,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 16.700000762939453,
      "cycle_end": 21,
-     "last_px": 17.329999923706055
+     "last_px": 17.649999618530273
     },
     {
      "id": "bist-1-TUPRS-0",
@@ -83,7 +83,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 391.25,
      "cycle_end": 21,
-     "last_px": 386.25
+     "last_px": 385.75
     },
     {
      "id": "bist-1-SOKM-0",
@@ -96,7 +96,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 56.5,
      "cycle_end": 21,
-     "last_px": 58.20000076293945
+     "last_px": 57.95000076293945
     },
     {
      "id": "bist-1-AKSGY-0",
@@ -109,7 +109,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 9.569999694824219,
      "cycle_end": 21,
-     "last_px": 9.539999961853027
+     "last_px": 9.430000305175781
     },
     {
      "id": "bist-1-KLSYN-0",
@@ -122,7 +122,7 @@
      "ref_date": "2026-10-05",
      "ref_px": 14.800000190734863,
      "cycle_end": 21,
-     "last_px": 14.029999732971191
+     "last_px": 14.289999961853027
     },
     {
      "id": "bist-1-EBEBK-0",
@@ -135,91 +135,140 @@
      "ref_date": "2026-10-05",
      "ref_px": 81.0,
      "cycle_end": 21,
-     "last_px": 83.5
-    }
-   ],
-   "pending": [
+     "last_px": 82.3499984741211
+    },
     {
-     "side": "buy",
+     "id": "bist-6-CELHA-1",
      "t": "CELHA",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 47.939505628362696,
+     "entry_px": 33.558625,
+     "entry_raw": 33.5,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 31.420000076293945,
+     "cycle_end": 26,
+     "last_px": 30.399999618530273
     },
     {
-     "side": "buy",
+     "id": "bist-6-AKFIS-1",
      "t": "AKFIS",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 89.71918842320139,
+     "entry_px": 17.9313246178627,
+     "entry_raw": 17.899999618530273,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 16.950000762939453,
+     "cycle_end": 26,
+     "last_px": 16.469999313354492
     },
     {
-     "side": "buy",
+     "id": "bist-6-TKFEN-1",
      "t": "TKFEN",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 6.037494129887784,
+     "entry_px": 266.46549999999996,
+     "entry_raw": 266.0,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 257.5,
+     "cycle_end": 26,
+     "last_px": 231.8000030517578
     },
     {
-     "side": "buy",
+     "id": "bist-6-GMTAS-1",
      "t": "GMTAS",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 33.24996819705721,
+     "entry_px": 48.3845242357254,
+     "entry_raw": 48.29999923706055,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 47.34000015258789,
+     "cycle_end": 26,
+     "last_px": 49.0
     },
     {
-     "side": "buy",
+     "id": "bist-6-TUPRS-1",
      "t": "TUPRS",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 4.2041189490841635,
+     "entry_px": 382.6685,
+     "entry_raw": 382.0,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 384.75,
+     "cycle_end": 26,
+     "last_px": 385.75
     },
     {
-     "side": "buy",
+     "id": "bist-6-RYGYO-1",
      "t": "RYGYO",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 32.22258093164877,
+     "entry_px": 49.927220152854915,
+     "entry_raw": 49.84000015258789,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 48.63999938964844,
+     "cycle_end": 26,
+     "last_px": 49.18000030517578
     },
     {
-     "side": "buy",
+     "id": "bist-6-INVES-1",
      "t": "INVES",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 2.1969540883038996,
+     "entry_px": 732.2792499999999,
+     "entry_raw": 731.0,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 732.5,
+     "cycle_end": 26,
+     "last_px": 733.0
     },
     {
-     "side": "buy",
+     "id": "bist-6-OZSUB-1",
      "t": "OZSUB",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 42.75754472395097,
+     "entry_px": 37.62573137569427,
+     "entry_raw": 37.560001373291016,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 37.560001373291016,
+     "cycle_end": 26,
+     "last_px": 36.97999954223633
     },
     {
-     "side": "buy",
+     "id": "bist-6-ISDMR-1",
      "t": "ISDMR",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 24.38835954083271,
+     "entry_px": 65.9652359714508,
+     "entry_raw": 65.8499984741211,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 63.150001525878906,
+     "cycle_end": 26,
+     "last_px": 62.400001525878906
     },
     {
-     "side": "buy",
+     "id": "bist-6-KLSYN-1",
      "t": "KLSYN",
-     "amount": 1608.7838920676131,
-     "full": 1608.7838920676131,
      "tranche": 1,
-     "cycle_end": 26
+     "qty": 115.45459785529289,
+     "entry_px": 13.93434234714508,
+     "entry_raw": 13.90999984741211,
+     "entry_date": "2026-10-12",
+     "ref_date": "2026-10-12",
+     "ref_px": 14.140000343322754,
+     "cycle_end": 26,
+     "last_px": 14.289999961853027
     }
    ],
+   "pending": [],
    "cycles": [
     {
      "k": 0,
@@ -1041,6 +1090,16 @@
      "2026-10-09",
      64467.225,
      48334.2733
+    ],
+    [
+     "2026-10-12",
+     64110.2494,
+     32296.7828
+    ],
+    [
+     "2026-10-13",
+     64064.8008,
+     32330.4254
     ]
    ],
    "trades": [],
@@ -1420,11 +1479,130 @@
      "total_tl": 100599.2892214096,
      "dd": 0.0,
      "fx": 49.3224983215332
+    },
+    {
+     "date": "2026-10-12",
+     "fills": [
+      {
+       "market": "bist",
+       "ticker": "CELHA",
+       "side": "AL",
+       "px": 33.5,
+       "qty": 47.939505628362696,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "AKFIS",
+       "side": "AL",
+       "px": 17.9,
+       "qty": 89.71918842320139,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "TKFEN",
+       "side": "AL",
+       "px": 266.0,
+       "qty": 6.037494129887784,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "GMTAS",
+       "side": "AL",
+       "px": 48.3,
+       "qty": 33.24996819705721,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "TUPRS",
+       "side": "AL",
+       "px": 382.0,
+       "qty": 4.2041189490841635,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "RYGYO",
+       "side": "AL",
+       "px": 49.84,
+       "qty": 32.22258093164877,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "INVES",
+       "side": "AL",
+       "px": 731.0,
+       "qty": 2.1969540883038996,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "OZSUB",
+       "side": "AL",
+       "px": 37.56,
+       "qty": 42.75754472395097,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "ISDMR",
+       "side": "AL",
+       "px": 65.85,
+       "qty": 24.38835954083271,
+       "tranche": 1
+      },
+      {
+       "market": "bist",
+       "ticker": "KLSYN",
+       "side": "AL",
+       "px": 13.91,
+       "qty": 115.45459785529289,
+       "tranche": 1
+      }
+     ],
+     "orders": [],
+     "stops": [],
+     "notes": [],
+     "shortfall": 0.0,
+     "nav": 64110.24944911277,
+     "transfer": null,
+     "insurance": null,
+     "weights": {
+      "bist": 0.64,
+      "us": 0.36
+     },
+     "vol_scale": 1.0,
+     "total_tl": 99702.55561401101,
+     "dd": -0.009179223966252592,
+     "fx": 49.33530044555664
+    },
+    {
+     "date": "2026-10-13",
+     "fills": [],
+     "orders": [],
+     "stops": [],
+     "notes": [],
+     "shortfall": 0.0,
+     "nav": 64064.80079979956,
+     "transfer": null,
+     "insurance": null,
+     "weights": {
+      "bist": 0.64,
+      "us": 0.36
+     },
+     "vol_scale": 1.0,
+     "total_tl": 99674.92662433014,
+     "dd": -0.009453794430650864,
+     "fx": 49.36000061035156
     }
    ],
-   "perf": 1.0062522075734832,
+   "perf": 0.9999708725287222,
    "perf_peak": 1.0062522075734832,
-   "nav_post": 64467.225,
+   "nav_post": 64064.8008,
    "warned": {},
    "audit_status": "veri birikiyor"
   },
@@ -2891,7 +3069,7 @@
   "capital_tl": 100000,
   "peak_tl": 100626.22628193168,
   "insurance": false,
-  "dd": -0.005752841282418375,
+  "dd": -0.009453794430650864,
   "weights": {
    "bist": 0.64,
    "us": 0.36
@@ -2901,7 +3079,7 @@
    "bist": false,
    "us": false
   },
-  "fx": 49.31840133666992,
+  "fx": 49.36000061035156,
   "transfers": [],
   "nav_tl": [],
   "shadow": {
