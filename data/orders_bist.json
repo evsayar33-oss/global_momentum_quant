@@ -1,17 +1,17 @@
 {
  "schema": "gmq.orders.v1",
- "generated_at": "2026-10-13T23:50:42",
+ "generated_at": "2026-10-14T22:42:50",
  "market": "bist",
- "signal_date": "2026-10-13",
- "execute_date": "2026-10-14",
+ "signal_date": "2026-10-14",
+ "execute_date": "2026-10-15",
  "currency": "TRY",
- "usdtry": 49.36,
+ "usdtry": 49.3872,
  "orders": [],
  "transfer": null,
  "portfolio": {
-  "total_try": 99674.93,
-  "market_value": 64064.8,
-  "cash": 32330.43,
+  "total_try": 99713.03,
+  "market_value": 64137.23,
+  "cash": 32364.1,
   "weights": {
    "bist": 0.64,
    "us": 0.36
@@ -26,10 +26,10 @@
    "tranche": 0,
    "quantity": 2,
    "entry_price": 690.0,
-   "last_price": 733.0,
+   "last_price": 722.0,
    "stop_price": 517.5,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "AYGAZ",
@@ -37,10 +37,10 @@
    "tranche": 0,
    "quantity": 5,
    "entry_price": 290.0,
-   "last_price": 294.0,
+   "last_price": 291.5,
    "stop_price": 217.5,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "BIMAS",
@@ -48,10 +48,10 @@
    "tranche": 0,
    "quantity": 3,
    "entry_price": 414.25,
-   "last_price": 411.25,
+   "last_price": 408.0,
    "stop_price": 310.6875,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "AGESA",
@@ -59,10 +59,10 @@
    "tranche": 0,
    "quantity": 6,
    "entry_price": 237.0,
-   "last_price": 231.6,
+   "last_price": 232.4,
    "stop_price": 177.75,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "GLYHO",
@@ -70,10 +70,10 @@
    "tranche": 0,
    "quantity": 98,
    "entry_price": 16.25,
-   "last_price": 17.65,
+   "last_price": 17.71,
    "stop_price": 12.1875,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "TUPRS",
@@ -81,10 +81,10 @@
    "tranche": 0,
    "quantity": 4,
    "entry_price": 377.5,
-   "last_price": 385.75,
+   "last_price": 391.0,
    "stop_price": 283.125,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "SOKM",
@@ -92,10 +92,10 @@
    "tranche": 0,
    "quantity": 27,
    "entry_price": 57.35,
-   "last_price": 57.95,
+   "last_price": 58.6,
    "stop_price": 43.0125,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "AKSGY",
@@ -103,10 +103,10 @@
    "tranche": 0,
    "quantity": 168,
    "entry_price": 9.48,
-   "last_price": 9.43,
+   "last_price": 9.4,
    "stop_price": 7.11,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "KLSYN",
@@ -114,10 +114,10 @@
    "tranche": 0,
    "quantity": 109,
    "entry_price": 14.54,
-   "last_price": 14.29,
+   "last_price": 14.48,
    "stop_price": 10.905,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "EBEBK",
@@ -125,10 +125,10 @@
    "tranche": 0,
    "quantity": 19,
    "entry_price": 82.25,
-   "last_price": 82.35,
+   "last_price": 79.7,
    "stop_price": 61.6875,
    "entry_date": "2026-10-05",
-   "days_left": 14
+   "days_left": 13
   },
   {
    "symbol": "CELHA",
@@ -136,10 +136,10 @@
    "tranche": 1,
    "quantity": 47,
    "entry_price": 33.5,
-   "last_price": 30.4,
+   "last_price": 31.48,
    "stop_price": 25.125,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "AKFIS",
@@ -147,10 +147,10 @@
    "tranche": 1,
    "quantity": 89,
    "entry_price": 17.9,
-   "last_price": 16.47,
+   "last_price": 17.33,
    "stop_price": 13.425,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "TKFEN",
@@ -158,10 +158,10 @@
    "tranche": 1,
    "quantity": 6,
    "entry_price": 266.0,
-   "last_price": 231.8,
+   "last_price": 214.5,
    "stop_price": 199.5,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "GMTAS",
@@ -169,10 +169,10 @@
    "tranche": 1,
    "quantity": 33,
    "entry_price": 48.3,
-   "last_price": 49.0,
+   "last_price": 49.4,
    "stop_price": 36.225,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "TUPRS",
@@ -180,10 +180,10 @@
    "tranche": 1,
    "quantity": 4,
    "entry_price": 382.0,
-   "last_price": 385.75,
+   "last_price": 391.0,
    "stop_price": 286.5,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "RYGYO",
@@ -191,10 +191,10 @@
    "tranche": 1,
    "quantity": 32,
    "entry_price": 49.84,
-   "last_price": 49.18,
+   "last_price": 50.5,
    "stop_price": 37.38,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "INVES",
@@ -202,10 +202,10 @@
    "tranche": 1,
    "quantity": 2,
    "entry_price": 731.0,
-   "last_price": 733.0,
+   "last_price": 722.0,
    "stop_price": 548.25,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "OZSUB",
@@ -216,7 +216,7 @@
    "last_price": 36.98,
    "stop_price": 28.17,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "ISDMR",
@@ -224,10 +224,10 @@
    "tranche": 1,
    "quantity": 24,
    "entry_price": 65.85,
-   "last_price": 62.4,
+   "last_price": 61.35,
    "stop_price": 49.3875,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   },
   {
    "symbol": "KLSYN",
@@ -235,10 +235,10 @@
    "tranche": 1,
    "quantity": 115,
    "entry_price": 13.91,
-   "last_price": 14.29,
+   "last_price": 14.48,
    "stop_price": 10.4325,
    "entry_date": "2026-10-12",
-   "days_left": 19
+   "days_left": 18
   }
  ]
 }
