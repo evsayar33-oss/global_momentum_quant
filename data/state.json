@@ -1655,9 +1655,9 @@
    "audit_status": "veri birikiyor"
   },
   "us": {
-   "n": 9,
-   "last_date": "2026-10-14",
-   "cash": 366.2187357774874,
+   "n": 10,
+   "last_date": "2026-10-15",
+   "cash": 366.2687330273689,
    "positions": [
     {
      "id": "us-1-SNDK-0",
@@ -1670,7 +1670,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 1719.989990234375,
      "cycle_end": 21,
-     "last_px": 1482.3299560546875
+     "last_px": 1394.8299560546875
     },
     {
      "id": "us-1-MU-0",
@@ -1683,7 +1683,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 1074.8900146484375,
      "cycle_end": 21,
-     "last_px": 914.1300048828125
+     "last_px": 931.239990234375
     },
     {
      "id": "us-1-JNJ-0",
@@ -1696,7 +1696,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 256.0299987792969,
      "cycle_end": 21,
-     "last_px": 253.91000366210938
+     "last_px": 253.27999877929688
     },
     {
      "id": "us-1-VLO-0",
@@ -1709,7 +1709,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 406.29998779296875,
      "cycle_end": 21,
-     "last_px": 459.7799987792969
+     "last_px": 444.05999755859375
     },
     {
      "id": "us-1-LITE-0",
@@ -1722,7 +1722,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 1085.4200439453125,
      "cycle_end": 21,
-     "last_px": 987.989990234375
+     "last_px": 869.5399780273438
     },
     {
      "id": "us-1-MPC-0",
@@ -1735,7 +1735,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 422.3299865722656,
      "cycle_end": 21,
-     "last_px": 484.9200134277344
+     "last_px": 476.9200134277344
     },
     {
      "id": "us-1-MRK-0",
@@ -1748,7 +1748,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 144.3000030517578,
      "cycle_end": 21,
-     "last_px": 147.3699951171875
+     "last_px": 145.19000244140625
     },
     {
      "id": "us-1-WDC-0",
@@ -1761,7 +1761,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 415.2900085449219,
      "cycle_end": 21,
-     "last_px": 364.1000061035156
+     "last_px": 356.45001220703125
     },
     {
      "id": "us-1-STX-0",
@@ -1774,7 +1774,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 848.989990234375,
      "cycle_end": 21,
-     "last_px": 713.5399780273438
+     "last_px": 690.8099975585938
     },
     {
      "id": "us-1-PSX-0",
@@ -1787,7 +1787,7 @@
      "ref_date": "2026-10-02",
      "ref_px": 264.5799865722656,
      "cycle_end": 21,
-     "last_px": 292.7300109863281
+     "last_px": 289.20001220703125
     },
     {
      "id": "us-6-SNDK-1",
@@ -1800,7 +1800,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 1581.8199462890625,
      "cycle_end": 26,
-     "last_px": 1482.3299560546875
+     "last_px": 1394.8299560546875
     },
     {
      "id": "us-6-LITE-1",
@@ -1813,7 +1813,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 1103.35498046875,
      "cycle_end": 26,
-     "last_px": 987.989990234375
+     "last_px": 869.5399780273438
     },
     {
      "id": "us-6-MU-1",
@@ -1826,7 +1826,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 1029.0,
      "cycle_end": 26,
-     "last_px": 914.1300048828125
+     "last_px": 931.239990234375
     },
     {
      "id": "us-6-MRNA-1",
@@ -1839,7 +1839,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 225.0,
      "cycle_end": 26,
-     "last_px": 216.25
+     "last_px": 236.5
     },
     {
      "id": "us-6-WDC-1",
@@ -1852,7 +1852,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 397.2799987792969,
      "cycle_end": 26,
-     "last_px": 364.1000061035156
+     "last_px": 356.45001220703125
     },
     {
      "id": "us-6-STX-1",
@@ -1865,7 +1865,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 783.0,
      "cycle_end": 26,
-     "last_px": 713.5399780273438
+     "last_px": 690.8099975585938
     },
     {
      "id": "us-6-DELL-1",
@@ -1878,7 +1878,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 586.0599975585938,
      "cycle_end": 26,
-     "last_px": 572.469970703125
+     "last_px": 473.3900146484375
     },
     {
      "id": "us-6-BE-1",
@@ -1891,7 +1891,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 280.5,
      "cycle_end": 26,
-     "last_px": 263.45001220703125
+     "last_px": 236.3000030517578
     },
     {
      "id": "us-6-INTC-1",
@@ -1904,7 +1904,7 @@
      "ref_date": "2026-10-09",
      "ref_px": 104.69999694824219,
      "cycle_end": 26,
-     "last_px": 98.12000274658203
+     "last_px": 95.37000274658203
     },
     {
      "id": "us-6-TER-1",
@@ -1917,10 +1917,91 @@
      "ref_date": "2026-10-09",
      "ref_px": 402.67999267578125,
      "cycle_end": 26,
-     "last_px": 359.44000244140625
+     "last_px": 343.2099914550781
     }
    ],
-   "pending": [],
+   "pending": [
+    {
+     "side": "buy",
+     "t": "SNDK",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "LITE",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "MRNA",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "MU",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "DELL",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "STX",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "WDC",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "INTC",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "MRVL",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    },
+    {
+     "side": "buy",
+     "t": "COHR",
+     "amount": 17.911363675697455,
+     "full": 17.911363675697455,
+     "tranche": 2,
+     "cycle_end": 31
+    }
+   ],
    "cycles": [
     {
      "k": 0,
@@ -2563,6 +2644,327 @@
      ],
      "entry_i": 753,
      "exit_i": 774
+    },
+    {
+     "k": 2,
+     "start": "2026-10-15",
+     "picks": [
+      "SNDK",
+      "LITE",
+      "MRNA",
+      "MU",
+      "DELL",
+      "STX",
+      "WDC",
+      "INTC",
+      "MRVL",
+      "COHR"
+     ],
+     "universe": [
+      "A",
+      "AAPL",
+      "ABBV",
+      "ABNB",
+      "ABT",
+      "ACGL",
+      "ACN",
+      "ADBE",
+      "ADI",
+      "ADP",
+      "ADSK",
+      "AEP",
+      "AIG",
+      "AJG",
+      "AKAM",
+      "ALL",
+      "AMAT",
+      "AMD",
+      "AME",
+      "AMGN",
+      "AMT",
+      "AMZN",
+      "ANET",
+      "AON",
+      "APH",
+      "APO",
+      "APP",
+      "AVGO",
+      "AXON",
+      "AXP",
+      "AZO",
+      "BA",
+      "BAC",
+      "BE",
+      "BKNG",
+      "BKR",
+      "BLK",
+      "BMY",
+      "BNY",
+      "BRK-B",
+      "BSX",
+      "BX",
+      "C",
+      "CAH",
+      "CARR",
+      "CASY",
+      "CAT",
+      "CB",
+      "CBOE",
+      "CBRE",
+      "CCL",
+      "CDNS",
+      "CEG",
+      "CHTR",
+      "CI",
+      "CIEN",
+      "CL",
+      "CMCSA",
+      "CME",
+      "CMG",
+      "CMI",
+      "COF",
+      "COHR",
+      "COIN",
+      "COP",
+      "COR",
+      "COST",
+      "CRH",
+      "CRM",
+      "CRWD",
+      "CSCO",
+      "CSX",
+      "CTAS",
+      "CTSH",
+      "CTVA",
+      "CVNA",
+      "CVS",
+      "CVX",
+      "DAL",
+      "DASH",
+      "DDOG",
+      "DE",
+      "DELL",
+      "DHI",
+      "DHR",
+      "DIS",
+      "DLR",
+      "DUK",
+      "DVN",
+      "EBAY",
+      "ECHO",
+      "ECL",
+      "ELV",
+      "EMR",
+      "EOG",
+      "EQIX",
+      "EQT",
+      "ETN",
+      "EW",
+      "EXC",
+      "EXPE",
+      "F",
+      "FANG",
+      "FAST",
+      "FCX",
+      "FDX",
+      "FERG",
+      "FICO",
+      "FITB",
+      "FIX",
+      "FLEX",
+      "FSLR",
+      "FTNT",
+      "GD",
+      "GE",
+      "GEV",
+      "GILD",
+      "GIS",
+      "GLW",
+      "GM",
+      "GOOG",
+      "GOOGL",
+      "GS",
+      "GWW",
+      "HAL",
+      "HBAN",
+      "HCA",
+      "HD",
+      "HLT",
+      "HON",
+      "HONA",
+      "HOOD",
+      "HPE",
+      "HPQ",
+      "HUM",
+      "HWM",
+      "IBKR",
+      "IBM",
+      "ICE",
+      "ILMN",
+      "INTC",
+      "INTU",
+      "IQV",
+      "IR",
+      "ISRG",
+      "ITW",
+      "JBL",
+      "JCI",
+      "JNJ",
+      "JPM",
+      "KDP",
+      "KEY",
+      "KEYS",
+      "KHC",
+      "KKR",
+      "KLAC",
+      "KMB",
+      "KMI",
+      "KO",
+      "KR",
+      "KVUE",
+      "LEN",
+      "LHX",
+      "LIN",
+      "LITE",
+      "LLY",
+      "LMT",
+      "LOW",
+      "LRCX",
+      "LULU",
+      "LYV",
+      "MA",
+      "MAR",
+      "MCD",
+      "MCHP",
+      "MCK",
+      "MCO",
+      "MDLZ",
+      "MDT",
+      "MET",
+      "META",
+      "MLM",
+      "MMM",
+      "MNST",
+      "MO",
+      "MPC",
+      "MPWR",
+      "MRK",
+      "MRNA",
+      "MRSH",
+      "MRVL",
+      "MS",
+      "MSCI",
+      "MSFT",
+      "MSI",
+      "MTD",
+      "MU",
+      "NCLH",
+      "NDAQ",
+      "NEE",
+      "NEM",
+      "NFLX",
+      "NKE",
+      "NOC",
+      "NOW",
+      "NTAP",
+      "NVDA",
+      "NXPI",
+      "O",
+      "ODFL",
+      "OKE",
+      "ON",
+      "ORCL",
+      "ORLY",
+      "OTIS",
+      "OXY",
+      "P",
+      "PANW",
+      "PAYX",
+      "PCAR",
+      "PCG",
+      "PEP",
+      "PFE",
+      "PG",
+      "PGR",
+      "PH",
+      "PLD",
+      "PLTR",
+      "PM",
+      "PNC",
+      "PSKY",
+      "PSX",
+      "PTC",
+      "PWR",
+      "PYPL",
+      "QCOM",
+      "RCL",
+      "RDDT",
+      "REGN",
+      "ROK",
+      "ROST",
+      "RTX",
+      "RVTY",
+      "SBUX",
+      "SCHW",
+      "SHW",
+      "SLB",
+      "SMCI",
+      "SNDK",
+      "SNPS",
+      "SO",
+      "SPGI",
+      "STT",
+      "STX",
+      "SWKS",
+      "SYK",
+      "SYY",
+      "T",
+      "TDG",
+      "TEL",
+      "TER",
+      "TFC",
+      "TGT",
+      "TJX",
+      "TMO",
+      "TMUS",
+      "TRGP",
+      "TRV",
+      "TSCO",
+      "TSLA",
+      "TT",
+      "TTWO",
+      "TXN",
+      "UAL",
+      "UBER",
+      "UNH",
+      "UNP",
+      "UPS",
+      "URI",
+      "USB",
+      "V",
+      "VEEV",
+      "VLO",
+      "VMC",
+      "VRT",
+      "VRTX",
+      "VST",
+      "VTR",
+      "VZ",
+      "WAT",
+      "WDAY",
+      "WDC",
+      "WELL",
+      "WFC",
+      "WM",
+      "WMB",
+      "WMT",
+      "XEL",
+      "XOM",
+      "XYZ",
+      "YUM"
+     ],
+     "entry_i": 753,
+     "exit_i": 774
     }
    ],
    "closed_cycles": [],
@@ -2616,6 +3018,11 @@
      "2026-10-14",
      715.8688,
      366.2187
+    ],
+    [
+     "2026-10-15",
+     702.9755,
+     366.2687
     ]
    ],
    "trades": [],
@@ -3152,11 +3559,119 @@
      "total_tl": 99459.64789893798,
      "dd": -0.011593184263168244,
      "fx": 49.3420295715332
+    },
+    {
+     "date": "2026-10-15",
+     "fills": [],
+     "orders": [
+      {
+       "tranche": 2,
+       "budget": 179.11,
+       "scale": 1.0,
+       "orders": [
+        {
+         "side": "AL",
+         "ticker": "SNDK",
+         "amount": 17.91,
+         "px": 1394.8299560546875,
+         "qty_est": 0.012841252511066086,
+         "stop": 1046.1225
+        },
+        {
+         "side": "AL",
+         "ticker": "LITE",
+         "amount": 17.91,
+         "px": 869.5399780273438,
+         "qty_est": 0.020598666108867753,
+         "stop": 652.155
+        },
+        {
+         "side": "AL",
+         "ticker": "MRNA",
+         "amount": 17.91,
+         "px": 236.5,
+         "qty_est": 0.07573515296277994,
+         "stop": 177.375
+        },
+        {
+         "side": "AL",
+         "ticker": "MU",
+         "amount": 17.91,
+         "px": 931.239990234375,
+         "qty_est": 0.01923388585491213,
+         "stop": 698.43
+        },
+        {
+         "side": "AL",
+         "ticker": "DELL",
+         "amount": 17.91,
+         "px": 473.3900146484375,
+         "qty_est": 0.03783637829581029,
+         "stop": 355.0425
+        },
+        {
+         "side": "AL",
+         "ticker": "STX",
+         "amount": 17.91,
+         "px": 690.8099975585938,
+         "qty_est": 0.025928060883598072,
+         "stop": 518.1075
+        },
+        {
+         "side": "AL",
+         "ticker": "WDC",
+         "amount": 17.91,
+         "px": 356.45001220703125,
+         "qty_est": 0.05024930021686822,
+         "stop": 267.3375
+        },
+        {
+         "side": "AL",
+         "ticker": "INTC",
+         "amount": 17.91,
+         "px": 95.37000274658203,
+         "qty_est": 0.18780919744011837,
+         "stop": 71.5275
+        },
+        {
+         "side": "AL",
+         "ticker": "MRVL",
+         "amount": 17.91,
+         "px": 241.24000549316406,
+         "qty_est": 0.07424707041886136,
+         "stop": 180.93
+        },
+        {
+         "side": "AL",
+         "ticker": "COHR",
+         "amount": 17.91,
+         "px": 250.60000610351562,
+         "qty_est": 0.07147391556047604,
+         "stop": 187.95
+        }
+       ],
+       "exit_date_est": 31
+      }
+     ],
+     "stops": [],
+     "notes": [],
+     "shortfall": 0.0,
+     "nav": 702.9754663456895,
+     "transfer": null,
+     "insurance": null,
+     "weights": {
+      "bist": 0.64,
+      "us": 0.36
+     },
+     "vol_scale": 1.0,
+     "total_tl": 98326.30754622765,
+     "dd": -0.022856056722828755,
+     "fx": 49.40520095825195
     }
    ],
-   "perf": 0.9771068051992152,
+   "perf": 0.9595084252007086,
    "perf_peak": 1.0035755560053738,
-   "nav_post": 715.8688,
+   "nav_post": 702.9755,
    "warned": {},
    "audit_status": "veri birikiyor"
   }
@@ -3165,7 +3680,7 @@
   "capital_tl": 100000,
   "peak_tl": 100626.22628193168,
   "insurance": false,
-  "dd": -0.016461718863146624,
+  "dd": -0.022856056722828755,
   "weights": {
    "bist": 0.64,
    "us": 0.36
@@ -3175,7 +3690,7 @@
    "bist": false,
    "us": false
   },
-  "fx": 49.41419982910156,
+  "fx": 49.40520095825195,
   "transfers": [],
   "nav_tl": [],
   "shadow": {
@@ -3997,6 +4512,6 @@
    "bist": 1.0,
    "us": 1.0
   },
-  "spy_card": "karne (başlangıçtan, 13 gün): sistem %-0.3 / SPY %+1.4"
+  "spy_card": "karne (başlangıçtan, 14 gün): sistem %-1.0 / SPY %+1.8"
  }
 }
