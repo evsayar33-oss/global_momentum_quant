@@ -432,3 +432,22 @@ BUY GLYHO.IS QTY=88 AMT=1555.17 STOP=13.1325 MARKET_ON_OPEN 2026-10-19
 BUY INVES.IS QTY=2 AMT=1555.17 STOP=508.125 MARKET_ON_OPEN 2026-10-19
 BUY KLSYN.IS QTY=114 AMT=1555.17 STOP=10.2 MARKET_ON_OPEN 2026-10-19
 BUY ISDMR.IS QTY=26 AMT=1555.17 STOP=43.9875 MARKET_ON_OPEN 2026-10-19</pre>
+
+===== 2026-10-17 02:52 =====
+🇺🇸 <b>ABD (S&P 500)</b> — 2026-10-16 kapanışı
+
+📌 <b>Yarın AÇILIŞTA yapılacaklar</b>
+⛔ <b>FELAKET STOPU</b> SNDK: kapanış 1.299,30 $ (giriş 1.773,12 $, %-26.7) → yarın açılışta SAT
+⛔ <b>FELAKET STOPU</b> LITE: kapanış 824,13 $ (giriş 1.114,54 $, %-26.1) → yarın açılışta SAT
+
+💼 <b>Durum</b>
+ABD (S&P 500) kolu: 680 $ | açık pozisyon 30 | nakit %28
+🌍 Toplam portföy: <b>96.119 TL</b> (zirveden %-4.5) | hedef BIST %64 / ABD %36 | USD/TRY 49,52
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+📊 SPY karne (başlangıçtan, 15 gün): sistem %-2.8 / SPY %+0.9
+
+===== 2026-10-17 02:52 =====
+🤖 <b>Bot emirleri</b> (data/orders_us.json)
+<pre>SELL SNDK QTY=ALL MARKET_ON_OPEN 2026-10-19
+SELL LITE QTY=ALL MARKET_ON_OPEN 2026-10-19</pre>
