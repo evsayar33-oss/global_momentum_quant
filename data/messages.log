@@ -397,3 +397,38 @@ BUY WDC QTY=0.0502 AMT=17.91 STOP=267.3375 MARKET_ON_OPEN 2026-10-16
 BUY INTC QTY=0.1878 AMT=17.91 STOP=71.5275 MARKET_ON_OPEN 2026-10-16
 BUY MRVL QTY=0.0742 AMT=17.91 STOP=180.93 MARKET_ON_OPEN 2026-10-16
 BUY COHR QTY=0.0715 AMT=17.91 STOP=187.95 MARKET_ON_OPEN 2026-10-16</pre>
+
+===== 2026-10-16 22:02 =====
+🇹🇷 <b>BIST</b> — 2026-10-16 kapanışı
+
+📌 <b>Yarın AÇILIŞTA yapılacaklar</b>
+<u>Dilim 3</u> (bütçe 15.552 TL, 21 işlem günü tutulur)
+🟢 AL <b>TUPRS</b> — 1.555 TL ≈ 4 adet (son fiyat 375,50 TL, felaket stopu 281,62 TL)
+🟢 AL <b>GMTAS</b> — 1.555 TL ≈ 31 adet (son fiyat 49,50 TL, felaket stopu 37,12 TL)
+🟢 AL <b>RYGYO</b> — 1.555 TL ≈ 33 adet (son fiyat 47,00 TL, felaket stopu 35,25 TL)
+🟢 AL <b>AHGAZ</b> — 1.555 TL ≈ 33 adet (son fiyat 46,48 TL, felaket stopu 34,86 TL)
+🟢 AL <b>CELHA</b> — 1.555 TL ≈ 58 adet (son fiyat 27,04 TL, felaket stopu 20,28 TL)
+🟢 AL <b>KRDMD</b> — 1.555 TL ≈ 38 adet (son fiyat 41,26 TL, felaket stopu 30,95 TL)
+🟢 AL <b>GLYHO</b> — 1.555 TL ≈ 89 adet (son fiyat 17,51 TL, felaket stopu 13,13 TL)
+🟢 AL <b>INVES</b> — 1.555 TL ≈ 2 adet (son fiyat 677,50 TL, felaket stopu 508,12 TL)
+🟢 AL <b>KLSYN</b> — 1.555 TL ≈ 114 adet (son fiyat 13,60 TL, felaket stopu 10,20 TL)
+🟢 AL <b>ISDMR</b> — 1.555 TL ≈ 27 adet (son fiyat 58,65 TL, felaket stopu 43,99 TL)
+
+💼 <b>Durum</b>
+BIST kolu: 62.421 TL | açık pozisyon 20 | nakit %52
+🌍 Toplam portföy: <b>97.232 TL</b> (zirveden %-3.4) | hedef BIST %64 / ABD %36 | USD/TRY 49,52
+🛡️ Portföy sigortası kapalı (her hissede %25 felaket stopu var)
+🧪 Öz denetim: veri birikiyor
+
+===== 2026-10-16 22:02 =====
+🤖 <b>Bot emirleri</b> (data/orders_bist.json)
+<pre>BUY TUPRS.IS QTY=4 AMT=1555.17 STOP=281.625 MARKET_ON_OPEN 2026-10-19
+BUY GMTAS.IS QTY=31 AMT=1555.17 STOP=37.125 MARKET_ON_OPEN 2026-10-19
+BUY RYGYO.IS QTY=33 AMT=1555.17 STOP=35.25 MARKET_ON_OPEN 2026-10-19
+BUY AHGAZ.IS QTY=33 AMT=1555.17 STOP=34.86 MARKET_ON_OPEN 2026-10-19
+BUY CELHA.IS QTY=57 AMT=1555.17 STOP=20.28 MARKET_ON_OPEN 2026-10-19
+BUY KRDMD.IS QTY=37 AMT=1555.17 STOP=30.945 MARKET_ON_OPEN 2026-10-19
+BUY GLYHO.IS QTY=88 AMT=1555.17 STOP=13.1325 MARKET_ON_OPEN 2026-10-19
+BUY INVES.IS QTY=2 AMT=1555.17 STOP=508.125 MARKET_ON_OPEN 2026-10-19
+BUY KLSYN.IS QTY=114 AMT=1555.17 STOP=10.2 MARKET_ON_OPEN 2026-10-19
+BUY ISDMR.IS QTY=26 AMT=1555.17 STOP=43.9875 MARKET_ON_OPEN 2026-10-19</pre>
